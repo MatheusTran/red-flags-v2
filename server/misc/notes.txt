@@ -1,0 +1,36 @@
+black list certain names, and also add character limit
+
+maybe let the people name the "fishes", then create tinder profiles with the name of the fishes
+
+incrementing white cards is STILL bugged?
+check if played is empty
+
+add emotes
+
+make cards scroll, and custom box gets bigger, and possibly character limit
+
+change the choosing method, perhaps use react to make a tinder swiper
+
+maybe change it to "blank is checking out blank's fish"
+
+add removing ability
+
+use character index instead of order attribute, this could make things simpler, however the scoreboard will now shuffle every time
+swiper boolean is now obsolete
+these two are now complete?
+
+and simplify socket.on(increment)
+
+also change the username checker to id, to avoid problems with the same username
+
+create tabs for cards
+
+implement room search, and browse lobbies, implement a binary search algorithm 
+
+add react
+
+Redis database
+
+Add APIs like dice bear
+
+doubly linked lists for the order of each player
