@@ -56,3 +56,35 @@ body{
         text-shadow: none;
     }
 }
+
+.popup-container{
+    position: fixed;
+    top: 20%;
+    width: 60%;
+    left: 50%;
+    transform: translateX(-50%);
+    border: solid white;
+    border-radius: 1em;
+    background: linear-gradient(0.35turn,#dd2A7B, #8134AF);
+}
+
+.close{
+    position: relative;
+    width: auto;
+    background: transparent;
+    border: transparent;
+    color: white;
+    cursor: pointer;
+    font-weight: bolder;
+    font-size: larger;
+}
+
+.close:hover{
+    color: red;
+}
+
+.popup-container .close{
+    position: absolute;
+    top: 2%;
+    right: 1%;
+}
