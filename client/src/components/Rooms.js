@@ -3,7 +3,7 @@ import Popup from './Popup'
 
 export default function Rooms() {
     const roomRef = useRef()
-    const [popupOn, setPopupOn] = useState(false);
+    const [popupOn, setPopupOn] = useState(()=>false);
     return (
         <div>
             <div className='btn' datatext="Get_A_room" onClick={()=>setPopupOn(!popupOn)}>Get_A_room</div>

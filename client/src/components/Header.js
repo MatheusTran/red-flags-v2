@@ -1,9 +1,9 @@
 import PropTypes from 'prop-types';
 
-const Header = (props) => {//ignore the error here, it is purpoefully a link to nowhere
+const Header = (props) => {
     return(
     <header> 
-        <h1 id="title"><a className="neon">RED</a> FLAGS</h1>
+        <h1 id="title"><a style={antiLink} href={"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAOEAAADhCAMAAAAJbSJIAAAAA1BMVEX/AAAZ4gk3AAAASElEQVR4nO3BgQAAAADDoPlTX+AIVQEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADwDcaiAAFXD1ujAAAAAElFTkSuQmCC"} className="neon">RED</a> FLAGS</h1>
         <h1 id="subtitle">{props.text}</h1>
     </header>
     );
@@ -15,6 +15,11 @@ Header.defaultProps = {
 
 Header.propTypes = {
     text: PropTypes.string.isRequired
+}
+
+const antiLink = {
+    textDecoration:"none",
+    color:"white"
 }
 
 //const style = {

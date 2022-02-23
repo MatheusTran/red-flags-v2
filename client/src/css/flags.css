@@ -63,7 +63,7 @@ body {
 }
 
 .input{
-    height: 1em;
+    height: auto;/*note: change this in the future (maybe)*/
     width: 50%;
     min-width: 50%;
     padding: 0;
