@@ -22,10 +22,4 @@ const antiLink = {
     color:"white"
 }
 
-//const style = {
-//    color: "pink", 
-//    backgroundColor:"black",
-//    display: "none"
-//}
-
 export default Header;

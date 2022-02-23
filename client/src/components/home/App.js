@@ -1,6 +1,6 @@
 import React from "react"
 import io from "socket.io-client"
-import useLocalStorage from "../hooks/useLocalStorage";
+import useLocalStorage from "../../hooks/useLocalStorage";
 import Header from './Header';
 import Username from "./username"
 import Rooms from "./Rooms"
