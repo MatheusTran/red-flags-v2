@@ -11,6 +11,5 @@ export default function Router() {
                 <Route path="/game" element={<Game/>}/>
             </Routes>
         </BrowserRouter>
-
     )
 }

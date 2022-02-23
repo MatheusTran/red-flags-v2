@@ -2,9 +2,9 @@ import React from 'react'
 
 export default function Popup(props) {
     function createRoom (x){
+        const roomName=x["target"][0].value
         x.preventDefault()
-        console.log(props.lobbyId)
-        window.location = (`game?roomId=${props.lobbyId}`)
+        window.location = (`game?roomId=${props.lobbyId}&room=${roomName}`)
     }
     return (props.trigger) ? (
         <div className="popup">

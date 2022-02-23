@@ -1,3 +1,5 @@
+const { connect } = require("http2");
+
 const app = require("express")()
 const server = require("http").createServer(app)
 const io = require("socket.io")(server)
@@ -8,7 +10,11 @@ function randint(n){
 
 io.on("connection", socket =>{
     console.log("connection established with: " + socket.id);
-    
+    socket.on("gamejoin", (roomId, username)=>{
+        console.log(roomId, username)
+        console.log(socket.id)
+    });
+    socket.on("home", ()=>console.log("user is at home")) 
     socket.on("disconnect", ()=>{
         console.log(socket.id + " has left")
     }) 
