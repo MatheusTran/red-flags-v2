@@ -1,4 +1,5 @@
 const { connect } = require("http2");
+const cards = require("./misc/cards.json");
 
 const app = require("express")()
 const server = require("http").createServer(app)
@@ -9,12 +10,15 @@ function randint(n){
 };
 
 io.on("connection", socket =>{
-    console.log("connection established with: " + socket.id);
-    socket.on("gamejoin", (roomId, username)=>{
-        console.log(roomId, username)
+    socket.on("gamejoin", ({roomId, username, userId})=>{
+        console.log(roomId, username, userId)
         console.log(socket.id)
     });
-    socket.on("home", ()=>console.log("user is at home")) 
+    socket.on("pull", ({color},callback)=>{ 
+        var random = randint(cards[color].length)
+        callback(cards[color][random])
+    });
+
     socket.on("disconnect", ()=>{
         console.log(socket.id + " has left")
     }) 

@@ -1,24 +1,28 @@
 import React, { useState, useEffect } from "react"
-import io from "socket.io-client"
 import queryString from "query-string"
 import useLocalStorage from "../../hooks/useLocalStorage";
+import {SocketProvider} from "../socket"
+import Hotbar from "./Hotbar";
+import socket from "socket.io-client/lib/socket";
 
 //note to self: for some reason downgrading socket.io to 2.4.0 fixes the bug
-let socket = io.connect("http://localhost:9000/"); 
 
 function Game() {
     const [user, setUser] = useLocalStorage("user")
     useEffect(()=>{
         const data = queryString.parse(window.location.search)
-        console.log(socket)
-        socket.emit("gamejoin", data.roomId, user)
+        console.log(data)
+        //socket.emit("gamejoin", data.roomId, user)
     },[user])
-
     return (
-        <div>
-            <div id="bg"></div>
-            <h1>welcome to room</h1>
-        </div>
+        <SocketProvider name={user}>
+            <div>
+                <div id="bg"></div>
+                <h1>working on making the rooms</h1>
+            </div>
+            <Hotbar userId="whatevs"/>
+        </SocketProvider>
+
     );
 }
 
