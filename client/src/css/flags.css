@@ -187,16 +187,12 @@ div.scrollmenu {
     margin: 5px;
 }
 
-#hand::-webkit-scrollbar {height: 0.5rem;}
-#hand::-webkit-scrollbar-track {background: transparent;}
-#hand::-webkit-scrollbar-thumb {
+.hand::-webkit-scrollbar {height: 0.5rem;}
+.hand::-webkit-scrollbar-track {background: transparent;}
+.hand::-webkit-scrollbar-thumb {
     background: red;
     border-radius: 5px;
     margin: 5px;
-}
-
-#hand{
-    width: 75%;
 }
 
 .custom{

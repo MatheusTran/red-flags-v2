@@ -5,6 +5,7 @@ import React, {useState, useEffect} from 'react'
 import Username from '../home/username'
 import { useSocket } from '../socket'
 import Scoreboard from "./Scoreboard"
+import Tabs from './tabs'
 
 export default function Hotbar(props) {
     const socket = useSocket()
@@ -17,6 +18,20 @@ export default function Hotbar(props) {
             })
         })
     }
+    const temp =             
+    <div className="scrollmenu" id="hand">
+    <div className='red card'>test</div>
+    <div className='red card'>test</div>
+    <div className='red card'>test</div>
+    <div className='red card'>test</div>
+    <div className='red card'>test</div>
+    <div className='red card'>test</div>
+    <div className='red card'>test</div>
+    <div className='red card'>test</div>
+    <div className='red card'>test</div>
+    <div className='red card'>test</div>
+    <div className='red card'>test</div>
+    </div>
     useEffect(()=>{
         if (socket==null) return
         pull("white")
@@ -25,20 +40,7 @@ export default function Hotbar(props) {
     return (
         <div id="lower-half">
             <Scoreboard/>
-            <div className="scrollmenu" id="hand">
-                <div className='red card'>test</div>
-                <div className='red card'>test</div>
-                <div className='red card'>test</div>
-                <div className='red card'>test</div>
-                <div className='red card'>test</div>
-                <div className='red card'>test</div>
-                <div className='red card'>test</div>
-                <div className='red card'>test</div>
-                <div className='red card'>test</div>
-                <div className='red card'>test</div>
-                <div className='red card'>test</div>
-
-            </div>
+            <Tabs/>
         </div>
     )
 }
