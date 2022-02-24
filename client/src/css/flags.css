@@ -122,24 +122,18 @@ input:focus{
 
 
 
-select{
-    width: 100%;
-    height: 80%;
-    background-color: transparent;
-    border: none;
-}
-
-select:focus{
-    outline-width: 0;
+.players-list{
+    height: 90%;
+    overflow-y: auto;
 }
 
 ::selection{
     background-color: #FF655B;
 }
 
-select::-webkit-scrollbar {width: 0.5rem;}
-select::-webkit-scrollbar-track {background: transparent;}
-select::-webkit-scrollbar-thumb {
+.players-list::-webkit-scrollbar {width: 0.5rem;}
+.players-list::-webkit-scrollbar-track {background: transparent;}
+.players-list::-webkit-scrollbar-thumb {
     background: white;
     border-radius: 5px;
     margin: 5px;
@@ -153,6 +147,10 @@ select::-webkit-scrollbar-thumb {
     color: #FF655B;/*not sure if red, purple, pink or #FF655B is better*/
     font-weight: bold;
     width: auto;
+    display:flex;
+    height:auto; 
+    flex-direction:right; 
+    align-items:center;
 }
 
 .name{
@@ -190,7 +188,7 @@ div.scrollmenu {
 .hand::-webkit-scrollbar {height: 0.5rem;}
 .hand::-webkit-scrollbar-track {background: transparent;}
 .hand::-webkit-scrollbar-thumb {
-    background: red;
+    background: purple;
     border-radius: 5px;
     margin: 5px;
 }

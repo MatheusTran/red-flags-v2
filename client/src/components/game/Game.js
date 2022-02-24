@@ -1,9 +1,8 @@
-import React, { useState, useEffect } from "react"
+import React, { useEffect } from "react"
 import queryString from "query-string"
 import useLocalStorage from "../../hooks/useLocalStorage";
 import {SocketProvider} from "../socket"
 import Hotbar from "./Hotbar";
-import socket from "socket.io-client/lib/socket";
 
 //note to self: for some reason downgrading socket.io to 2.4.0 fixes the bug
 

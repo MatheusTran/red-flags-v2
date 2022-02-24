@@ -1,12 +1,31 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useSocket } from '../socket'
+
 
 
 function Tabs() {
     const [toggleState, setToggleState] = useState(1);
+    const [whiteCards, setWhiteCards] = useState([])
+    const [redCards, setRedCards] = useState([])
 
-    const toggleTab = (index) => {
-        setToggleState(index);
-    };
+    const toggleTab = (index) => setToggleState(index);
+    const socket = useSocket()
+    function pull(color, array, setArray){
+        if (array.length>=10) return
+        socket.emit("pull", {color:color}, (card)=>{
+            setArray((prevCards)=>{return [...prevCards, card]})
+            
+        })
+    }
+    useEffect(()=>{
+        if (socket==null) return
+        pull("white", whiteCards, setWhiteCards)
+    },[socket, whiteCards])
+
+    useEffect(()=>{
+        if (socket==null) return
+        pull("red", redCards, setRedCards)
+    },[socket, redCards])
 
     return (
         <div className="tabs-container">
@@ -30,7 +49,12 @@ function Tabs() {
             className={(toggleState === 1 ? "content  active-content" : "content")}
             >
                 <div className="scrollmenu hand">
-                    <div className="white card">test</div>
+                    {whiteCards.map(card => (
+                        <div className="white card">
+                            {card.text}
+                            {card.Custom ? <input className="custom" placeholder="Custom text"/>:""}
+                        </div>
+                    ))}
 
                 </div>
             </div>
@@ -39,7 +63,12 @@ function Tabs() {
             className={(toggleState === 2 ? "content  active-content" : "content")}
             >
                 <div className="scrollmenu hand">
-                    <div className="red card">test</div>
+                    {redCards.map(card => (
+                        <div className="red card">
+                            {card.text}
+                            {card.Custom ? <input className="custom" placeholder="Custom text"/>:""}
+                        </div>
+                    ))}
                 </div>
             </div>
         </div>
