@@ -271,11 +271,11 @@
         {"text":"Doesn't like music... \n \nany of it", "Custom": false}, 
         {"text":"Thinks they're smarter than you", "Custom": false}, 
         {"text":"As long as you date them you can only eat food off the dollar menu", "Custom": false}, 
-        {"text":"(Custom card)", "Custom": true}, 
-        {"text":"(Custom card)", "Custom": true}, 
-        {"text":"(Custom card)", "Custom": true}, 
-        {"text":"(Custom card)", "Custom": true}, 
-        {"text":"(Custom card)", "Custom": true}
+        {"text":"(Custom card)", "Custom": true, "n": 271}, 
+        {"text":"(Custom card)", "Custom": true, "n": 272}, 
+        {"text":"(Custom card)", "Custom": true, "n": 273}, 
+        {"text":"(Custom card)", "Custom": true, "n": 274}, 
+        {"text":"(Custom card)", "Custom": true, "n": 275}
     ],
     "white":[ 
         {"text":"Fiercely loyal", "Custom": false}, 
@@ -453,6 +453,7 @@
         {"text":"Has a comet named after them", "Custom": false}, 
         {"text":"Nobel prize recipient", "Custom": false}, 
         {"text":"Charge all electronics around them", "Custom": false}, 
+        {"text":"Was actually one of the lesser known spice girls", "Custom": false}, 
         {"text":"Life is the true story that _____ is based on", "Custom": true}, 
         {"text":"Can fly", "Custom": false}, 
         {"text":"Superhero", "Custom": false}, 
@@ -485,10 +486,10 @@
         {"text":"Can talk to animals", "Custom": false}, 
         {"text":"Owns real dinosaurs", "Custom": false}, 
         {"text":"Gives great massages", "Custom": false}, 
-        {"text":"(Custom card)", "Custom": true}, 
-        {"text":"(Custom card)", "Custom": true}, 
-        {"text":"(Custom card)", "Custom": true}, 
-        {"text":"(Custom card)", "Custom": true}, 
-        {"text":"(Custom card)", "Custom": true}
+        {"text":"(Custom card)", "Custom": true, "n": 208}, 
+        {"text":"(Custom card)", "Custom": true, "n": 209}, 
+        {"text":"(Custom card)", "Custom": true, "n": 210}, 
+        {"text":"(Custom card)", "Custom": true, "n": 211}, 
+        {"text":"(Custom card)", "Custom": true, "n": 212}
     ]
 }
