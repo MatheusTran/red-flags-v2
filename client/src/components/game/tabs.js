@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { useSocket } from '../socket'
-
-
+//import Drag from '../DragNDrop'
 
 function Tabs() {
     const [toggleState, setToggleState] = useState(1);
@@ -67,26 +66,27 @@ function Tabs() {
         </div>
 
         <div className="content-tabs">
-            <div
-            className={(toggleState === 1 ? "content  active-content" : "content")}
-            >
-                <div className="scrollmenu hand">
-                    {whiteCards.map(card => (
-                        <div className="white card" onDoubleClick={()=>{play(setWhiteCards,whiteCards,card)}} key={"white"+whiteCards.indexOf(card)}>
-                            {card.text}
-                            {card.Custom ? <input className="custom" placeholder="Custom text"/>:""}
-                        </div>
-                    ))}
-
+            
+                <div
+                className={(toggleState === 1 ? "content  active-content" : "content")}
+                >
+                    <div className="scrollmenu hand">
+                        {whiteCards.map((card,index) => (
+                            <div key={"white "+index} className="white card" onDoubleClick={()=>{play(setWhiteCards,whiteCards,card)}}>
+                                {card.text}
+                                {card.Custom ? <input className="custom" placeholder="Custom text"/>:""}
+                            </div>
+                        ))}
+                    </div>
                 </div>
-            </div>
+            
 
             <div
             className={(toggleState === 2 ? "content  active-content" : "content")}
             >
                 <div className="scrollmenu hand">
-                    {redCards.map(card => (
-                        <div className="red card" onDoubleClick={()=>{play(setRedCards,redCards,card)}} key={"red "+redCards.indexOf(card)}>
+                    {redCards.map((card,index) => (
+                        <div className="red card" onDoubleClick={()=>{play(setRedCards,redCards,card)}} key={"red "+index}>
                             {card.text}
                             {card.Custom ? <input className="custom" placeholder="Custom text"/>:""}
                         </div>

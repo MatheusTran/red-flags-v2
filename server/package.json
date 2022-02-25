@@ -15,6 +15,7 @@
   "dependencies": {
     "express": "^4.17.3",
     "nodemon": "^2.0.15",
+    "react-beautiful-dnd": "^13.1.0",
     "redis-om": "^0.1.7",
     "socketio": "^1.0.0"
   }
