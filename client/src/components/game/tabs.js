@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import { useSocket } from '../socket'
-//import Drag from '../DragNDrop'
 
 function Tabs() {
     const [toggleState, setToggleState] = useState(1);
@@ -8,7 +7,6 @@ function Tabs() {
     const [redCards, setRedCards] = useState([])
     const [whiteDupe, setWhiteDupe] = useState(false)
     const [redDupe, setRedDupe] = useState(false) 
-    //was thinking of doing things like [redDupe, setRedDupe] = [whiteDupe, setWhiteDupe] = useState(false), but not sure if that works
 
     const toggleTab = (index) => setToggleState(index);
     const socket = useSocket()
