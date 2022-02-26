@@ -11,7 +11,7 @@ function randint(n){
 
 io.on("connection", socket =>{
     socket.on("gamejoin", ({roomId, username, userId})=>{
-        console.log(roomId, username, userId)
+        console.log(roomId, username, userId) 
         console.log(socket.id)
     });
     socket.on("pull", ({color},callback)=>{ 
@@ -23,8 +23,6 @@ io.on("connection", socket =>{
         console.log(socket.id + " has left")
     }) 
 });
-
-
-
+//the env port checks if there is an environmental variable
 const PORT = process.env.PORT || 9000;
 server.listen(PORT, () => console.log(`\n\x1b[32m[server]\x1b[0m running on port: \x1b[33m${PORT}\x1b[0m \n`));
