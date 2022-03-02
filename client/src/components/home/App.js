@@ -9,10 +9,15 @@ const subs = ["so... You come here often?","Because NBs only date Samurai's from
 
 function App() {
   const [user, setUser] = useLocalStorage("user")
+  const [seed, setSeed] = useLocalStorage("seed")
+  function create(a,b){
+    setUser(a)
+    setSeed(b)
+  }
   return (
     <div className="container">
       <div id="bg"></div>
-      {user? <Rooms/>:<div><Header text={subs[Math.floor(Math.random()*subs.length)]}/> <Username onUserSubmit={setUser}/></div>}
+      {user? <Rooms/>:<div><Header text={subs[Math.floor(Math.random()*subs.length)]}/> <Username onUserSubmit={create}/></div>}
     </div>
   );
 }

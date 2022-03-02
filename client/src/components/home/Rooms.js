@@ -29,8 +29,10 @@ export default function Rooms() {
     const [popupOn, setPopupOn] = useState(()=>false);
     const [isPrivate, setIsPrivate] = useState(()=>false)
     const [user, setUser] = useLocalStorage("user")
+    const [seed, setSeed] = useLocalStorage("seed")
 
-    let player = {username:user, score:0, admin:true, played:[]}//note to self, create an id
+
+    let player = {username:user, score:0, admin:true, played:[], seed:seed}//note to self, create an id
 
     useEffect(()=>{
         const socket = io.connect("http://localhost:9000/")
@@ -64,7 +66,7 @@ export default function Rooms() {
     return (
         <div>
             <div className='btn' datatext="Get_A_room" onClick={()=>setPopupOn(!popupOn)}>Get_A_room</div>
-            <Popup trigger={popupOn} text="create" setTrigger={setPopupOn}>                
+            <Popup trigger={popupOn} setTrigger={setPopupOn}>                
                 <form onSubmit={createRoom} autoComplete='off' action="game">
                     <h1>Room details:</h1>
                     <p style={{margin:"0"}}><input required ref={roomRef} className="input" name="Lobbyname" id="Lobbyname" placeholder="Lobby name"/></p>
