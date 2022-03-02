@@ -15,6 +15,11 @@
 /server/misc/tensor_cards/checkpoint
 /server/misc/tensor_cards/models
 
+#API keys
+/client/src/components/game/.env
+/client/src/components/home/.env
+
+
 # misc
 .DS_Store
 .env.local

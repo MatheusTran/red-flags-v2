@@ -10,7 +10,7 @@ import {getFirestore, setDoc, getDoc, doc, collection, getDocs} from "firebase/f
 
 import {useCollectionData} from "react-firebase-hooks/firestore"
 
-const APIKey = ""
+const APIKey = process.env.REACT_APP_firebase_api
 
 const firebase = initializeApp({
     apiKey: APIKey,
