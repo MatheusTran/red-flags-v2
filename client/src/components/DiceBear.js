@@ -6,6 +6,6 @@ export default function DiceBear(props) {
         setUrl(`https://avatars.dicebear.com/api/avataaars/${props.seed}.svg`)
     },[props.seed])
     return (
-        <img src={url} alt={props.seed} style={{width:"20%"}}/>
+        <img src={url} alt={props.seed} title={props.seed} style={{width:"20%"}}/>
     )
 }

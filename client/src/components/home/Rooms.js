@@ -53,7 +53,8 @@ export default function Rooms() {
                 turn:1,
                 maxPoints:x["target"][1].value,
                 maxPlayer:x["target"][2].value,
-                password:password
+                password:password,
+                id:lobbyId
             },
             waiting:[]
         })
@@ -63,6 +64,11 @@ export default function Rooms() {
             socket.off()
         }
     }
+
+    function join(id){
+        console.log(id)
+    }
+
     return (
         <div>
             <div className='btn' datatext="Get_A_room" onClick={()=>setPopupOn(!popupOn)}>Get_A_room</div>
@@ -80,15 +86,15 @@ export default function Rooms() {
                     <button className='btn' type='submit' datatext="create">create</button>
                 </form>
             </Popup>
-            <div>
+            <div style={{display:"flex", width:"100%",flexDirection:"column",alignItems:"center"}}>
                 <h1>rooms</h1>
                 {
                     roomsList?.map((room, index)=>(
-                        <div key={room["Name"]} style={{backgroundColor:"purple"}}>
-                            <h1>{index+1}.{room["Name"]}</h1>
-                            <p style={{color:"white"}}>players: {room.players.length}/{room.data.maxPlayer}</p>
-                            <p style={{color:"white"}}>State: {room.data.state}</p>
-                            <p>{room.data.password? "private lobby" : "open"}</p>
+                        <div key={room["Name"]} className="roomContainer" onClick={()=>join(room.data.id)}>
+                            <h1 style={{marginLeft:"1em"}}>{index+1}.{room["Name"]}</h1>
+                            <p style={{color:"white", margin:"0", marginLeft:"2em"}}>players: {room.players.length}/{room.data.maxPlayer}</p>
+                            <p style={{color:"white", margin:"0", marginLeft:"2em"}}>State: {room.data.state}</p>
+                            <p style={{color:"white", margin:"0", marginLeft:"2em", marginBottom:"1em"}}>{room.data.password? "private lobby" : "open"}</p>
                         </div>
                         ))
                 }

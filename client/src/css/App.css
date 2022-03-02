@@ -136,3 +136,17 @@ input[type=checkbox]:checked:disabled + label:before {
     background-color: #bfb;
     border-color: #bfb;
 }
+
+.roomContainer{
+    background-color:purple;
+    display: Flex;
+    flex-direction: column;
+    margin-bottom: 1em;
+    justify-content: flex-start;
+    text-align: left;
+    width:50%;
+    min-width:fit-content;
+    border-radius:1em;
+    border:solid white;
+    cursor:pointer
+}
