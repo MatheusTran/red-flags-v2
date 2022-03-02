@@ -1,4 +1,4 @@
-const { connect } = require("http2");
+const { connect } = require("http2"); //not sure what this is, I think I will remove it
 const cards = require("./misc/cards.json");
 
 const app = require("express")()
@@ -9,6 +9,18 @@ function randint(n){
     return Math.floor(Math.random() * (n));
 };
 
+const firebaseConfig = {
+    apiKey: "AIzaSyDnl4uaPL3jUBBfETZLNUtsfIS-UcBxPQs",
+    authDomain: "red-flags-v2.firebaseapp.com",
+    projectId: "red-flags-v2",
+    storageBucket: "red-flags-v2.appspot.com",
+    messagingSenderId: "35160152967",
+    appId: "1:35160152967:web:6d106eec111e58897d1122",
+    measurementId: "G-1GQK9YKCNK"
+};
+
+tempDB = {} //this is only temporary as I figure out the whole database situation
+
 io.on("connection", socket =>{
     socket.on("gamejoin", ({roomId, username, userId})=>{
         console.log(roomId, username, userId) 
@@ -18,6 +30,8 @@ io.on("connection", socket =>{
         var random = randint(cards[color].length)
         callback(cards[color][random])
     });
+
+
 
     socket.on("disconnect", ()=>{
         console.log(socket.id + " has left")

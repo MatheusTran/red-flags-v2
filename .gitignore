@@ -11,6 +11,10 @@
 # production
 /build
 
+#ai stuff
+/server/misc/tensor_cards/checkpoint
+/server/misc/tensor_cards/models
+
 # misc
 .DS_Store
 .env.local

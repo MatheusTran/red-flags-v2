@@ -62,10 +62,19 @@ body {
     align-items: center;
 }
 
-.input{
+input[type=number]{
+    width: 10%;
+    font-size: xx-large;
+}
+
+input::-webkit-inner-spin-button {/*arrows inside of the number input*/
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+input{
     height: auto;/*note: change this in the future (maybe)*/
     width: 50%;
-    min-width: 50%;
     padding: 0;
     border-radius: 0;
     line-height: 70px;
