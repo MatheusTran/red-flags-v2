@@ -49,7 +49,7 @@ function Tabs() {
     },[socket, redCards, redDupe])
 
     function limit(e){
-        if(e.target.innerText.length >36 && e.key!=="Backspace")e.preventDefault()
+        if(e.target.innerText.length >=36 && e.key!=="Backspace")e.preventDefault()
     }
 
     return (
@@ -92,7 +92,7 @@ function Tabs() {
                     {redCards.map((card,index) => (
                         <div className="red card" onDoubleClick={()=>{play(setRedCards,redCards,card)}} key={"red "+index}>
                             {card.text}
-                            {card.Custom ? <span contentEditable="true"></span>:""}
+                            {card.Custom ? <span contentEditable="true" onKeyDown={e => limit(e)}></span>:""}
                         </div>
                     ))}
                 </div>
