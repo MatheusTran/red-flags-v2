@@ -12,6 +12,8 @@ import Popup from '../Popup'
 //important!!!!:
 //https://stackoverflow.com/questions/61297769/how-to-hide-api-key-and-still-run-heroku-app
 
+//note to self: fix the input fields for the custom cards
+
 //note to self: for some reason downgrading socket.io to 2.4.0 fixes the bug
 const APIKey = ""
 function Game() {
@@ -47,7 +49,7 @@ function Game() {
             <div>
                 <div id="bg"></div>
                 <h1>working on making the rooms</h1>
-                <div className="btn" dataText="stuff" onClick={action}>stuff</div>
+                <div className="btn" datatext="stuff" onClick={action}>stuff</div>
                 <Popup trigger={popupOn} text="create" setTrigger={setPopupOn}>
                     <div>
                         stuff?

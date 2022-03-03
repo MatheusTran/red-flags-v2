@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import { useSocket } from '../socket'
 
+//charcter limit should be ~36 characters
+
 function Tabs() {
     const [toggleState, setToggleState] = useState(1);
     const [whiteCards, setWhiteCards] = useState([])
@@ -46,6 +48,10 @@ function Tabs() {
         pull("red", redCards, setRedCards, setRedDupe)
     },[socket, redCards, redDupe])
 
+    function limit(e){
+        if(e.target.innerText.length >36 && e.key!=="Backspace")e.preventDefault()
+    }
+
     return (
         <div className="tabs-container">
         <div className="bloc-tabs">
@@ -72,7 +78,7 @@ function Tabs() {
                         {whiteCards.map((card,index) => (
                             <div key={"white "+index} className="white card" onDoubleClick={()=>{play(setWhiteCards,whiteCards,card)}}>
                                 {card.text}
-                                {card.Custom ? <input className="custom" placeholder="Custom text"/>:""}
+                                {card.Custom ? <span contentEditable="true" onKeyDown={e => limit(e)}></span>:""} 
                             </div>
                         ))}
                     </div>
@@ -86,7 +92,7 @@ function Tabs() {
                     {redCards.map((card,index) => (
                         <div className="red card" onDoubleClick={()=>{play(setRedCards,redCards,card)}} key={"red "+index}>
                             {card.text}
-                            {card.Custom ? <input className="custom" placeholder="Custom text"/>:""}
+                            {card.Custom ? <span contentEditable="true"></span>:""}
                         </div>
                     ))}
                 </div>

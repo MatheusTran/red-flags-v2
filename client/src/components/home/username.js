@@ -17,7 +17,7 @@ export default function Username({onUserSubmit}) {
         <div>
             <Popup trigger={popupOn} setTrigger={setPopupOn}>
             <form onSubmit={handleSubmit} autoComplete="off">
-                <p><input required ref={userRef} className="input" name="username" id="username" placeholder="Username"/></p>
+                <p><input required ref={userRef} className="input" name="username" id="username" placeholder="Username" maxLength={15} /></p>
                 <div>
                     <DiceBear seed={currentSeed}/>
                 </div>
