@@ -1,5 +1,5 @@
 # red-flags-v2
-This is the revised edition of red flags, a web application based off of the popular card game "red flags" using socket.io
+This is the revised edition of red flags, a web application based off of the popular card game "red flags" using socket.io adn react and firebase
 
 # where is v1?
 
