@@ -1,12 +1,10 @@
-import React, {useState, useRef, useEffect} from 'react'
+import React, {useState, useRef} from 'react'
 import Popup from '../Popup'
 import { v4 } from "uuid"
-import io from "socket.io-client"
-import socket from 'socket.io-client/lib/socket'
 import useLocalStorage from "../../hooks/useLocalStorage";
 
 import {initializeApp} from "firebase/app";
-import {getFirestore, setDoc, getDoc, doc, collection, getDocs} from "firebase/firestore";
+import {getFirestore, setDoc, doc, collection, arrayUnion} from "firebase/firestore";
 
 import {useCollectionData} from "react-firebase-hooks/firestore"
 
@@ -28,26 +26,21 @@ export default function Rooms() {
     const roomRef = useRef()
     const [popupOn, setPopupOn] = useState(()=>false);
     const [isPrivate, setIsPrivate] = useState(()=>false)
-    const [user, setUser] = useLocalStorage("user")
-    const [seed, setSeed] = useLocalStorage("seed")
+    const [user] = useLocalStorage("user")
+    const [seed] = useLocalStorage("seed")
 
-
-    let player = {username:user, score:0, admin:true, played:[], seed:seed}//note to self, create an id
-
-    useEffect(()=>{
-        const socket = io.connect("http://localhost:9000/")
-        socket.emit("home")
-    })
+    let player = {username:user, score:0, admin:false, played:[], seed:seed}//note to self, create an id
 
     const [roomsList] = useCollectionData(collection(FS,"rooms"))
 
     const createRoom = async(x) => {
         const lobbyId = v4()
+        player.admin = true 
         x.preventDefault()
         const password = isPrivate? x["target"][4].value : null
         await setDoc(doc(FS, "rooms", lobbyId), {
             Name:x["target"][0].value,
-            players:[player],
+            players:[],
             data:{
                 state:"awaiting",
                 turn:1,
@@ -57,16 +50,13 @@ export default function Rooms() {
                 id:lobbyId
             },
             waiting:[]
-        })
-        //window.location = (`game?roomId=${lobbyId}&room=${roomName}`)
-        return () =>{
-            socket.emit("disconnect")
-            socket.off()
-        }
+        });
+        joinRoom(lobbyId)
     }
 
-    function join(id){
-        console.log(id)
+    const joinRoom = async(id) =>{
+        await setDoc(doc(FS, "rooms", id), {players:arrayUnion(player)},{merge:true});
+        window.location = (`game?roomId=${id}`);
     }
 
     return (
@@ -90,7 +80,7 @@ export default function Rooms() {
                 <h1>rooms</h1>
                 {
                     roomsList?.map((room, index)=>(
-                        <div key={room["Name"]} className="roomContainer" onClick={()=>join(room.data.id)}>
+                        <div key={room["Name"]} className="roomContainer" onClick={()=>joinRoom(room.data.id)}>
                             <h1 style={{marginLeft:"1em"}}>{index+1}.{room["Name"]}</h1>
                             <p style={{color:"white", margin:"0", marginLeft:"2em"}}>players: {room.players.length}/{room.data.maxPlayer}</p>
                             <p style={{color:"white", margin:"0", marginLeft:"2em"}}>State: {room.data.state}</p>
@@ -102,5 +92,4 @@ export default function Rooms() {
         </div>
     )
 }
-
-//things that the lobby needs to show: room name, room host, current players, max players
+//note to self, make the rooms look better
