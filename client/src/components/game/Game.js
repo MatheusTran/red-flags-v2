@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from "react"
-import queryString, { stringify } from "query-string"
+import React, { useState } from "react"
 import useLocalStorage from "../../hooks/useLocalStorage";
 import {SocketProvider} from "../socket"
 import Hotbar from "./Hotbar";
@@ -17,14 +16,8 @@ import Popup from '../Popup'
 //note to self: for some reason downgrading socket.io to 2.4.0 fixes the bug
 const APIKey = ""
 function Game() {
-    const [user, setUser] = useLocalStorage("user")
+    const [user] = useLocalStorage("user")
     const [popupOn, setPopupOn] = useState(()=>false);
-
-    useEffect(()=>{
-        const data = queryString.parse(window.location.search)
-        console.log(data)
-        //socket.emit("gamejoin", data.roomId, user)
-    },[user])
 
     function action(){//come back to this later
         setPopupOn(!popupOn)

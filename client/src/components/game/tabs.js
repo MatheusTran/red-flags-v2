@@ -1,5 +1,8 @@
 import { useState, useEffect } from "react";
 import { useSocket } from '../socket'
+import queryString from "query-string"
+import useLocalStorage from "../../hooks/useLocalStorage";
+
 
 //charcter limit should be ~36 characters
 
@@ -12,6 +15,12 @@ function Tabs() {
 
     const toggleTab = (index) => setToggleState(index);
     const socket = useSocket()
+    const [user] = useLocalStorage("user")
+
+    useEffect(()=>{
+        const data = queryString.parse(window.location.search)
+        socket?.emit("gamejoin", data.roomId, user, socket?.id)
+    },[socket,user]) 
 
     function dupe(card, array, setDupe){
         const cardString = JSON.stringify(card)//the (Custom card)s have an "n" value that makes them different when stringified

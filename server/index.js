@@ -5,12 +5,18 @@ const app = require("express")()
 const server = require("http").createServer(app)
 const io = require("socket.io")(server)
 
+const { initializeApp, applicationDefault, cert } = require('firebase-admin/app');
+const { getFirestore, Timestamp, FieldValue } = require('firebase-admin/firestore');
+
+
+apikey = process.env.firebase_api
+
 function randint(n){
     return Math.floor(Math.random() * (n));
 };
 
 const firebaseConfig = {
-    apiKey: "AIzaSyDnl4uaPL3jUBBfETZLNUtsfIS-UcBxPQs",
+    apiKey: apikey,
     authDomain: "red-flags-v2.firebaseapp.com",
     projectId: "red-flags-v2",
     storageBucket: "red-flags-v2.appspot.com",
@@ -19,12 +25,13 @@ const firebaseConfig = {
     measurementId: "G-1GQK9YKCNK"
 };
 
-tempDB = {} //this is only temporary as I figure out the whole database situation
+initializeApp(firebaseConfig);
+const db = getFirestore();
 
 io.on("connection", socket =>{
-    socket.on("gamejoin", ({roomId, username, userId})=>{
-        console.log(roomId, username, userId) 
-        console.log(socket.id)
+    socket.on("gamejoin", (roomId, username, userId)=>{
+        console.log(roomId, username, userId)
+        //let docRed = db.collection("rooms").doc(roomId).doc("players")
     });
     socket.on("pull", ({color},callback)=>{ 
         var random = randint(cards[color].length)
