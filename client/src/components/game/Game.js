@@ -12,10 +12,10 @@ import Popup from '../Popup'
 //https://stackoverflow.com/questions/61297769/how-to-hide-api-key-and-still-run-heroku-app
 
 //note to self: fix the input fields for the custom cards
-
+//notes: 
 //note to self: for some reason downgrading socket.io to 2.4.0 fixes the bug
 const APIKey = ""
-function Game() {
+function Game() { 
     const [user] = useLocalStorage("user")
     const [popupOn, setPopupOn] = useState(()=>false);
 
