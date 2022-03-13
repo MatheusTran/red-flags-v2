@@ -23,9 +23,7 @@ const userToSocket = {}
 
 io.on("connection", socket =>{
     socket.on("gamejoin", (roomId, username, userId)=>{
-        console.log(roomId, username, socket.id)
         userToSocket[socket.id] = {userId,roomId}
-        console.log(userToSocket);
     });
     socket.on("pull", ({color},callback)=>{ 
         var random = randint(cards[color].length)
@@ -37,14 +35,10 @@ io.on("connection", socket =>{
     socket.on("disconnect", ()=>{
         console.log(socket.id + " has left")
         const data = userToSocket[socket.id] 
-        console.log(data)
-        console.log(data.roomId)
         let docRef = db.collection("rooms").doc(data.roomId); 
         (async ()=>{
-            console.log("test")
             const doc = await docRef.get();
             quiter = doc.data()["players"].find(user => user.id == data.userId)
-            console.log(quiter)
             if(doc.data()["players"].length <= 1){
                 await docRef.delete()
             }else{
