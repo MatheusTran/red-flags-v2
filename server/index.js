@@ -5,33 +5,27 @@ const app = require("express")()
 const server = require("http").createServer(app)
 const io = require("socket.io")(server)
 
-const { initializeApp, applicationDefault, cert } = require('firebase-admin/app');
-const { getFirestore, Timestamp, FieldValue } = require('firebase-admin/firestore');
+const admin = require("firebase-admin")
+const serviceAccount = require("./firestore_key.json")
+const FieldValue = require('firebase-admin').firestore.FieldValue;
 
+admin.initializeApp({
+    credential: admin.credential.cert(serviceAccount)
+})
 
-apikey = process.env.firebase_api
+const db = admin.firestore()
 
 function randint(n){
     return Math.floor(Math.random() * (n));
 };
 
-const firebaseConfig = {
-    apiKey: apikey,
-    authDomain: "red-flags-v2.firebaseapp.com",
-    projectId: "red-flags-v2",
-    storageBucket: "red-flags-v2.appspot.com",
-    messagingSenderId: "35160152967",
-    appId: "1:35160152967:web:6d106eec111e58897d1122",
-    measurementId: "G-1GQK9YKCNK"
-};
-
-initializeApp(firebaseConfig);
-const db = getFirestore();
+const userToSocket = {}
 
 io.on("connection", socket =>{
     socket.on("gamejoin", (roomId, username, userId)=>{
-        console.log(roomId, username, userId)
-        //let docRed = db.collection("rooms").doc(roomId).doc("players")
+        console.log(roomId, username, socket.id)
+        userToSocket[socket.id] = {userId,roomId}
+        console.log(userToSocket);
     });
     socket.on("pull", ({color},callback)=>{ 
         var random = randint(cards[color].length)
@@ -42,6 +36,21 @@ io.on("connection", socket =>{
 
     socket.on("disconnect", ()=>{
         console.log(socket.id + " has left")
+        const data = userToSocket[socket.id] 
+        console.log(data)
+        console.log(data.roomId)
+        let docRef = db.collection("rooms").doc(data.roomId); 
+        (async ()=>{
+            console.log("test")
+            const doc = await docRef.get();
+            quiter = doc.data()["players"].find(user => user.id == data.userId)
+            console.log(quiter)
+            if(doc.data()["players"].length <= 1){
+                await docRef.delete()
+            }else{
+                await docRef.update({players:FieldValue.arrayRemove(quiter)}) 
+            }
+        })();
     }) 
 });
 //the env port checks if there is an environmental variable

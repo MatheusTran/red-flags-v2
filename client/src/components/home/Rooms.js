@@ -1,4 +1,4 @@
-import React, {useState, useRef} from 'react'
+import React, {useState, useRef, useEffect} from 'react'
 import Popup from '../Popup'
 import { v4 } from "uuid"
 import useLocalStorage from "../../hooks/useLocalStorage";
@@ -28,8 +28,13 @@ export default function Rooms() {
     const [isPrivate, setIsPrivate] = useState(()=>false)
     const [user] = useLocalStorage("user")
     const [seed] = useLocalStorage("seed")
+    const [id, setId] = useLocalStorage("id")
 
-    let player = {username:user, score:0, admin:false, played:[], seed:seed}//note to self, create an id
+    useEffect(()=>{
+        setId(v4())
+    },[setId])
+
+    let player = {username:user, score:0, admin:false, played:[], seed:seed, id:id}//note to self, create an id
 
     const [roomsList] = useCollectionData(collection(FS,"rooms"))
 
@@ -49,14 +54,15 @@ export default function Rooms() {
                 password:password,
                 id:lobbyId
             },
-            waiting:[]
+            waiting:[],
+            id: id
         });
         joinRoom(lobbyId)
     }
 
-    const joinRoom = async(id) =>{
-        await setDoc(doc(FS, "rooms", id), {players:arrayUnion(player)},{merge:true});
-        window.location = (`game?roomId=${id}`);
+    const joinRoom = async(joinroomid) =>{
+        await setDoc(doc(FS, "rooms", joinroomid), {players:arrayUnion(player)},{merge:true});
+        window.location = (`game?roomId=${joinroomid}`);
     }
 
     return (
