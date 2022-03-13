@@ -20,7 +20,7 @@
 /client/src/components/game/.env
 /client/src/components/home/.env
 /server/.env
-
+/server/firestore_key.json
 
 
 # misc
