@@ -22,7 +22,7 @@ function randint(n){
 const userToSocket = {}
 
 io.on("connection", socket =>{
-    socket.on("gamejoin", (roomId, username, userId)=>{
+    socket.on("gamejoin", (roomId, userId)=>{
         userToSocket[socket.id] = {userId,roomId}
     });
     socket.on("pull", ({color},callback)=>{ 

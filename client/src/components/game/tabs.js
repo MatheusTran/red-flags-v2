@@ -3,9 +3,6 @@ import { useSocket } from '../socket'
 import queryString from "query-string"
 import useLocalStorage from "../../hooks/useLocalStorage";
 
-
-//charcter limit should be ~36 characters
-
 function Tabs() {
     const [toggleState, setToggleState] = useState(1);
     const [whiteCards, setWhiteCards] = useState([])
@@ -15,14 +12,12 @@ function Tabs() {
 
     const toggleTab = (index) => setToggleState(index);
     const socket = useSocket()
-    const [user] = useLocalStorage("user")
     const [id] = useLocalStorage("id")
-
 
     useEffect(()=>{
         const data = queryString.parse(window.location.search)
-        socket?.emit("gamejoin", data.roomId, user, id)
-    },[socket,user, id]) 
+        socket?.emit("gamejoin", data.roomId, id)
+    },[socket, id]) 
 
     function dupe(card, array, setDupe){
         const cardString = JSON.stringify(card)//the (Custom card)s have an "n" value that makes them different when stringified
