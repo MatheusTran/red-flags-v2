@@ -34,17 +34,19 @@ io.on("connection", socket =>{
 
     socket.on("disconnect", ()=>{
         console.log(socket.id + " has left")
-        const data = userToSocket[socket.id] 
-        let docRef = db.collection("rooms").doc(data.roomId); 
-        (async ()=>{
-            const doc = await docRef.get();
-            quiter = doc.data()["players"].find(user => user.id == data.userId)
-            if(doc.data()["players"].length <= 1){
-                await docRef.delete()
-            }else{
-                await docRef.update({players:FieldValue.arrayRemove(quiter)}) 
-            }
-        })();
+        const data = userToSocket[socket.id]
+        if (data){
+            let docRef = db.collection("rooms").doc(data.roomId); 
+            (async ()=>{
+                const doc = await docRef.get();
+                quiter = doc.data()["players"].find(user => user.id == data.userId)
+                if(doc.data()["players"].length <= 1){
+                    await docRef.delete()
+                }else{
+                    await docRef.update({players:FieldValue.arrayRemove(quiter)}) 
+                } 
+            })();
+        } 
     }) 
 });
 //the env port checks if there is an environmental variable
