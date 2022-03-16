@@ -33,7 +33,6 @@ io.on("connection", socket =>{
 
 
     socket.on("disconnect", ()=>{
-        console.log(socket.id + " has left")
         const data = userToSocket[socket.id]
         if (data){
             let docRef = db.collection("rooms").doc(data.roomId); 
