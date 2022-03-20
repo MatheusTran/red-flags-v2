@@ -7,6 +7,7 @@ import queryString from "query-string"
 
 import {initializeApp} from "firebase/app";
 import {getFirestore, doc} from "firebase/firestore";
+import axios from "axios";
 
 import {useDocumentData} from "react-firebase-hooks/firestore"
 
@@ -28,10 +29,8 @@ const FS = getFirestore();
 //important!!!!:
 //https://stackoverflow.com/questions/61297769/how-to-hide-api-key-and-still-run-heroku-app
 
-//note to self: fix the input fields for the custom cards
-//notes: 
 //note to self: for some reason downgrading socket.io to 2.4.0 fixes the bug
-const APIKey = ""
+const APIKey = process.env.REACT_APP_imgur_api
 function Game() { 
     const [user] = useLocalStorage("user")
     const [popupOn, setPopupOn] = useState(()=>false);
@@ -41,17 +40,15 @@ function Game() {
 
     function action(){//come back to this later
         setPopupOn(!popupOn)
-        fetch(`https://www.flickr.com/services/rest/?method=flickr.photos.getRecent&api_key=${APIKey}&tags=human&format=json&tagmode=any&per_page=10`).then(
-            (response)=>{
-                console.log(response)
-                return response
-            }
-        ).then((x)=>{
-            let array = x.photos.photos.map((pic) =>{
+        axios.request({
+            url: `https://www.flickr.com/services/rest/?method=flickr.photos.getRecent&api_key=${APIKey}&tags=human&format=json&tagmode=any&per_page=10`,
+            method: 'GET'
+        }).then(res => {
+            let x = res.data;
+            x = (JSON.parse(x.substring(14,(x.length-1))))
+            let array = x.photos.photo.map((pic) =>{
                 var url = `https://farm${pic.farm}.static.flickr.com/${pic.server}/${pic.id}_${pic.secret}.jpg`
-                return (
-                    <img alt="test" src={url}/>
-                )
+                return (<img alt="test" src={url}/>)
             })
             console.log(array)
         })
@@ -69,7 +66,7 @@ function Game() {
                     </div>
                 </Popup>
             </div>
-            <Hotbar QS={data} players={room["players"]}/>
+            <Hotbar QS={data} players={room?.players}/>
         </SocketProvider>
 
     );

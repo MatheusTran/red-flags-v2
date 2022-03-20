@@ -83,7 +83,7 @@ export default function Rooms() {
                 <h1>rooms</h1>
                 {
                     roomsList?.map((room, index)=>(
-                        <div key={room["Name"]} className="roomContainer" onClick={()=>joinRoom(room.data.id)}>
+                        <div key={room["Name"]} className="roomContainer" onClick={()=>joinRoom(room.id)}>
                             <h1 style={{marginLeft:"1em"}}>{index+1}.{room["Name"]}</h1>
                             <p style={{color:"white", margin:"0", marginLeft:"2em"}}>players: {room.players.length}/{room.data.maxPlayer}</p>
                             <p style={{color:"white", margin:"0", marginLeft:"2em"}}>State: {room.data.state}</p>

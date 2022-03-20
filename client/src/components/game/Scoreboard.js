@@ -7,12 +7,12 @@ export default function Scoreboard(props) {//this might have to take in the room
         <div className="players-menu">
             <p>score</p>
             <div className='players-list'>
-            {props.players.map(player => (
+            {props.players? props.players.map(player => (
                         <div className="player" key={player.username}>
                             <DiceBear seed={player.seed}/>
                             <div className="player-text">{player.username}<br/>{player.score} point{player.score===1?"":"s"}</div>
                         </div>
-                    ))}
+                    )) : ""}
             </div>
 
         </div>
