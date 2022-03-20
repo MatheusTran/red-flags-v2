@@ -32,19 +32,19 @@ io.on("connection", socket =>{
 
 
 
-    socket.on("disconnect", ()=>{
+    socket.on("disconnect", ()=>{ 
         const data = userToSocket[socket.id]
         if (data){
             let docRef = db.collection("rooms").doc(data.roomId); 
             (async ()=>{
                 const doc = await docRef.get();
                 quiter = doc.data()["players"].find(user => user.id == data.userId)
-                if(doc.data()["players"].length <= 1){
+                if(doc.data()["players"].length <= 1){ 
                     await docRef.delete()
                 }else{
                     await docRef.update({players:FieldValue.arrayRemove(quiter)}) 
                 } 
-            })();
+            })(); 
         } 
     }) 
 });

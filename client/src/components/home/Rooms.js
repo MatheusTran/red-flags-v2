@@ -8,10 +8,8 @@ import {getFirestore, setDoc, doc, collection, arrayUnion} from "firebase/firest
 
 import {useCollectionData} from "react-firebase-hooks/firestore"
 
-const APIKey = process.env.REACT_APP_firebase_api
-
-const firebase = initializeApp({
-    apiKey: APIKey,
+initializeApp({
+    apiKey: process.env.REACT_APP_firebase_api,
     authDomain: "red-flags-v2.firebaseapp.com",
     projectId: "red-flags-v2",
     storageBucket: "red-flags-v2.appspot.com",
@@ -52,16 +50,15 @@ export default function Rooms() {
                 maxPoints:x["target"][1].value,
                 maxPlayer:x["target"][2].value,
                 password:password,
-                id:lobbyId
             },
             waiting:[],
-            id: id
+            id:lobbyId
         });
         joinRoom(lobbyId)
     }
 
     const joinRoom = async(joinroomid) =>{
-        await setDoc(doc(FS, "rooms", joinroomid), {players:arrayUnion(player)},{merge:true});
+        await setDoc(doc(FS, "rooms", joinroomid), {players:arrayUnion(player)},{merge:true});//maybe move this into tabs.js
         window.location = (`game?roomId=${joinroomid}`);
     }
 

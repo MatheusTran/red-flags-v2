@@ -8,8 +8,8 @@ import Tabs from './tabs'
 export default function Hotbar(props) {
     return (
         <div id="lower-half">
-            <Scoreboard/>
-            <Tabs/>
+            <Scoreboard players={props.players}/>
+            <Tabs QS={props.QS}/>
         </div>
     )
 }

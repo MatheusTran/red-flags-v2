@@ -1,9 +1,8 @@
 import { useState, useEffect } from "react";
 import { useSocket } from '../socket'
-import queryString from "query-string"
 import useLocalStorage from "../../hooks/useLocalStorage";
 
-function Tabs() {
+function Tabs(props) {
     const [toggleState, setToggleState] = useState(1);
     const [whiteCards, setWhiteCards] = useState([])
     const [redCards, setRedCards] = useState([])
@@ -15,9 +14,9 @@ function Tabs() {
     const [id] = useLocalStorage("id")
 
     useEffect(()=>{
-        const data = queryString.parse(window.location.search)
+        const data = props.QS
         socket?.emit("gamejoin", data.roomId, id)
-    },[socket, id]) 
+    },[socket, id, props.QS]) 
 
     function dupe(card, array, setDupe){
         const cardString = JSON.stringify(card)//the (Custom card)s have an "n" value that makes them different when stringified

@@ -3,7 +3,24 @@ import useLocalStorage from "../../hooks/useLocalStorage";
 import {SocketProvider} from "../socket"
 import Hotbar from "./Hotbar";
 import Popup from '../Popup'
+import queryString from "query-string"
 
+import {initializeApp} from "firebase/app";
+import {getFirestore, doc} from "firebase/firestore";
+
+import {useDocumentData} from "react-firebase-hooks/firestore"
+
+initializeApp({
+    apiKey: process.env.REACT_APP_firebase_api,
+    authDomain: "red-flags-v2.firebaseapp.com",
+    projectId: "red-flags-v2",
+    storageBucket: "red-flags-v2.appspot.com",
+    messagingSenderId: "35160152967",
+    appId: "1:35160152967:web:6d106eec111e58897d1122",
+    measurementId: "G-1GQK9YKCNK"
+})
+
+const FS = getFirestore();
 
 //note: flickerAPI = $.getJSON("http://api.flickr.com/services/feeds/photos_public.gne?jsoncallback=?",{tags: "Human",tagmode: "any",format: "json"})
 //you can change the tag, the links are in responseJSON and
@@ -18,6 +35,9 @@ const APIKey = ""
 function Game() { 
     const [user] = useLocalStorage("user")
     const [popupOn, setPopupOn] = useState(()=>false);
+
+    var data = queryString.parse(window.location.search);
+    const [room] = useDocumentData(doc(FS, "rooms", data.roomId))
 
     function action(){//come back to this later
         setPopupOn(!popupOn)
@@ -49,7 +69,7 @@ function Game() {
                     </div>
                 </Popup>
             </div>
-            <Hotbar userId="whatevs"/>
+            <Hotbar QS={data} players={room["players"]}/>
         </SocketProvider>
 
     );
