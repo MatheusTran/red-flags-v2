@@ -22,9 +22,18 @@ function randint(n){
 const userToSocket = {}
 
 io.on("connection", socket =>{
-    socket.on("gamejoin", (roomId, userId)=>{
+    socket.on("gamejoin", (roomId, userId, user, seed)=>{
         userToSocket[socket.id] = {userId,roomId}
-        
+        let docRef = db.collection("rooms").doc(roomId);
+        (async ()=>{
+            const doc = await docRef.get();
+            if (doc.data()["players"]){
+                await docRef.update({players:FieldValue.arrayUnion({username:user, score:0, admin:false, played:[], seed:seed, id:userId})})
+                //{username:user, score:0, admin:false, played:[], seed:seed, id:id}
+            }else{
+                await docRef.update({players:FieldValue.arrayUnion({username:user, score:0, admin:true, played:[], seed:seed, id:userId})})
+            }
+        })();
     });
 
     socket.on("pull", ({color},callback)=>{ 
@@ -40,7 +49,7 @@ io.on("connection", socket =>{
             let docRef = db.collection("rooms").doc(data.roomId); 
             (async ()=>{
                 const doc = await docRef.get();
-                quiter = doc.data()["players"].find(user => user.id == data.userId)
+                const quiter = doc.data()["players"].find(user => user.id == data.userId)
                 if(doc.data()["players"].length <= 1){ 
                     await docRef.delete()
                 }else{

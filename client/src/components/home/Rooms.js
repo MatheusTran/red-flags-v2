@@ -58,7 +58,7 @@ export default function Rooms() {
     }
 
     const joinRoom = async(joinroomid) =>{
-        await setDoc(doc(FS, "rooms", joinroomid), {players:arrayUnion(player)},{merge:true});//maybe move this to index.js
+        //await setDoc(doc(FS, "rooms", joinroomid), {players:arrayUnion(player)},{merge:true});//maybe move this to index.js
         window.location = (`game?roomId=${joinroomid}`);
     }
 
