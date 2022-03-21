@@ -12,11 +12,14 @@ function Tabs(props) {
     const toggleTab = (index) => setToggleState(index);
     const socket = useSocket()
     const [id] = useLocalStorage("id")
+    const [seed] = useLocalStorage("seed")
+    const [username] = useLocalStorage("user")
 
     useEffect(()=>{
         const data = props.QS
-        socket?.emit("gamejoin", data.roomId, id)
-    },[socket, id, props.QS]) 
+        socket?.emit("gamejoin", data.roomId, id, username, seed)
+        //need to add seed, username. Score is set to 0 anyways
+    },[socket, id, props.QS, seed, username]) 
 
     function dupe(card, array, setDupe){
         const cardString = JSON.stringify(card)//the (Custom card)s have an "n" value that makes them different when stringified

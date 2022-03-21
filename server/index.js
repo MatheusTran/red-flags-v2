@@ -1,4 +1,4 @@
-const { connect } = require("http2"); //not sure what this is, I think I will remove it
+const { connect } = require("http2"); //not sure what this is, I think I will remove it. I think it might have auto added this 
 const cards = require("./misc/cards.json");
 
 const app = require("express")()
@@ -11,7 +11,7 @@ const FieldValue = require('firebase-admin').firestore.FieldValue;
 
 admin.initializeApp({
     credential: admin.credential.cert(serviceAccount)
-})
+}) 
 
 const db = admin.firestore()
 
@@ -24,7 +24,9 @@ const userToSocket = {}
 io.on("connection", socket =>{
     socket.on("gamejoin", (roomId, userId)=>{
         userToSocket[socket.id] = {userId,roomId}
+        
     });
+
     socket.on("pull", ({color},callback)=>{ 
         var random = randint(cards[color].length)
         callback(cards[color][random])
