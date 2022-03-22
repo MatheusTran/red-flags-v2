@@ -5,7 +5,7 @@ const app = require("express")()
 const server = require("http").createServer(app)
 const io = require("socket.io")(server)
 
-const admin = require("firebase-admin")
+const admin = require("firebase-admin")//note to self: may change to real time database in the future instead of firestore
 const serviceAccount = require("./firestore_key.json")
 const FieldValue = require('firebase-admin').firestore.FieldValue;
 
@@ -40,8 +40,6 @@ io.on("connection", socket =>{
         var random = randint(cards[color].length)
         callback(cards[color][random])
     });
-
-
 
     socket.on("disconnect", ()=>{ 
         const data = userToSocket[socket.id]

@@ -1,13 +1,14 @@
 import useLocalStorage from "../../hooks/useLocalStorage";
 import {SocketProvider} from "../socket"
-import Hotbar from "./Hotbar";
-import PresentField from "./PresentField";
 import queryString from "query-string"
+import Tabs from "./tabs";
+import Scoreboard from "./Scoreboard";
 
 import {initializeApp} from "firebase/app";
 import {getFirestore, doc} from "firebase/firestore";
 
 import {useDocumentData} from "react-firebase-hooks/firestore"
+import React from "react";
 
 initializeApp({
     apiKey: process.env.REACT_APP_firebase_api,
@@ -34,15 +35,16 @@ function Game() {
     var data = queryString.parse(window.location.search);
     const [room] = useDocumentData(doc(FS, "rooms", data.roomId))
 
-
-
+    //hotbar component is not really useful
     return (
         <SocketProvider name={user}>
             <div>
                 <div id="bg"></div>
-                <PresentField/>
             </div>
-            <Hotbar QS={data} players={room?.players}/>
+            <div id="lower-half">
+                <Scoreboard players={room?.players}/>
+                <Tabs QS={data}/>
+            </div>
         </SocketProvider>
 
     );

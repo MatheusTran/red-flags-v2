@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useSocket } from '../socket'
 import useLocalStorage from "../../hooks/useLocalStorage";
+import PresentField from "./PresentField";
 
 function Tabs(props) {
     const [toggleState, setToggleState] = useState(1);
@@ -61,52 +62,55 @@ function Tabs(props) {
     }
 
     return (
-        <div className="tabs-container">
-        <div className="bloc-tabs">
-            <button
-            className={toggleState === 1 ? "tabs active-tabs" : "tabs"}
-            onClick={() => toggleTab(1)}
-            >
-            white cards
-            </button>
-            <button
-            className={toggleState === 2 ? "tabs active-tabs" : "tabs"}
-            onClick={() => toggleTab(2)}
-            >
-            red cards
-            </button>
-        </div>
+        <>
+            <PresentField/>
+            <div className="tabs-container">
+            <div className="bloc-tabs">
+                <button
+                className={toggleState === 1 ? "tabs active-tabs" : "tabs"}
+                onClick={() => toggleTab(1)}
+                >
+                white cards
+                </button>
+                <button
+                className={toggleState === 2 ? "tabs active-tabs" : "tabs"}
+                onClick={() => toggleTab(2)}
+                >
+                red cards
+                </button>
+            </div>
 
-        <div className="content-tabs">
-            
+            <div className="content-tabs">
+                
+                    <div
+                    className={(toggleState === 1 ? "content  active-content" : "content")}
+                    >
+                        <div className="scrollmenu hand">
+                            {whiteCards.map((card,index) => (
+                                <div key={"white "+index} className="white card" onDoubleClick={()=>{play(setWhiteCards,whiteCards,card)}}>
+                                    {card.text}
+                                    {card.Custom ? <span contentEditable="true" onKeyDown={e => limit(e)}></span>:""} 
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                
+
                 <div
-                className={(toggleState === 1 ? "content  active-content" : "content")}
+                className={(toggleState === 2 ? "content  active-content" : "content")}
                 >
                     <div className="scrollmenu hand">
-                        {whiteCards.map((card,index) => (
-                            <div key={"white "+index} className="white card" onDoubleClick={()=>{play(setWhiteCards,whiteCards,card)}}>
+                        {redCards.map((card,index) => (
+                            <div className="red card" onDoubleClick={()=>{play(setRedCards,redCards,card)}} key={"red "+index}>
                                 {card.text}
-                                {card.Custom ? <span contentEditable="true" onKeyDown={e => limit(e)}></span>:""} 
+                                {card.Custom ? <span contentEditable="true" onKeyDown={e => limit(e)}></span>:""}
                             </div>
                         ))}
                     </div>
                 </div>
-            
-
-            <div
-            className={(toggleState === 2 ? "content  active-content" : "content")}
-            >
-                <div className="scrollmenu hand">
-                    {redCards.map((card,index) => (
-                        <div className="red card" onDoubleClick={()=>{play(setRedCards,redCards,card)}} key={"red "+index}>
-                            {card.text}
-                            {card.Custom ? <span contentEditable="true" onKeyDown={e => limit(e)}></span>:""}
-                        </div>
-                    ))}
-                </div>
             </div>
-        </div>
-        </div>
+            </div>
+        </>
     );
 }
 
