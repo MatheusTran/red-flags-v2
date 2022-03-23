@@ -4,7 +4,7 @@ import { v4 } from "uuid"
 import useLocalStorage from "../../hooks/useLocalStorage";
 
 import {initializeApp} from "firebase/app";
-import {getFirestore, setDoc, doc, collection, arrayUnion} from "firebase/firestore";
+import {getFirestore, setDoc, doc, collection} from "firebase/firestore";
 
 import {useCollectionData} from "react-firebase-hooks/firestore"
 

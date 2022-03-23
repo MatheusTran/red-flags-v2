@@ -4,7 +4,7 @@ import Popup from '../Popup';
 import { useSocket } from '../socket';
 
 
-function PresentField() {
+function PresentField(props) {
     const [popupOn, setPopupOn] = useState(()=>false);
     const socket = useSocket()
     console.log(socket)//this is just here to shut the errors up
@@ -33,7 +33,7 @@ function PresentField() {
         <div id="upper-half">
                     <h2>working on making the rooms</h2>
                     <div id="played-cards" className="scrollmenu">
-
+                        {props.children}
                     </div>
             <div className="btn" datatext="stuff" onClick={action}>stuff</div>
             <Popup trigger={popupOn} text="create" setTrigger={setPopupOn}>

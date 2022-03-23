@@ -63,7 +63,9 @@ function Tabs(props) {
 
     return (
         <>
-            <PresentField/>
+            <PresentField>
+                {/*this is where the cards go*/}
+            </PresentField>
             <div className="tabs-container">
             <div className="bloc-tabs">
                 <button
