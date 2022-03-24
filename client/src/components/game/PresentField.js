@@ -7,7 +7,7 @@ import { useSocket } from '../socket';
 function PresentField(props) {
     const [popupOn, setPopupOn] = useState(()=>false);
     const socket = useSocket()
-    console.log(socket)//this is just here to shut the errors up
+    socket?.on("stfu errors")//this is just here to shut the errors up
 
     function action(){
         getImages();//this is only temporary

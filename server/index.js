@@ -11,7 +11,7 @@ const FieldValue = require('firebase-admin').firestore.FieldValue;
 
 admin.initializeApp({
     credential: admin.credential.cert(serviceAccount)
-}) 
+})
 
 const db = admin.firestore()
 
@@ -23,15 +23,18 @@ const userToSocket = {}
 
 io.on("connection", socket =>{
     socket.on("gamejoin", (roomId, userId, user, seed)=>{
+        socket.emit("init")
         userToSocket[socket.id] = {userId,roomId}
         let docRef = db.collection("rooms").doc(roomId);
         (async ()=>{
             const doc = await docRef.get();
-            if (doc.data()["players"]){
+            try{if (doc.data()["players"]){
                 await docRef.update({players:FieldValue.arrayUnion({username:user, score:0, admin:false, played:[], seed:seed, id:userId})})
                 //{username:user, score:0, admin:false, played:[], seed:seed, id:id}
             }else{
                 await docRef.update({players:FieldValue.arrayUnion({username:user, score:0, admin:true, played:[], seed:seed, id:userId})})
+            }} catch {
+                console.log("this is just test stuff")
             }
         })();
     });

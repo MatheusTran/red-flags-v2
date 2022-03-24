@@ -232,14 +232,13 @@ div.scrollmenu {
     word-break: break-word;
     min-height: 10rem; /*min height is for the thing to extend. fix it later*/
     min-width: 9rem;
-    max-width: 9rem; /*I'll be honest I have no clue why this works but it does, so deal with it*/
     text-decoration: none;
     box-shadow: 0 0 5px 2px rgba(0, 0, 0, 0.1);
     font-size: 20px;
     border-radius: 0.5rem;
     padding: 15px;
     transition: all .2s ease-in-out;
-    margin: 0.5rem;
+    margin: 0.5rem;/*might need to change this*/
     border: solid black 1px;
     cursor: pointer;
 }

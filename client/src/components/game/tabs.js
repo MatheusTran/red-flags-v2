@@ -1,7 +1,8 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useSocket } from '../socket'
 import useLocalStorage from "../../hooks/useLocalStorage";
 import PresentField from "./PresentField";
+import {DragDropContext, Droppable, Draggable} from "react-beautiful-dnd"
 
 function Tabs(props) {
     const [toggleState, setToggleState] = useState(1);
@@ -9,6 +10,7 @@ function Tabs(props) {
     const [redCards, setRedCards] = useState([])
     const [whiteDupe, setWhiteDupe] = useState(false)
     const [redDupe, setRedDupe] = useState(false) 
+    const [present, setPresent] = useState([])
 
     const toggleTab = (index) => setToggleState(index);
     const socket = useSocket()
@@ -17,8 +19,8 @@ function Tabs(props) {
     const [username] = useLocalStorage("user")
 
     useEffect(()=>{
-        const data = props.QS
-        socket?.emit("gamejoin", data.roomId, id, username, seed)
+        if(socket==null)return
+
         //need to add seed, username. Score is set to 0 anyways
     },[socket, id, props.QS, seed, username]) 
 
@@ -33,36 +35,68 @@ function Tabs(props) {
         return false
     }
 
-    function pull(color, array, setArray, setDupe){
-        if (array.length>=10) return
+    const pull = useCallback((color, array, setArray, setDupe)=>{
         socket.emit("pull", {color:color}, (card)=>{
-            if(dupe(card, array, setDupe))return
+            if(dupe(card, array, setDupe))return//because of the new way the card system works, I will have to fix this
             setDupe(false)
             setArray((prevCards)=>{return [...prevCards, card]})
         })
-    }
+    },[socket])
+
+    useEffect(()=>{
+        console.log(socket)
+        if (socket==null)return
+        const data = props.QS
+        socket.emit("gamejoin", data.roomId, id, username, seed)
+        socket.on("init", ()=>{
+            for(let x=0; x<15; x++){
+                pull("white", whiteCards, setWhiteCards, setWhiteDupe)
+            }
+            for(let x=0; x<10; x++){
+                pull("red", redCards, setRedCards, setRedDupe)
+            }
+        })
+    },[socket])
+
+    useEffect(()=>{
+        if (whiteDupe===true){
+            pull("white", whiteCards, setWhiteCards, setWhiteDupe)
+        }
+        if (redDupe===true){
+            pull("red", redCards, setRedCards, setRedDupe)
+        }
+    }, [whiteDupe,redDupe])
 
     function play(setCards,cards, card){
         const text = card.text
         setCards(cards.filter(item => item.text !== text));
     }
 
-    useEffect(()=>{
-        if (socket==null) return
-        pull("white", whiteCards, setWhiteCards, setWhiteDupe)
-    },[socket, whiteCards, whiteDupe])
-
-    useEffect(()=>{
-        if (socket==null) return
-        pull("red", redCards, setRedCards, setRedDupe)
-    },[socket, redCards, redDupe])
-
     function limit(e){
         if(e.target.innerText.length >=36 && e.key!=="Backspace")e.preventDefault()
     }
+    function reOrder(result, array, setArray){
+        const items = Array.from(array)
+        console.log(array)
+        const [reorderedItem] = items.splice(result.source.index, 1)
+        items.splice(result.destination.index, 0, reorderedItem)
+        setArray(items)
+    }
+    function handleDragEnd(result){
+        switch (result.destination.droppableId){
+        case "white":
+            reOrder(result, whiteCards,setWhiteCards)
+            break;
+        case "present":
+            reOrder(result, present, setPresent)
+            break;
+        default:
+            return
+        }
+    }
 
     return (
-        <>
+        <DragDropContext onDragEnd={handleDragEnd}>
             <PresentField>
                 {/*this is where the cards go*/}
             </PresentField>
@@ -83,20 +117,27 @@ function Tabs(props) {
             </div>
 
             <div className="content-tabs">
-                
                     <div
                     className={(toggleState === 1 ? "content  active-content" : "content")}
                     >
-                        <div className="scrollmenu hand">
-                            {whiteCards.map((card,index) => (
-                                <div key={"white "+index} className="white card" onDoubleClick={()=>{play(setWhiteCards,whiteCards,card)}}>
-                                    {card.text}
-                                    {card.Custom ? <span contentEditable="true" onKeyDown={e => limit(e)}></span>:""} 
-                                </div>
-                            ))}
-                        </div>
+                        <Droppable droppableId="white" direction="horizontal">
+                            {(provided)=>(
+                            <div className="scrollmenu hand" {...provided.droppableProps} ref={provided.innerRef}>
+                                {whiteCards.map((card,index) => (
+                                    <Draggable key={"white "+index} draggableId={"white "+index} index={index}>
+                                        {(provided)=>(
+                                            <div {...provided.draggableProps} {...provided.dragHandleProps} ref={provided.innerRef} className="white card" onDoubleClick={()=>{play(setWhiteCards,whiteCards,card)}}>
+                                                {card.text}
+                                                {card.Custom ? <span contentEditable="true" onKeyDown={e => limit(e)}></span>:""} 
+                                            </div>
+                                        )}
+                                    </Draggable>
+                                ))}
+                                {provided.placeholder}
+                            </div>
+                            )}
+                        </Droppable>
                     </div>
-                
 
                 <div
                 className={(toggleState === 2 ? "content  active-content" : "content")}
@@ -112,7 +153,7 @@ function Tabs(props) {
                 </div>
             </div>
             </div>
-        </>
+        </DragDropContext>
     );
 }
 
