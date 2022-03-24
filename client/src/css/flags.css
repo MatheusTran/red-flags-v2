@@ -237,7 +237,6 @@ div.scrollmenu {
     font-size: 20px;
     border-radius: 0.5rem;
     padding: 15px;
-    transition: all .2s ease-in-out;
     margin: 0.5rem;/*might need to change this*/
     border: solid black 1px;
     cursor: pointer;

@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { useSocket } from '../socket'
 import useLocalStorage from "../../hooks/useLocalStorage";
 import PresentField from "./PresentField";
@@ -32,13 +32,13 @@ function Tabs(props) {
                 return true
             }
         }
+        setDupe(false)
         return false
     }
 
     const pull = useCallback((color, array, setArray, setDupe)=>{
         socket.emit("pull", {color:color}, (card)=>{
-            if(dupe(card, array, setDupe))return//because of the new way the card system works, I will have to fix this
-            setDupe(false)
+            if(dupe(card, array, setDupe))return//I think it is fixed, not sure
             setArray((prevCards)=>{return [...prevCards, card]})
         })
     },[socket])
@@ -72,23 +72,24 @@ function Tabs(props) {
         setCards(cards.filter(item => item.text !== text));
     }
 
-    function limit(e){
+    function limit(e){//it's a limit function... ba dum tss
         if(e.target.innerText.length >=36 && e.key!=="Backspace")e.preventDefault()
     }
-    function reOrder(result, array, setArray){
+    function reOrder(result, array){
         const items = Array.from(array)
-        console.log(array)
         const [reorderedItem] = items.splice(result.source.index, 1)
         items.splice(result.destination.index, 0, reorderedItem)
-        setArray(items)
+        console.log(items)
+        return items
     }
     function handleDragEnd(result){
+        console.log(result)
         switch (result.destination.droppableId){
         case "white":
-            reOrder(result, whiteCards,setWhiteCards)
+            setWhiteCards(reOrder(result, whiteCards))
             break;
         case "present":
-            reOrder(result, present, setPresent)
+            setPresent(reOrder(result, present))
             break;
         default:
             return
@@ -123,7 +124,7 @@ function Tabs(props) {
                         <Droppable droppableId="white" direction="horizontal">
                             {(provided)=>(
                             <div className="scrollmenu hand" {...provided.droppableProps} ref={provided.innerRef}>
-                                {whiteCards.map((card,index) => (
+                                {whiteCards.map((card,index) => {return (
                                     <Draggable key={"white "+index} draggableId={"white "+index} index={index}>
                                         {(provided)=>(
                                             <div {...provided.draggableProps} {...provided.dragHandleProps} ref={provided.innerRef} className="white card" onDoubleClick={()=>{play(setWhiteCards,whiteCards,card)}}>
@@ -132,8 +133,8 @@ function Tabs(props) {
                                             </div>
                                         )}
                                     </Draggable>
-                                ))}
-                                {provided.placeholder}
+                                )})}
+                                {provided.placeholder} 
                             </div>
                             )}
                         </Droppable>
