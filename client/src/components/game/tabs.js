@@ -10,7 +10,7 @@ function Tabs(props) {
     const [redCards, setRedCards] = useState([])
     const [whiteDupe, setWhiteDupe] = useState(false)
     const [redDupe, setRedDupe] = useState(false) 
-    const [present, setPresent] = useState([{"text":"Puts live butterflies in your stomach", "Custom": false}])
+    const [present, setPresent] = useState([])
 
     const toggleTab = (index) => setToggleState(index);
     const socket = useSocket()
@@ -122,7 +122,7 @@ function Tabs(props) {
                             {present.map((card,index) => {return (
                                 <Draggable key={"present "+index} draggableId={"present "+index} index={index}>
                                     {(provided)=>(
-                                        <div {...provided.draggableProps} {...provided.dragHandleProps} ref={provided.innerRef} className="white card presented" onDoubleClick={()=>{play("present", "white",index)}}>
+                                        <div {...provided.draggableProps} {...provided.dragHandleProps} ref={provided.innerRef} className={card.color + " card presented"} onDoubleClick={()=>{play("present", card.color,index)}}>
                                             {card.text}{/*note to self, I will have to change the class thing*/}
                                             {card.Custom ? <span contentEditable="true" onKeyDown={e => limit(e)}></span>:""} 
                                         </div> 
