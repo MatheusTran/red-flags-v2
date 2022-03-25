@@ -235,7 +235,7 @@ div.scrollmenu {
     word-wrap: break-word;
     white-space: pre-wrap;
     word-break: break-word;
-    min-height: 10rem; /*min height is for the thing to extend. fix it later*/
+    min-height: 10.25rem; /*min height is for the thing to extend. fix it later*/
     min-width: 9rem;
     text-decoration: none;
     box-shadow: 0 0 5px 2px rgba(0, 0, 0, 0.1);

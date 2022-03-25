@@ -129,7 +129,7 @@ function Tabs(props) {
                                     )}
                                 </Draggable>
                             )})}
-                            <div className="white card" style={{maxWidth:"9rem", opacity:"0.5"}}>
+                            <div className="white card" style={{maxWidth:"9rem", opacity:"0"}}>
                                 this is a placeholder card
                             </div>
                             {provided.placeholder} 
