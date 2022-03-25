@@ -224,6 +224,11 @@ div.scrollmenu {
     opacity: 0.75;
 }
 
+.presented{
+    z-index: 20;
+    width:min-content;
+}
+
 .card {
     text-align: left;
     user-select: none;

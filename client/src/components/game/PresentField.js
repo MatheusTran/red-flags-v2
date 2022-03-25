@@ -32,7 +32,7 @@ function PresentField(props) {
     return (
         <div id="upper-half">
                     <h2>working on making the rooms</h2>
-                    <div id="played-cards" className="scrollmenu">
+                    <div>
                         {props.children}
                     </div>
             <div className="btn" datatext="stuff" onClick={action}>stuff</div>

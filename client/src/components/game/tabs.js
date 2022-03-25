@@ -10,13 +10,15 @@ function Tabs(props) {
     const [redCards, setRedCards] = useState([])
     const [whiteDupe, setWhiteDupe] = useState(false)
     const [redDupe, setRedDupe] = useState(false) 
-    const [present, setPresent] = useState([])
+    const [present, setPresent] = useState([{"text":"Puts live butterflies in your stomach", "Custom": false}])
 
     const toggleTab = (index) => setToggleState(index);
     const socket = useSocket()
     const [id] = useLocalStorage("id")
     const [seed] = useLocalStorage("seed")
     const [username] = useLocalStorage("user")
+
+    const pointer = {array:{white:whiteCards, red:redCards, present:present}, setArray:{white:setWhiteCards,red:setRedCards,present:setPresent}}
 
     useEffect(()=>{
         if(socket==null)return
@@ -76,20 +78,35 @@ function Tabs(props) {
         if(e.target.innerText.length >=36 && e.key!=="Backspace")e.preventDefault()
     }
     function reOrder(result, array){
-        const items = Array.from(array)
-        const [reorderedItem] = items.splice(result.source.index, 1)
-        items.splice(result.destination.index, 0, reorderedItem)
-        console.log(items)
-        return items
+        if(result.destination.droppableId === result.source.droppableId){
+            const items = Array.from(pointer["array"][result.source.droppableId])
+            const setItems = pointer["setArray"][result.source.droppableId]
+            const [reorderedItem] = items.splice(result.source.index, 1)
+            items.splice(result.destination.index, 0, reorderedItem)
+            setItems(items)
+        } else {
+            const source = Array.from(pointer["array"][result.source.droppableId])
+            const setSource = pointer["setArray"][result.source.droppableId]
+            const destination = Array.from(pointer["array"][result.destination.droppableId])
+            const setDestination = pointer["setArray"][result.destination.droppableId]
+            const [removedItem] = source.splice(result.source.index, 1)
+            destination.splice(result.destination.index, 0, removedItem)
+            setSource(source)
+            setDestination(destination)
+        }
+        
     }
     function handleDragEnd(result){
-        console.log(result)
+        console.log(present)
         switch (result.destination.droppableId){
         case "white":
-            setWhiteCards(reOrder(result, whiteCards))
+            reOrder(result)
             break;
         case "present":
-            setPresent(reOrder(result, present))
+            reOrder(result)
+            break;
+        case "red":
+            reOrder(result)
             break;
         default:
             return
@@ -99,7 +116,26 @@ function Tabs(props) {
     return (
         <DragDropContext onDragEnd={handleDragEnd}>
             <PresentField>
-                {/*this is where the cards go*/}
+                <Droppable droppableId="present" direction="horizontal">
+                    {(provided)=>(
+                        <div id="played-cards" className="scrollmenu" {...provided.droppableProps} ref={provided.innerRef} style={{width:"100%", backgroundColor:"green", height:"auto"}}>
+                            {present.map((card,index) => {return (
+                                <Draggable key={"present "+index} draggableId={"present "+index} index={index}>
+                                    {(provided)=>(
+                                        <div {...provided.draggableProps} {...provided.dragHandleProps} ref={provided.innerRef} className="white card presented" onDoubleClick={()=>{play(setPresent,present,card)}}>
+                                            {card.text}{/*note to self, I will have to change the class thing*/}
+                                            {card.Custom ? <span contentEditable="true" onKeyDown={e => limit(e)}></span>:""} 
+                                        </div> 
+                                    )}
+                                </Draggable>
+                            )})}
+                            <div className="white card" style={{maxWidth:"9rem", opacity:"0.5"}}>
+                                this is a placeholder card
+                            </div>
+                            {provided.placeholder} 
+                        </div>
+                    )}
+                </Droppable>
             </PresentField>
             <div className="tabs-container">
             <div className="bloc-tabs">
@@ -131,26 +167,35 @@ function Tabs(props) {
                                                 {card.text}
                                                 {card.Custom ? <span contentEditable="true" onKeyDown={e => limit(e)}></span>:""} 
                                             </div>
-                                        )}
-                                    </Draggable>
-                                )})}
-                                {provided.placeholder} 
-                            </div>
-                            )}
-                        </Droppable>
-                    </div>
+                                    )}
+                                </Draggable>
+                            )})}
+                            {provided.placeholder} 
+                        </div>
+                        )}
+                    </Droppable>
+                </div>
 
                 <div
                 className={(toggleState === 2 ? "content  active-content" : "content")}
                 >
-                    <div className="scrollmenu hand">
-                        {redCards.map((card,index) => (
-                            <div className="red card" onDoubleClick={()=>{play(setRedCards,redCards,card)}} key={"red "+index}>
-                                {card.text}
-                                {card.Custom ? <span contentEditable="true" onKeyDown={e => limit(e)}></span>:""}
-                            </div>
-                        ))}
-                    </div>
+                    <Droppable droppableId="red" direction="horizontal">
+                        {(provided)=>(
+                        <div className="scrollmenu hand" {...provided.droppableProps} ref={provided.innerRef}>
+                            {redCards.map((card,index) => {return (
+                                <Draggable key={"red "+index} draggableId={"red "+index} index={index}>
+                                    {(provided)=>(
+                                        <div {...provided.draggableProps} {...provided.dragHandleProps} ref={provided.innerRef} className="red card" onDoubleClick={()=>{play(setRedCards,redCards,card)}}>
+                                            {card.text}
+                                            {card.Custom ? <span contentEditable="true" onKeyDown={e => limit(e)}></span>:""}
+                                        </div>
+                                    )}
+                                </Draggable>
+                            )})}
+                            {provided.placeholder} 
+                        </div>
+                        )}
+                    </Droppable>
                 </div>
             </div>
             </div>
