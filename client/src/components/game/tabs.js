@@ -69,15 +69,15 @@ function Tabs(props) {
         }
     }, [whiteDupe,redDupe])
 
-    function play(setCards,cards, card){
-        const text = card.text
-        setCards(cards.filter(item => item.text !== text));
+    function play(source,destination, index){
+        let sudoResult = {source:{droppableId:source, index:index},destination:{droppableId:destination, index:0}}
+        reOrder(sudoResult)
     }
 
     function limit(e){//it's a limit function... ba dum tss
         if(e.target.innerText.length >=36 && e.key!=="Backspace")e.preventDefault()
     }
-    function reOrder(result, array){
+    function reOrder(result){
         if(result.destination.droppableId === result.source.droppableId){
             const items = Array.from(pointer["array"][result.source.droppableId])
             const setItems = pointer["setArray"][result.source.droppableId]
@@ -122,7 +122,7 @@ function Tabs(props) {
                             {present.map((card,index) => {return (
                                 <Draggable key={"present "+index} draggableId={"present "+index} index={index}>
                                     {(provided)=>(
-                                        <div {...provided.draggableProps} {...provided.dragHandleProps} ref={provided.innerRef} className="white card presented" onDoubleClick={()=>{play(setPresent,present,card)}}>
+                                        <div {...provided.draggableProps} {...provided.dragHandleProps} ref={provided.innerRef} className="white card presented" onDoubleClick={()=>{play("present", "white",index)}}>
                                             {card.text}{/*note to self, I will have to change the class thing*/}
                                             {card.Custom ? <span contentEditable="true" onKeyDown={e => limit(e)}></span>:""} 
                                         </div> 
@@ -163,7 +163,7 @@ function Tabs(props) {
                                 {whiteCards.map((card,index) => {return (
                                     <Draggable key={"white "+index} draggableId={"white "+index} index={index}>
                                         {(provided)=>(
-                                            <div {...provided.draggableProps} {...provided.dragHandleProps} ref={provided.innerRef} className="white card" onDoubleClick={()=>{play(setWhiteCards,whiteCards,card)}}>
+                                            <div {...provided.draggableProps} {...provided.dragHandleProps} ref={provided.innerRef} className="white card" onDoubleClick={()=>{play("white","present",index)}}>
                                                 {card.text}
                                                 {card.Custom ? <span contentEditable="true" onKeyDown={e => limit(e)}></span>:""} 
                                             </div>
@@ -185,7 +185,7 @@ function Tabs(props) {
                             {redCards.map((card,index) => {return (
                                 <Draggable key={"red "+index} draggableId={"red "+index} index={index}>
                                     {(provided)=>(
-                                        <div {...provided.draggableProps} {...provided.dragHandleProps} ref={provided.innerRef} className="red card" onDoubleClick={()=>{play(setRedCards,redCards,card)}}>
+                                        <div {...provided.draggableProps} {...provided.dragHandleProps} ref={provided.innerRef} className="red card" onDoubleClick={()=>{play("red","present",index)}}>
                                             {card.text}
                                             {card.Custom ? <span contentEditable="true" onKeyDown={e => limit(e)}></span>:""}
                                         </div>
