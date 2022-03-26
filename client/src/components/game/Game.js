@@ -3,6 +3,7 @@ import {SocketProvider} from "../socket"
 import queryString from "query-string"
 import Tabs from "./tabs";
 import Scoreboard from "./Scoreboard";
+import { NotificationsProvider } from '@mantine/notifications';
 
 import {initializeApp} from "firebase/app";
 import {getFirestore, doc} from "firebase/firestore";
@@ -38,13 +39,15 @@ function Game() {
     //hotbar component is not really useful
     return (
         <SocketProvider name={user}>
-            <div>
-                <div id="bg"></div>
-            </div>
-            <div id="lower-half">
-                <Scoreboard players={room?.players}/>
-                <Tabs QS={data}/>
-            </div>
+            <NotificationsProvider position="top-right" limit={3}>
+                <div>
+                    <div id="bg"></div>
+                </div>
+                <div id="lower-half">
+                    <Scoreboard players={room?.players}/>
+                    <Tabs QS={data}/>
+                </div>
+            </NotificationsProvider>
         </SocketProvider>
 
     );

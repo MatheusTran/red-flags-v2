@@ -3,6 +3,7 @@ import { useSocket } from '../socket'
 import useLocalStorage from "../../hooks/useLocalStorage";
 import PresentField from "./PresentField";
 import {DragDropContext, Droppable, Draggable} from "react-beautiful-dnd"
+import { useNotifications } from '@mantine/notifications';
 
 function Tabs(props) {
     const [toggleState, setToggleState] = useState(1);
@@ -11,6 +12,8 @@ function Tabs(props) {
     const [whiteDupe, setWhiteDupe] = useState(false)
     const [redDupe, setRedDupe] = useState(false) 
     const [present, setPresent] = useState([])
+
+    const notifications = useNotifications()
 
     const toggleTab = (index) => setToggleState(index);
     const socket = useSocket()
@@ -87,38 +90,31 @@ function Tabs(props) {
         } else {
             const source = Array.from(pointer["array"][result.source.droppableId])
             const setSource = pointer["setArray"][result.source.droppableId]
+            const [removedItem] = source.splice(result.source.index, 1)
+            if((removedItem.color === "white" && result.destination.droppableId === "red") ||(removedItem.color === "red" && result.destination.droppableId === "white")){
+                notifications.showNotification({
+                    title: 'Whoopsies',
+                    message: `${removedItem.color} cards do not go with the ${result.destination.droppableId} cards`,
+                    color:"red",
+                    style:{ textAlign: 'left' }//this is not currently working btw, so I jut manually added it to .mantine-1yg4h9z
+                })
+                return
+            }
             const destination = Array.from(pointer["array"][result.destination.droppableId])
             const setDestination = pointer["setArray"][result.destination.droppableId]
-            const [removedItem] = source.splice(result.source.index, 1)
             destination.splice(result.destination.index, 0, removedItem)
             setSource(source)
             setDestination(destination)
         }
         
     }
-    function handleDragEnd(result){
-        console.log(present)
-        switch (result.destination.droppableId){
-        case "white":
-            reOrder(result)
-            break;
-        case "present":
-            reOrder(result)
-            break;
-        case "red":
-            reOrder(result)
-            break;
-        default:
-            return
-        }
-    }
 
     return (
-        <DragDropContext onDragEnd={handleDragEnd}>
+        <DragDropContext onDragEnd={reOrder}>
             <PresentField>
                 <Droppable droppableId="present" direction="horizontal">
                     {(provided)=>(
-                        <div id="played-cards" className="scrollmenu" {...provided.droppableProps} ref={provided.innerRef} style={{width:"100%", backgroundColor:"green", height:"auto"}}>
+                        <div id="played-cards" className="scrollmenu" {...provided.droppableProps} ref={provided.innerRef} style={{width:"100%", height:"auto"}}>
                             {present.map((card,index) => {return (
                                 <Draggable key={"present "+index} draggableId={"present "+index} index={index}>
                                     {(provided)=>(
