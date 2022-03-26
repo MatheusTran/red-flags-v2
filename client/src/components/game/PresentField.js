@@ -35,7 +35,7 @@ function PresentField(props) {
                     <div>
                         {props.children}
                     </div>
-            <div className="btn" datatext="stuff" onClick={action}>stuff</div>
+            {props.mountButton? <div className="btn" datatext="stuff" onClick={action}>stuff</div> : ""}
             <Popup trigger={popupOn} text="create" setTrigger={setPopupOn}>
                     <div>
                         stuff?

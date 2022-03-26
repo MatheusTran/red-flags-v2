@@ -6,28 +6,27 @@ import {DragDropContext, Droppable, Draggable} from "react-beautiful-dnd"
 import { useNotifications } from '@mantine/notifications';
 
 function Tabs(props) {
+    //tabs
     const [toggleState, setToggleState] = useState(1);
+    const toggleTab = (index) => setToggleState(index);
+    //cards
     const [whiteCards, setWhiteCards] = useState([])
     const [redCards, setRedCards] = useState([])
     const [whiteDupe, setWhiteDupe] = useState(false)
     const [redDupe, setRedDupe] = useState(false) 
     const [present, setPresent] = useState([])
-
+    //for the button
+    const [show, setShow] = useState(false)
+    //pointer is for the function that place cards in their new location
+    const pointer = {array:{white:whiteCards, red:redCards, present:present}, setArray:{white:setWhiteCards,red:setRedCards,present:setPresent}}
+    //mantine notification
     const notifications = useNotifications()
-
-    const toggleTab = (index) => setToggleState(index);
+    //socket
     const socket = useSocket()
     const [id] = useLocalStorage("id")
     const [seed] = useLocalStorage("seed")
     const [username] = useLocalStorage("user")
 
-    const pointer = {array:{white:whiteCards, red:redCards, present:present}, setArray:{white:setWhiteCards,red:setRedCards,present:setPresent}}
-
-    useEffect(()=>{
-        if(socket==null)return
-
-        //need to add seed, username. Score is set to 0 anyways
-    },[socket, id, props.QS, seed, username]) 
 
     function dupe(card, array, setDupe){
         const cardString = JSON.stringify(card)//the (Custom card)s have an "n" value that makes them different when stringified
@@ -72,6 +71,14 @@ function Tabs(props) {
         }
     }, [whiteDupe,redDupe])
 
+    useEffect(()=>{
+        if(present.length === 2){
+            setShow(true)
+        } else{
+            setShow(false)
+        }
+    }, [present])
+
     function play(source,destination, index){
         let sudoResult = {source:{droppableId:source, index:index},destination:{droppableId:destination, index:0}}
         reOrder(sudoResult)
@@ -111,7 +118,7 @@ function Tabs(props) {
 
     return (
         <DragDropContext onDragEnd={reOrder}>
-            <PresentField>
+            <PresentField mountButton={show}>
                 <Droppable droppableId="present" direction="horizontal">
                     {(provided)=>(
                         <div id="played-cards" className="scrollmenu" {...provided.droppableProps} ref={provided.innerRef} style={{width:"100%", height:"auto"}}>
