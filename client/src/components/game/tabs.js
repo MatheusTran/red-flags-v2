@@ -15,7 +15,7 @@ function Tabs(props) {
     const [whiteDupe, setWhiteDupe] = useState(false)
     const [redDupe, setRedDupe] = useState(false) 
     const [present, setPresent] = useState([])
-    //for the button
+    //action button
     const [show, setShow] = useState(false)
     //pointer is for the function that place cards in their new location
     const pointer = {array:{white:whiteCards, red:redCards, present:present}, setArray:{white:setWhiteCards,red:setRedCards,present:setPresent}}
@@ -42,7 +42,7 @@ function Tabs(props) {
 
     const pull = useCallback((color, array, setArray, setDupe)=>{
         socket.emit("pull", {color:color}, (card)=>{
-            if(dupe(card, array, setDupe))return//I think it is fixed, not sure
+            if(dupe(card, array, setDupe))return
             setArray((prevCards)=>{return [...prevCards, card]})
         })
     },[socket])
@@ -62,7 +62,7 @@ function Tabs(props) {
         })
     },[socket])
 
-    useEffect(()=>{
+    useEffect(()=>{//for some reason this does not work
         if (whiteDupe===true){
             pull("white", whiteCards, setWhiteCards, setWhiteDupe)
         }
@@ -90,15 +90,14 @@ function Tabs(props) {
         setArray(array)
     }
 
-    function limit(e, index, color){//it's a limit function... ba dum tss
-        
+    function limit(e){//it's a limit function... ba dum tss
         if(e.target.innerText.length >=36 && e.key!=="Backspace")e.preventDefault()
     }
     function reOrder(result){
         const source = Array.from(pointer["array"][result.source.droppableId])
-        source[result.source.index].display = source[result.source.index].value
         const setSource = pointer["setArray"][result.source.droppableId]
         const [removedItem] = source.splice(result.source.index, 1)
+        removedItem.display = removedItem.value //note to self: when moving objects from present field to hand, this does not work, not sure why yet
         if(result.destination.droppableId === result.source.droppableId){
             source.splice(result.destination.index, 0, removedItem)
             setSource(source)
@@ -195,7 +194,7 @@ function Tabs(props) {
                                     {(provided)=>(
                                         <div {...provided.draggableProps} {...provided.dragHandleProps} ref={provided.innerRef} className="red card" onDoubleClick={()=>{play("red","present",index)}}>
                                             {card.text}
-                                            {card.Custom ? <span contentEditable="true" onKeyUp={e =>update(e, index, "red")} onKeyDown={limit}>{card.display}</span>:""}
+                                            {card.Custom ? <span contentEditable="true" onKeyUp={e => update(e, index, "red")} onKeyDown={limit}>{card.display}</span>:""}
                                         </div>
                                     )}
                                 </Draggable>
