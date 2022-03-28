@@ -83,21 +83,26 @@ function Tabs(props) {
         let sudoResult = {source:{droppableId:source, index:index},destination:{droppableId:destination, index:0}}
         reOrder(sudoResult)
     }
+    function update(e, index, color){
+        let array = Array.from(pointer["array"][color])
+        let setArray = pointer["setArray"][color]
+        array[index].value = e.target.innerText
+        setArray(array)
+    }
 
-    function limit(e){//it's a limit function... ba dum tss
+    function limit(e, index, color){//it's a limit function... ba dum tss
+        
         if(e.target.innerText.length >=36 && e.key!=="Backspace")e.preventDefault()
     }
     function reOrder(result){
+        const source = Array.from(pointer["array"][result.source.droppableId])
+        source[result.source.index].display = source[result.source.index].value
+        const setSource = pointer["setArray"][result.source.droppableId]
+        const [removedItem] = source.splice(result.source.index, 1)
         if(result.destination.droppableId === result.source.droppableId){
-            const items = Array.from(pointer["array"][result.source.droppableId])
-            const setItems = pointer["setArray"][result.source.droppableId]
-            const [reorderedItem] = items.splice(result.source.index, 1)
-            items.splice(result.destination.index, 0, reorderedItem)
-            setItems(items)
+            source.splice(result.destination.index, 0, removedItem)
+            setSource(source)
         } else {
-            const source = Array.from(pointer["array"][result.source.droppableId])
-            const setSource = pointer["setArray"][result.source.droppableId]
-            const [removedItem] = source.splice(result.source.index, 1)
             if((removedItem.color === "white" && result.destination.droppableId === "red") ||(removedItem.color === "red" && result.destination.droppableId === "white")){
                 notifications.showNotification({
                     title: 'Whoopsies',
@@ -127,7 +132,7 @@ function Tabs(props) {
                                     {(provided)=>(
                                         <div {...provided.draggableProps} {...provided.dragHandleProps} ref={provided.innerRef} className={card.color + " card presented"} onDoubleClick={()=>{play("present", card.color,index)}}>
                                             {card.text}{/*note to self, I will have to change the class thing*/}
-                                            {card.Custom ? <span contentEditable="true" onKeyDown={e => limit(e)}></span>:""} 
+                                            {card.Custom ? <span contentEditable="true" onKeyUp={e => update(e, index, card.color)} onKeyDown={limit}>{card.display}</span>:""} 
                                         </div> 
                                     )}
                                 </Draggable>
@@ -168,7 +173,7 @@ function Tabs(props) {
                                         {(provided)=>(
                                             <div {...provided.draggableProps} {...provided.dragHandleProps} ref={provided.innerRef} className="white card" onDoubleClick={()=>{play("white","present",index)}}>
                                                 {card.text}
-                                                {card.Custom ? <span contentEditable="true" onKeyDown={e => limit(e)}></span>:""} 
+                                                {card.Custom ? <span contentEditable="true" onKeyUp={e => update(e, index, "white")} onKeyDown={limit}>{card.display}</span>:""} 
                                             </div>
                                     )}
                                 </Draggable>
@@ -190,7 +195,7 @@ function Tabs(props) {
                                     {(provided)=>(
                                         <div {...provided.draggableProps} {...provided.dragHandleProps} ref={provided.innerRef} className="red card" onDoubleClick={()=>{play("red","present",index)}}>
                                             {card.text}
-                                            {card.Custom ? <span contentEditable="true" onKeyDown={e => limit(e)}></span>:""}
+                                            {card.Custom ? <span contentEditable="true" onKeyUp={e =>update(e, index, "red")} onKeyDown={limit}>{card.display}</span>:""}
                                         </div>
                                     )}
                                 </Draggable>
