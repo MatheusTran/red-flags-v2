@@ -79,7 +79,9 @@ function Tabs(props) {
             case "awaiting":
                 setTopText("waiting for players")
                 setButtonName("start")
-                if(props.room.players.find(user => user.id === id)["admin"]){
+                let you = props.room.players.find(user => user.id === id)
+                if(!you)return
+                if(you["admin"]){//note to self: fix this
                     setShow(true)
                     break;
                 } 

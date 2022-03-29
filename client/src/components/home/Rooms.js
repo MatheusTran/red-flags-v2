@@ -46,7 +46,7 @@ export default function Rooms() {
             players:[],
             data:{
                 state:"awaiting",
-                turn:1,
+                turn:0,
                 maxPoints:x["target"][1].value,
                 maxPlayer:x["target"][2].value,
                 password:password,

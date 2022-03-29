@@ -21,6 +21,7 @@ function PresentField(props) {
                         color:"red",
                         style:{ textAlign: 'left' }
                     })
+                    break;
                 }
                 socket.emit("increment", roomId)
                 break;

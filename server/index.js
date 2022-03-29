@@ -31,6 +31,7 @@ io.on("connection", socket =>{
         let docRef = db.collection("rooms").doc(roomId);
         (async ()=>{
             const doc = await docRef.get();
+            await docRef.update({"data.turn":FieldValue.increment(1)})
             try{
             if (doc.data()["players"].length > 0){// I will have to remove the try block, this is only here for test purposes
                 await docRef.update({players:FieldValue.arrayUnion({username:user, score:0, admin:false, played:[], seed:seed, id:userId, swiper:false})})
@@ -68,18 +69,18 @@ io.on("connection", socket =>{
 
     socket.on("disconnect", ()=>{ 
         const data = userToSocket[socket.id]//this is only commented out for test purposes
-//        if (data){
-//            let docRef = db.collection("rooms").doc(data.roomId); 
-//            (async ()=>{
-//                const doc = await docRef.get();
-//                const quiter = doc.data()["players"].find(user => user.id == data.userId)
-//                if(doc.data()["players"].length <= 1){ 
-//                    await docRef.delete()
-//                }else{
-//                    await docRef.update({players:FieldValue.arrayRemove(quiter)}) 
-//                } 
-//            })(); 
-//        } 
+        if (data){
+            let docRef = db.collection("rooms").doc(data.roomId); 
+            (async ()=>{
+                const doc = await docRef.get();
+                const quiter = doc.data()["players"].find(user => user.id == data.userId)
+                if(doc.data()["players"].length <= 1){ 
+                    await docRef.delete()
+                }else{
+                    await docRef.update({players:FieldValue.arrayRemove(quiter)}) 
+                } 
+            })(); 
+        } 
     }) 
 });
 //the env port checks if there is an environmental variable
