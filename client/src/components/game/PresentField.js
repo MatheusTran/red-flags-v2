@@ -2,15 +2,34 @@ import React, {useState} from 'react'
 import axios from "axios";
 import Popup from '../Popup';
 import { useSocket } from '../socket';
+import { useNotifications } from '@mantine/notifications';
+
 
 
 function PresentField(props) {
     const [popupOn, setPopupOn] = useState(()=>false);
     const socket = useSocket()
+    const notifications = useNotifications()
     socket?.on("stfu errors")//this is just here to shut the errors up
-
+    console.log(props.room)//take this out later
     function action(){
-        getImages();//this is only temporary
+        switch(props.room.data.state){
+            case "awaiting":
+                if (props.room.players.length < 3){
+                    notifications.showNotification({
+                        title: 'Not enough players',
+                        message: `You only need ${3-props.room.players.length} more ${(3-props.room.players.length)===1? 'person':'people'}. Get more friends, loser`,
+                        color:"red",
+                        style:{ textAlign: 'left' }
+                    })
+                }
+                break;
+            case "white":
+                getImages();
+                break;
+            default:
+                break;
+        }
     }
 
     function getImages(){//come back to this later
@@ -31,11 +50,11 @@ function PresentField(props) {
     }
     return (
         <div id="upper-half">
-                    <h2>working on making the rooms</h2>
+                    <h2>{props.topText}</h2>
                     <div>
                         {props.children}
                     </div>
-            {props.mountButton? <div className="btn" datatext="stuff" onClick={action}>stuff</div> : ""}
+            {props.mountButton? <div className="btn" datatext={props.buttonName} onClick={action}>{props.buttonName}</div> : ""}
             <Popup trigger={popupOn} text="create" setTrigger={setPopupOn}>
                     <div>
                         stuff?

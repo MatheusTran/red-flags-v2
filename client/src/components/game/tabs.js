@@ -15,7 +15,9 @@ function Tabs(props) {
     const [whiteDupe, setWhiteDupe] = useState(false)
     const [redDupe, setRedDupe] = useState(false) 
     const [present, setPresent] = useState([])
-    //action button
+    //present field
+    const [topText, setTopText] = useState("")//maybe I can use an object again
+    const [buttonName, setButtonName] = useState("")//not sure if these two have to be useState. just Using them for now to be sure
     const [show, setShow] = useState(false)
     //pointer is for the function that place cards in their new location
     const pointer = {array:{white:whiteCards, red:redCards, present:present}, setArray:{white:setWhiteCards,red:setRedCards,present:setPresent}}
@@ -72,12 +74,31 @@ function Tabs(props) {
     }, [whiteDupe,redDupe])
 
     useEffect(()=>{
-        if(present.length === 2){
-            setShow(true)
-        } else{
-            setShow(false)
+        if(!props.room)return
+        switch(props.room.data.state){
+            case "awaiting":
+                setTopText("waiting for players")
+                setButtonName("start")
+                if(props.room.players.find(user => user.id === id)["admin"]){
+                    setShow(true)
+                    break;
+                } 
+                setShow(false)
+                break
+            case "white":
+                setTopText("You are lonely and looking for a fish to fill the empty void that is your heart. Don't worry, you'll find someone eventually")
+                setButtonName("confirm")
+                if(present.length === 2){
+                    setShow(true)
+                    break
+                }
+                setShow(false)
+                break;
+            default:
+                break
         }
-    }, [present])
+
+    }, [present, props.room, id])
 
     function play(source,destination, index){
         let sudoResult = {source:{droppableId:source, index:index},destination:{droppableId:destination, index:0}}
@@ -107,7 +128,7 @@ function Tabs(props) {
                     title: 'Whoopsies',
                     message: `${removedItem.color} cards do not go with the ${result.destination.droppableId} cards`,
                     color:"red",
-                    style:{ textAlign: 'left' }//this is not currently working btw, so I jut manually added it to .mantine-1yg4h9z
+                    style:{ textAlign: 'left' }
                 })
                 return
             }
@@ -119,10 +140,10 @@ function Tabs(props) {
         }
         
     }
-
+    //note to self: I may add another tab for emotes
     return (
         <DragDropContext onDragEnd={reOrder}>
-            <PresentField mountButton={show}>
+            <PresentField topText={topText} mountButton={show} buttonName={buttonName} room={props.room}>
                 <Droppable droppableId="present" direction="horizontal">
                     {(provided)=>(
                         <div id="played-cards" className="scrollmenu" {...provided.droppableProps} ref={provided.innerRef} style={{width:"100%", height:"auto"}}>

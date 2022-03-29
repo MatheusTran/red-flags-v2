@@ -23,17 +23,19 @@ const userToSocket = {}
 
 io.on("connection", socket =>{
     socket.on("gamejoin", (roomId, userId, user, seed)=>{
-        socket.emit("init")
+        socket.emit("init")//I could make this a callback function but I prefer this method then we wouldn't have to wait for the documents
         userToSocket[socket.id] = {userId,roomId}
+        socket.join(roomId)//adds user to room id
         let docRef = db.collection("rooms").doc(roomId);
         (async ()=>{
             const doc = await docRef.get();
-            try{if (doc.data()["players"]){
+            try{
+            if (doc.data()["players"].length > 0){// I will have to remove the try block, this is only here for test purposes
                 await docRef.update({players:FieldValue.arrayUnion({username:user, score:0, admin:false, played:[], seed:seed, id:userId})})
-                //{username:user, score:0, admin:false, played:[], seed:seed, id:id}
             }else{
                 await docRef.update({players:FieldValue.arrayUnion({username:user, score:0, admin:true, played:[], seed:seed, id:userId})})
-            }} catch {
+            }
+            } catch {
                 console.log("this is just test stuff")
             }
         })();
@@ -45,7 +47,7 @@ io.on("connection", socket =>{
     });
 
     socket.on("disconnect", ()=>{ 
-        const data = userToSocket[socket.id]
+        const data = userToSocket[socket.id]//this is only commented out for test purposes
 //        if (data){
 //            let docRef = db.collection("rooms").doc(data.roomId); 
 //            (async ()=>{

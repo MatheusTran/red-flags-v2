@@ -23,9 +23,6 @@ initializeApp({
 
 const FS = getFirestore();
 
-//note: flickerAPI = $.getJSON("http://api.flickr.com/services/feeds/photos_public.gne?jsoncallback=?",{tags: "Human",tagmode: "any",format: "json"})
-//you can change the tag, the links are in responseJSON and
-
 //important!!!!:
 //https://stackoverflow.com/questions/61297769/how-to-hide-api-key-and-still-run-heroku-app
 
@@ -45,11 +42,10 @@ function Game() {
                 </div>
                 <div id="lower-half">
                     <Scoreboard players={room?.players}/>
-                    <Tabs QS={data}/>
+                    <Tabs QS={data} room={room}/>
                 </div>
             </NotificationsProvider>
         </SocketProvider>
-
     );
 }
 
