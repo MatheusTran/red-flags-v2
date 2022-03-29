@@ -54,11 +54,8 @@ io.on("connection", socket =>{
                 current["players"][randint(current["players"].length)]["swiper"] = true
             }
             current["data"]["turn"] = 1
-            console.log(current["data"]["state"])
-            console.log(phase[current["data"]["state"]])
             current["data"]["state"] = phase[current["data"]["state"]]
         }
-        console.log(current)
         await docRef.update(current)
         io.to(roomId).emit("game")
         })();
