@@ -9,6 +9,8 @@ const admin = require("firebase-admin")//note to self: may change to real time d
 const serviceAccount = require("./firestore_key.json")
 const FieldValue = require('firebase-admin').firestore.FieldValue;
 
+const phase = {awaiting:"white", white:"presenting", presenting:"red", red:"pick", pick:"pick"}
+
 admin.initializeApp({
     credential: admin.credential.cert(serviceAccount)
 })
@@ -31,15 +33,36 @@ io.on("connection", socket =>{
             const doc = await docRef.get();
             try{
             if (doc.data()["players"].length > 0){// I will have to remove the try block, this is only here for test purposes
-                await docRef.update({players:FieldValue.arrayUnion({username:user, score:0, admin:false, played:[], seed:seed, id:userId})})
+                await docRef.update({players:FieldValue.arrayUnion({username:user, score:0, admin:false, played:[], seed:seed, id:userId, swiper:false})})
             }else{
-                await docRef.update({players:FieldValue.arrayUnion({username:user, score:0, admin:true, played:[], seed:seed, id:userId})})
+                await docRef.update({players:FieldValue.arrayUnion({username:user, score:0, admin:true, played:[], seed:seed, id:userId, swiper:false})})
             }
             } catch {
                 console.log("this is just test stuff")
             }
         })();
     });
+
+    socket.on("increment", (roomId)=>{
+        let docRef = db.collection("rooms").doc(roomId);
+        (async ()=>{
+        const doc = await docRef.get();
+        const current = doc.data()
+        current["data"]["turn"]++
+        if (current["data"]["turn"] >= current["players"].length){
+            if (current["data"]["state"] === "awaiting"){
+                current["players"][randint(current["players"].length)]["swiper"] = true
+            }
+            current["data"]["turn"] = 1
+            console.log(current["data"]["state"])
+            console.log(phase[current["data"]["state"]])
+            current["data"]["state"] = phase[current["data"]["state"]]
+        }
+        console.log(current)
+        await docRef.update(current)
+        io.to(roomId).emit("game")
+        })();
+    })
 
     socket.on("pull", ({color},callback)=>{ 
         var random = randint(cards[color].length)

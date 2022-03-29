@@ -143,8 +143,8 @@ function Tabs(props) {
     //note to self: I may add another tab for emotes
     return (
         <DragDropContext onDragEnd={reOrder}>
-            <PresentField topText={topText} mountButton={show} buttonName={buttonName} room={props.room}>
-                <Droppable droppableId="present" direction="horizontal">
+            <PresentField topText={topText} mountButton={show} buttonName={buttonName} room={props.room} data={props.QS.roomId}>
+                <Droppable droppableId="present" direction="horizontal" roomId={props.QS}>
                     {(provided)=>(
                         <div id="played-cards" className="scrollmenu" {...provided.droppableProps} ref={provided.innerRef} style={{width:"100%", height:"auto"}}>
                             {present.map((card,index) => {return (

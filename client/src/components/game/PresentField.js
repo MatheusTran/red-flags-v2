@@ -10,8 +10,7 @@ function PresentField(props) {
     const [popupOn, setPopupOn] = useState(()=>false);
     const socket = useSocket()
     const notifications = useNotifications()
-    socket?.on("stfu errors")//this is just here to shut the errors up
-    console.log(props.room)//take this out later
+    const roomId = props.data
     function action(){
         switch(props.room.data.state){
             case "awaiting":
@@ -23,6 +22,7 @@ function PresentField(props) {
                         style:{ textAlign: 'left' }
                     })
                 }
+                socket.emit("increment", roomId)
                 break;
             case "white":
                 getImages();
