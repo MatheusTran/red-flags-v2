@@ -75,12 +75,14 @@ function Tabs(props) {
 
     useEffect(()=>{
         if(!props.room)return
+        let you = props.room.players.find(user => user.id === id)
+        if(!you)return
+        let swiper = props.room.players.find(user => user.swiper)
+
         switch(props.room.data.state){
             case "awaiting":
                 setTopText("waiting for players")
                 setButtonName("start")
-                let you = props.room.players.find(user => user.id === id)
-                if(!you)return
                 if(you["admin"]){//note to self: fix this
                     setShow(true)
                     break;
@@ -88,7 +90,11 @@ function Tabs(props) {
                 setShow(false)
                 break
             case "white":
-                setTopText("You are lonely and looking for a fish to fill the empty void that is your heart. Don't worry, you'll find someone eventually")
+                if (you.swiper){
+                    setTopText("You are lonely and looking for a fish to fill the empty void that is your heart. Don't worry, you'll find someone eventually")
+                    break;
+                }
+                setTopText(`${swiper.username} is looking for love, play two white cards`)
                 setButtonName("confirm")
                 if(present.length === 2){
                     setShow(true)
