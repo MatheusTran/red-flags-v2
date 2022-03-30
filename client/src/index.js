@@ -6,9 +6,5 @@ import './css/flags.css';
 import './css/tabs.css';
 
 const root= ReactDOM.createRoot(document.getElementById('root'))
-//remove react strictmode in the future
 
-root.render(
-    <Router />
-);
-
+root.render(<Router />);
