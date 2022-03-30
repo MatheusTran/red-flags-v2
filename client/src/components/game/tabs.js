@@ -16,7 +16,7 @@ function Tabs(props) {
     const [redDupe, setRedDupe] = useState(false) 
     const [present, setPresent] = useState([])
     //present field
-    const [topText, setTopText] = useState("")//maybe I can use an object again
+    const [topText, setTopText] = useState("loading data, please be patient")//maybe I can use an object again
     const [buttonName, setButtonName] = useState("")//not sure if these two have to be useState. just Using them for now to be sure
     const [show, setShow] = useState(false)
     //pointer is for the function that place cards in their new location
@@ -166,7 +166,7 @@ function Tabs(props) {
                     {(provided)=>(
                         <div id="played-cards" className="scrollmenu" {...provided.droppableProps} ref={provided.innerRef} style={{width:"100%", height:"auto"}}>
                             {present.map((card,index) => {return (
-                                <Draggable key={"present "+index} draggableId={"present "+index} index={index}>
+                                <Draggable key={"present"+index} draggableId={"present"+index} index={index}>
                                     {(provided)=>(
                                         <div {...provided.draggableProps} {...provided.dragHandleProps} ref={provided.innerRef} className={card.color + " card presented"} onDoubleClick={()=>{play("present", card.color,index)}}>
                                             {card.text}{/*note to self, I will have to change the class thing*/}
@@ -207,14 +207,14 @@ function Tabs(props) {
                             {(provided)=>(
                             <div className="scrollmenu hand" {...provided.droppableProps} ref={provided.innerRef}>
                                 {whiteCards.map((card,index) => {return (
-                                    <Draggable key={"white "+index} draggableId={"white "+index} index={index}>
-                                        {(provided)=>(
-                                            <div {...provided.draggableProps} {...provided.dragHandleProps} ref={provided.innerRef} className="white card" onDoubleClick={()=>{play("white","present",index)}}>
-                                                {card.text}
-                                                {card.Custom ? <span contentEditable="true" onKeyUp={e => update(e, index, "white")} onKeyDown={limit}>{card.display}</span>:""} 
-                                            </div>
-                                    )}
-                                </Draggable>
+                                    <Draggable key={"white"+index} draggableId={"white"+index} index={index}>
+                                            {(provided)=>(
+                                                <div {...provided.draggableProps} {...provided.dragHandleProps} ref={provided.innerRef} className="white card" onDoubleClick={()=>{play("white","present",index)}}>
+                                                    {card.text}
+                                                    {card.Custom ? <span contentEditable="true" onKeyUp={e => update(e, index, "white")} onKeyDown={limit}>{card.display}</span>:""} 
+                                                </div>
+                                        )}
+                                    </Draggable>
                             )})}
                             {provided.placeholder} 
                         </div>
@@ -229,7 +229,7 @@ function Tabs(props) {
                         {(provided)=>(
                         <div className="scrollmenu hand" {...provided.droppableProps} ref={provided.innerRef}>
                             {redCards.map((card,index) => {return (
-                                <Draggable key={"red "+index} draggableId={"red "+index} index={index}>
+                                <Draggable key={"red"+index} draggableId={"red"+index} index={index}>
                                     {(provided)=>(
                                         <div {...provided.draggableProps} {...provided.dragHandleProps} ref={provided.innerRef} className="red card" onDoubleClick={()=>{play("red","present",index)}}>
                                             {card.text}
