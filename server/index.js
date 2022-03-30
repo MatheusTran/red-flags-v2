@@ -68,7 +68,7 @@ io.on("connection", socket =>{
     });
 
     socket.on("disconnect", ()=>{ 
-        const data = userToSocket[socket.id]//this is only commented out for test purposes
+        const data = userToSocket[socket.id]
         if (data){
             let docRef = db.collection("rooms").doc(data.roomId); 
             (async ()=>{

@@ -36,7 +36,7 @@ export default function Rooms() {
 
     const [roomsList] = useCollectionData(collection(FS,"rooms"))
 
-    const createRoom = async(x) => {
+    const createRoom = async(x) => { //this should propbably be in index js as well
         const lobbyId = v4()
         player.admin = true 
         x.preventDefault()

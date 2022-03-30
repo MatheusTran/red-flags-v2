@@ -92,6 +92,7 @@ function Tabs(props) {
             case "white":
                 if (you.swiper){
                     setTopText("You are lonely and looking for a fish to fill the empty void that is your heart. Don't worry, you'll find someone eventually")
+                    setShow(false)
                     break;
                 }
                 setTopText(`${swiper.username} is looking for love, play two white cards`)
@@ -135,6 +136,15 @@ function Tabs(props) {
                 notifications.showNotification({
                     title: 'Whoopsies',
                     message: `${removedItem.color} cards do not go with the ${result.destination.droppableId} cards`,
+                    color:"red",
+                    style:{ textAlign: 'left' }
+                })
+                return
+            }
+            if(!(result.source.droppableId===props.room.data.state)&&!(result.source.droppableId==="present")){
+                notifications.showNotification({
+                    title:"Now is not the time",
+                    message:`please read the instructions on the top or learn to read`,
                     color:"red",
                     style:{ textAlign: 'left' }
                 })
