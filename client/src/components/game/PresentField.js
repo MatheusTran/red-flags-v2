@@ -74,7 +74,7 @@ function PresentField(props) {
                             </div>
                         ))}
                     </div>
-                    <input className="input" name="search" id="search" onChange={(e)=>getImages(e.target.value)} maxLength={15} autoComplete="off" placeholder="search"/>
+                    <input className="input" name="search" id="search" onChange={(e)=>getImages(e.target.value)} maxLength={25} autoComplete="off" placeholder="search"/>
             </Popup>
         </div>
     )

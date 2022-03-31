@@ -68,7 +68,7 @@ export default function Rooms() {
             <Popup trigger={popupOn} setTrigger={setPopupOn}>                
                 <form onSubmit={createRoom} autoComplete='off' action="game">
                     <h1>Room details:</h1>
-                    <p style={{margin:"0"}}><input required ref={roomRef} className="input" name="Lobbyname" id="Lobbyname" placeholder="Lobby name"/></p>
+                    <p style={{margin:"0"}}><input required ref={roomRef} className="input" name="Lobbyname" id="Lobbyname" placeholder="Lobby name" maxLength={25}/></p>
                     <h1 style={{margin:"0"}}>Score limit:<input type="number" className="input" name="ScoreMax" id="ScoreMax" defaultValue="8" /></h1>
                     <h1 style={{margin:"0"}} >player limit:<input type="number" className="input" name="playerMax" id="playerMax" defaultValue="10" /></h1>
                     <div className="checkbox" style={{marginBottom:"1em"}}>
