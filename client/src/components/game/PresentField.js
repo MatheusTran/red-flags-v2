@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import axios from "axios";
 import Popup from '../Popup';
 import { useSocket } from '../socket';
@@ -8,9 +8,15 @@ import { useNotifications } from '@mantine/notifications';
 
 function PresentField(props) {
     const [popupOn, setPopupOn] = useState(()=>false);
+    const [pics, setPics] = useState([])
     const socket = useSocket()
     const notifications = useNotifications()
     const roomId = props.data
+
+    useEffect(()=>{
+        getImages("Humans")
+    },[])
+
     function action(){
         switch(props.room.data.state){
             case "awaiting":
@@ -26,27 +32,29 @@ function PresentField(props) {
                 socket.emit("increment", roomId)
                 break;
             case "white":
-                getImages();
+                setPopupOn(!popupOn)
                 break;
             default:
                 break;
         }
     }
 
-    function getImages(){//come back to this later
-        setPopupOn(!popupOn)
-        let query = "humans"
+    function getImages(query){//come back to this later
+        if (!query) query="Humans"
+        query = query.replace(/ /g, "+")
+        console.log(query)
         axios.request({
-            url: `https://www.flickr.com/services/rest/?method=flickr.photos.getRecent&api_key=${process.env.REACT_APP_imgur_api}&tags=${query}&format=json&tagmode=any&per_page=10`,
+            url: `https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=${process.env.REACT_APP_imgur_api}&tags=${query}&format=json&tagmode=any&per_page=10&sort=relevance`,
             method: 'GET'
         }).then(res => {
+            console.log(res)
             let x = res.data;
             x = (JSON.parse(x.substring(14,(x.length-1))))
             let array = x.photos.photo.map((pic) =>{
-                var url = `https://farm${pic.farm}.static.flickr.com/${pic.server}/${pic.id}_${pic.secret}.jpg`
-                return (<img alt="test" src={url}/>)
+                return (`https://farm${pic.farm}.static.flickr.com/${pic.server}/${pic.id}_${pic.secret}.jpg`)
             })
-            console.log(array)
+            console.log(props.cards)
+            setPics(array)
         })
     }
     return (
@@ -57,9 +65,15 @@ function PresentField(props) {
                     </div>
             {props.mountButton? <div className="btn" datatext={props.buttonName} onClick={action}>{props.buttonName}</div> : ""}
             <Popup trigger={popupOn} text="create" setTrigger={setPopupOn}>
-                    <div>
-                        stuff?
+                <h2>choose a picture</h2>
+                    <div className='scrollmenu' style={{spaceBetween:"5rem", padding:"1rem"}}>
+                        {pics.map((pic)=>(
+                            <div className="pfp" key={pic}>
+                                <img alt={pic} src={pic}/>
+                            </div>
+                        ))}
                     </div>
+                    <input className="input" name="search" id="search" onChange={(e)=>getImages(e.target.value)} maxLength={15} autoComplete="off" placeholder="search"/>
             </Popup>
         </div>
     )

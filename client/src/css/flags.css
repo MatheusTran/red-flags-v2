@@ -195,17 +195,9 @@ div.scrollmenu {
     padding-left: 2rem;
 }
 
-#played-cards::-webkit-scrollbar {height: 0.5rem;}
-#played-cards::-webkit-scrollbar-track {background: transparent;}
-#played-cards::-webkit-scrollbar-thumb {
-    background: white;
-    border-radius: 5px;
-    margin: 5px;
-}
-
-.hand::-webkit-scrollbar {height: 0.5rem;}
-.hand::-webkit-scrollbar-track {background: transparent;}
-.hand::-webkit-scrollbar-thumb {
+.scrollmenu::-webkit-scrollbar {height: 0.5rem;}
+.scrollmenu::-webkit-scrollbar-track {background: transparent;}
+.scrollmenu::-webkit-scrollbar-thumb {
     background: purple;
     border-radius: 5px;
     margin: 5px;

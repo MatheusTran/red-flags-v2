@@ -1,6 +1,7 @@
 
 .tabs-container {
     display: flex;
+    z-index: -10;
     flex-direction: column;
     position: relative;
     width: 75%;
@@ -71,4 +72,16 @@ button {
 }
 .active-content {
     display: block;
+}
+
+.pfp{
+    min-width:160px; 
+    height:180px; 
+    margin:0.5rem; 
+    overflow-x:hidden;
+    overflow-y:hidden; 
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    cursor: pointer;
 }

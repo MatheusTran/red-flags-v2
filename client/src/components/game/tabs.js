@@ -141,7 +141,7 @@ function Tabs(props) {
                 })
                 return
             }
-            if(!(result.source.droppableId===props.room.data.state)&&!(result.source.droppableId==="present")){
+            if(!(result.source.droppableId===props.room.data.state||result.source.droppableId==="present")){
                 notifications.showNotification({
                     title:"Now is not the time",
                     message:`please read the instructions on the top or learn to read`,
@@ -161,7 +161,7 @@ function Tabs(props) {
     //note to self: I may add another tab for emotes
     return (
         <DragDropContext onDragEnd={reOrder}>
-            <PresentField topText={topText} mountButton={show} buttonName={buttonName} room={props.room} data={props.QS.roomId}>
+            <PresentField cards={present} topText={topText} mountButton={show} buttonName={buttonName} room={props.room} data={props.QS.roomId}>
                 <Droppable droppableId="present" direction="horizontal" roomId={props.QS}>
                     {(provided)=>(
                         <div id="played-cards" className="scrollmenu" {...provided.droppableProps} ref={provided.innerRef} style={{width:"100%", height:"auto"}}>
