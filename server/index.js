@@ -34,9 +34,9 @@ io.on("connection", socket =>{
             await docRef.update({"data.turn":FieldValue.increment(1)})
             try{
             if (doc.data()["players"].length > 0){// I will have to remove the try block, this is only here for test purposes
-                await docRef.update({players:FieldValue.arrayUnion({username:user, score:0, admin:false, played:[], seed:seed, id:userId, swiper:false})})
+                await docRef.update({players:FieldValue.arrayUnion({username:user, score:0, admin:false, fish:{}, seed:seed, id:userId, swiper:false})})
             }else{
-                await docRef.update({players:FieldValue.arrayUnion({username:user, score:0, admin:true, played:[], seed:seed, id:userId, swiper:false})})
+                await docRef.update({players:FieldValue.arrayUnion({username:user, score:0, admin:true, fish:{}, seed:seed, id:userId, swiper:false})})
             }
             } catch {
                 console.log("this is just test stuff")
@@ -59,6 +59,19 @@ io.on("connection", socket =>{
         }
         await docRef.update(current)
         io.to(roomId).emit("game")
+        })();
+    })
+
+    socket.on("submitFish", (fish, roomId)=>{
+        let docRef = db.collection("rooms").doc(roomId);
+        console.log("test");
+        (async ()=>{
+            const doc = await docRef.get()
+            let current = doc.data()
+            const data = userToSocket[socket.id]
+            const index = current.players.indexOf(current.players.find(user =>user.id === data.userId))
+            current.players[index]["fish"] = fish
+            await docRef.update({players:current.players})
         })();
     })
 

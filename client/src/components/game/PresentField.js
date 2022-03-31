@@ -11,7 +11,7 @@ function PresentField(props) {
     const [pics, setPics] = useState([])
     const socket = useSocket()
     const notifications = useNotifications()
-    const roomId = props.data
+    const roomId = props.data //note to self, just remembered that I can access room id from the database aka props.room, I will look into this later
 
     useEffect(()=>{
         getImages("Humans")
@@ -42,20 +42,21 @@ function PresentField(props) {
     function getImages(query){//come back to this later
         if (!query) query="Humans"
         query = query.replace(/ /g, "+")
-        console.log(query)
         axios.request({
             url: `https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=${process.env.REACT_APP_imgur_api}&tags=${query}&format=json&tagmode=any&per_page=10&sort=relevance`,
             method: 'GET'
         }).then(res => {
-            console.log(res)
             let x = res.data;
             x = (JSON.parse(x.substring(14,(x.length-1))))
             let array = x.photos.photo.map((pic) =>{
                 return (`https://farm${pic.farm}.static.flickr.com/${pic.server}/${pic.id}_${pic.secret}.jpg`)
             })
-            console.log(props.cards)
             setPics(array)
         })
+    }
+    function goFish(pic){
+        const fish = {cards:props.cards, url:pic}
+        socket.emit("submitFish", fish, roomId)
     }
     return (
         <div id="upper-half">
@@ -68,7 +69,7 @@ function PresentField(props) {
                 <h2>choose a picture</h2>
                     <div className='scrollmenu' style={{spaceBetween:"5rem", padding:"1rem"}}>
                         {pics.map((pic)=>(
-                            <div className="pfp" key={pic}>
+                            <div className="pfp" key={pic} onClick={()=>goFish(pic)}>
                                 <img alt={pic} src={pic}/>
                             </div>
                         ))}
