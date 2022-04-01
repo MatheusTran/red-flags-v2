@@ -9,7 +9,7 @@ function Tabs(props) {
     //tabs
     const [toggleState, setToggleState] = useState(1);
     const toggleTab = (index) => setToggleState(index);
-    //cards
+    //cards. it may be better to create a context provider for this in the future
     const [whiteCards, setWhiteCards] = useState([])
     const [redCards, setRedCards] = useState([])
     const [whiteDupe, setWhiteDupe] = useState(false)
