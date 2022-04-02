@@ -62,6 +62,9 @@ function Tabs(props) {
                 pull("red", redCards, setRedCards, setRedDupe)
             }
         })
+        socket.on("notif", (notif)=>{
+            notifications.showNotification(notif)
+        })
     },[socket])
 
     useEffect(()=>{//for some reason this does not work
