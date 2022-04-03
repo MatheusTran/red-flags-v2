@@ -27,6 +27,7 @@ export default function Rooms() {
     const [user] = useLocalStorage("user")
     const [seed] = useLocalStorage("seed")
     const [id, setId] = useLocalStorage("id")
+    const [searchRoom, setSearchRoom] = useState("")
 
     useEffect(()=>{
         setId(v4())
@@ -64,7 +65,7 @@ export default function Rooms() {
 
     return (
         <div>
-            <div className='btn' datatext="Get_A_room" onClick={()=>setPopupOn(!popupOn)}>Get_A_room</div>
+            <div className='btn' datatext="Get_A_room" onClick={()=>setPopupOn(!popupOn)}>Get_A_room</div> {/* maybe this should be on the bottom of the screen*/}
             <Popup trigger={popupOn} setTrigger={setPopupOn}>                
                 <form onSubmit={createRoom} autoComplete='off' action="game">
                     <h1>Room details:</h1>
@@ -80,11 +81,19 @@ export default function Rooms() {
                 </form>
             </Popup>
             <div style={{display:"flex", width:"100%",flexDirection:"column",alignItems:"center"}}>
-                <h1>rooms</h1>
+                <h1>rooms</h1> {/*I should probably remove this in the future, it is kinda ugly. I will leave this in for now while I work on the functional components*/}
+                <input className="input" name="search" placeholder="Search..." autoComplete="off" onChange={(e)=>setSearchRoom(e.target.value)}/>
                 {
-                    roomsList?.map((room, index)=>(
-                        <div key={room["Name"]} className="roomContainer" onClick={()=>joinRoom(room.id)}>
-                            <h1 style={{marginLeft:"1em"}}>{index+1}.{room["Name"]}</h1>{/*perhaps I can change this in the future?*/}
+                    roomsList?.filter((room) =>{//filters the room listings
+                        if(searchRoom===""){
+                            return(room)
+                        } else if (room.Name.toLowerCase().includes(searchRoom.toLowerCase())){
+                            return(room)
+                        }
+                        return(room)//ignore this. This does nothing, it is just to shut the editor up. might remove in production
+                    }).map((room, index)=>(
+                        <div key={room.Name} className="roomContainer" onClick={()=>joinRoom(room.id)}>
+                            <h1 style={{marginLeft:"1em"}}>{index+1}.{room.Name}</h1>{/*perhaps I can change this in the future?*/}
                             <p style={{color:"white", margin:"0", marginLeft:"2em"}}>players: {room.players.length}/{room.data.maxPlayer}</p>
                             <p style={{color:"white", margin:"0", marginLeft:"2em"}}>State: {room.data.state}</p>
                             <p style={{color:"white", margin:"0", marginLeft:"2em", marginBottom:"1em"}}>{room.data.password? "private lobby" : "open"}</p>
