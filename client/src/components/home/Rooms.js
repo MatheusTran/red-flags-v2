@@ -1,4 +1,4 @@
-import React, {useState, useRef, useEffect} from 'react'
+import React, {useState, useRef, useEffect, useTransition, useMemo} from 'react'
 import Popup from '../Popup'
 import { v4 } from "uuid"
 import useLocalStorage from "../../hooks/useLocalStorage";
@@ -28,6 +28,7 @@ export default function Rooms() {
     const [seed] = useLocalStorage("seed")
     const [id, setId] = useLocalStorage("id")
     const [searchRoom, setSearchRoom] = useState("")
+    const [isPending, startTransition] = useTransition()
 
     useEffect(()=>{
         setId(v4())
@@ -36,6 +37,15 @@ export default function Rooms() {
     let player = {username:user, score:0, admin:false, played:[], seed:seed, id:id}//note to self, create an id
 
     const [roomsList] = useCollectionData(collection(FS,"rooms"))
+    const filteredRooms = useMemo(()=>{
+        return roomsList?.filter((room) =>{//filters the room listings. Also ignore this error message
+            if(searchRoom===""){
+                return(room)
+            } else if (room.Name.toLowerCase().includes(searchRoom.toLowerCase())){
+                return(room)
+            }
+        })
+    }, [searchRoom, roomsList])
 
     const createRoom = async(x) => { //this should propbably be in index js as well
         const lobbyId = v4()
@@ -63,6 +73,13 @@ export default function Rooms() {
         window.location = (`game?roomId=${joinroomid}`);
     }
 
+    function search(e){
+        startTransition(()=>{
+            console.log(searchRoom)
+            setSearchRoom(e.target.value)
+        })
+    }
+
     return (
         <div>
             <div className='btn' datatext="Get_A_room" onClick={()=>setPopupOn(!popupOn)}>Get_A_room</div> {/* maybe this should be on the bottom of the screen*/}
@@ -82,23 +99,17 @@ export default function Rooms() {
             </Popup>
             <div style={{display:"flex", width:"100%",flexDirection:"column",alignItems:"center"}}>
                 <h1>rooms</h1> {/*I should probably remove this in the future, it is kinda ugly. I will leave this in for now while I work on the functional components*/}
-                <input className="input" name="search" placeholder="Search..." autoComplete="off" onChange={(e)=>setSearchRoom(e.target.value)}/>{/*might restyle this in the future*/}
+                <input className="input" name="search" placeholder="Search..." autoComplete="off" onChange={(e)=>search(e)}/>{/*might restyle this in the future*/}
+                {isPending? <h1>please be patient while we look for your results</h1>:"" /*should probably make this float above the menu, not apart of it. It looks annoying */} 
                 {
-                    roomsList?.filter((room) =>{//filters the room listings
-                        if(searchRoom===""){
-                            return(room)
-                        } else if (room.Name.toLowerCase().includes(searchRoom.toLowerCase())){
-                            return(room)
-                        }
-                        return(room)//ignore this. This does nothing, it is just to shut the editor up. might remove in production
-                    }).map((room, index)=>(
+                    filteredRooms.length>0? filteredRooms.map((room, index)=>(
                         <div key={room.Name} className="roomContainer" onClick={()=>joinRoom(room.id)}>
                             <h1 style={{marginLeft:"1em"}}>{index+1}.{room.Name}</h1>{/*perhaps I can change this in the future?*/}
                             <p style={{color:"white", margin:"0", marginLeft:"2em"}}>players: {room.players.length}/{room.data.maxPlayer}</p>
                             <p style={{color:"white", margin:"0", marginLeft:"2em"}}>State: {room.data.state}</p>
                             <p style={{color:"white", margin:"0", marginLeft:"2em", marginBottom:"1em"}}>{room.data.password? "private lobby" : "open"}</p>
                         </div>
-                        ))
+                        )) : <h1>Can not find any rooms, sorry. Make your own room</h1>
                 }
             </div>
         </div>
