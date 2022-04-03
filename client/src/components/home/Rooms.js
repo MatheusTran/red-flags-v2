@@ -82,7 +82,7 @@ export default function Rooms() {
             </Popup>
             <div style={{display:"flex", width:"100%",flexDirection:"column",alignItems:"center"}}>
                 <h1>rooms</h1> {/*I should probably remove this in the future, it is kinda ugly. I will leave this in for now while I work on the functional components*/}
-                <input className="input" name="search" placeholder="Search..." autoComplete="off" onChange={(e)=>setSearchRoom(e.target.value)}/>
+                <input className="input" name="search" placeholder="Search..." autoComplete="off" onChange={(e)=>setSearchRoom(e.target.value)}/>{/*might restyle this in the future*/}
                 {
                     roomsList?.filter((room) =>{//filters the room listings
                         if(searchRoom===""){
