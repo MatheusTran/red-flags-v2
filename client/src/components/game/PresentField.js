@@ -66,7 +66,9 @@ function PresentField(props) {
                     </div>
             {props.mountButton? <div className="btn" datatext={props.buttonName} onClick={action}>{props.buttonName}</div> : ""}
             <Popup trigger={popupOn} text="create" setTrigger={setPopupOn}>
-                <h2>choose a picture</h2>
+                <h2>choose a picture</h2>{/*I might add an input field here to add the name of the fish*/}
+                <input className="input" name="search" id="search" onChange maxLength={12} autoComplete="off" placeholder="name of Fish"/>
+                
                     <div className='scrollmenu' style={{spaceBetween:"5rem", padding:"1rem"}}>
                         {pics.map((pic)=>(
                             <div className="pfp" key={pic} onClick={()=>goFish(pic)}>
