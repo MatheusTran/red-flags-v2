@@ -169,11 +169,11 @@ function Tabs(props) { //I think there are wayyyyy too many variables
                     {(provided)=>(
                         <div id="played-cards" className="scrollmenu" {...provided.droppableProps} ref={provided.innerRef} style={{width:"100%", height:"auto"}}>
                             {present.map((card,index) => {return (
-                                <Draggable key={"present"+index} draggableId={"present"+index} index={index}>
+                                <Draggable key={"present"+index} draggableId={"present"+index} index={index} isDragDisabled={false}>
                                     {(provided)=>(
                                         <div {...provided.draggableProps} {...provided.dragHandleProps} ref={provided.innerRef} className={card.color + " card presented"} onDoubleClick={()=>{play("present", card.color,index)}}>
                                             {card.text}{/*note to self, I will have to change the class thing*/}
-                                            {card.Custom ? <span contentEditable="true" onKeyUp={e => update(e, index, card.color)} onKeyDown={limit}>{card.display}</span>:""} 
+                                            {card.Custom ? <span contentEditable="true" onKeyUp={e => update(e, index, "present")} onKeyDown={limit}>{card.display}</span>:""} 
                                         </div> 
                                     )}
                                 </Draggable>

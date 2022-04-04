@@ -4,8 +4,6 @@ import Popup from '../Popup';
 import { useSocket } from '../socket';
 import { useNotifications } from '@mantine/notifications';
 
-
-
 function PresentField(props) {
     const [popupOn, setPopupOn] = useState(()=>false);
     const [pics, setPics] = useState([])
@@ -40,7 +38,7 @@ function PresentField(props) {
         }
     }
 
-    function getImages(query){//come back to this later
+    function getImages(query){
         if (!query) query="Humans"
         query = query.replace(/ /g, "+")
         axios.request({
