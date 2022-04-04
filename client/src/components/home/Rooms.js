@@ -80,9 +80,19 @@ export default function Rooms() {
         })
     }
 
+    const styleTest = {
+        width:"50%",
+        background:"black",
+        textAlign:"left",
+        paddingLeft:"1em",
+        opacity:"0.25",
+        textColor:"white",
+        marginBottom:"2em"
+    }
+
     return (
         <div>
-            <div className='btn' datatext="Get_A_room" onClick={()=>setPopupOn(!popupOn)}>Get_A_room</div> {/* maybe this should be on the bottom of the screen*/}
+            <div className='btn' datatext="Get_A_room" onClick={()=>setPopupOn(!popupOn)}>Get_A_room</div> {/* maybe this should be in a side menu with other options, like look at all cards, change username, github page, etc*/}
             <Popup trigger={popupOn} setTrigger={setPopupOn}>                
                 <form onSubmit={createRoom} autoComplete='off' action="game">
                     <h1>Room details:</h1>
@@ -97,12 +107,15 @@ export default function Rooms() {
                     <button className='btn' type='submit' datatext="create">create</button>
                 </form>
             </Popup>
-            <div style={{display:"flex", width:"100%",flexDirection:"column",alignItems:"center"}}>
-                <h1>rooms</h1> {/*I should probably remove this in the future, it is kinda ugly. I will leave this in for now while I work on the functional components*/}
-                <input className="input" name="search" placeholder="Search..." autoComplete="off" onChange={(e)=>search(e)}/>{/*might restyle this in the future*/}
-                {isPending? <h1>please be patient while we look for your results</h1>:"" /*should probably make this float above the menu, not apart of it. It looks annoying */} 
+
+            <div style={{display:"flex", width:"100%",flexDirection:"column",alignItems:"center", marginTop:"2em"}}>
+
+                <input style={styleTest} name="search" placeholder="Search..." autoComplete="off" onChange={(e)=>search(e)}/>
+                
+                {/*isPending? <h1>please be patient while we look for your results</h1>:"" /*should probably make this float above the menu, not apart of it. It looks annoying */} 
+                
                 {
-                    filteredRooms.length>0? filteredRooms.map((room, index)=>(
+                    filteredRooms?.length>0? filteredRooms.map((room, index)=>(
                         <div key={room.Name} className="roomContainer" onClick={()=>joinRoom(room.id)}>
                             <h1 style={{marginLeft:"1em"}}>{index+1}.{room.Name}</h1>{/*perhaps I can change this in the future?*/}
                             <p style={{color:"white", margin:"0", marginLeft:"2em"}}>players: {room.players.length}/{room.data.maxPlayer}</p>
