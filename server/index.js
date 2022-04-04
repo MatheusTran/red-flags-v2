@@ -64,7 +64,6 @@ io.on("connection", socket =>{
 
     socket.on("submitFish", (fish, roomId)=>{
         let docRef = db.collection("rooms").doc(roomId);
-        console.log("test");
         (async ()=>{
             const doc = await docRef.get()
             let current = doc.data()
@@ -72,7 +71,7 @@ io.on("connection", socket =>{
             const index = current.players.indexOf(current.players.find(user =>user.id === data.userId))
             current.players[index]["fish"] = fish
             await docRef.update({players:current.players})
-            io.to(data.roomId).broadcast('notif', {
+            io.to(data.roomId).emit('notif', {
                 title:`${current.players[index]["username"]} has submitted their fish`,
                 message:`waiting on blank more players`,
                 color:"green",

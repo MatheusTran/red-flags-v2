@@ -12,6 +12,7 @@ function PresentField(props) {
     const socket = useSocket()
     const notifications = useNotifications()
     const roomId = props.data //note to self, just remembered that I can access room id from the database aka props.room, I will look into this later
+    const [fishName, setFishName] = useState("")
 
     useEffect(()=>{
         getImages("Humans")
@@ -55,7 +56,7 @@ function PresentField(props) {
         })
     }
     function goFish(pic){
-        const fish = {cards:props.cards, url:pic}
+        const fish = {cards:props.cards, url:pic, name:fishName}
         socket.emit("submitFish", fish, roomId)
     }
     return (
@@ -66,8 +67,8 @@ function PresentField(props) {
                     </div>
             {props.mountButton? <div className="btn" datatext={props.buttonName} onClick={action}>{props.buttonName}</div> : ""}
             <Popup trigger={popupOn} text="create" setTrigger={setPopupOn}>
-                <h2>choose a picture</h2>{/*I might add an input field here to add the name of the fish*/}
-                <input className="input" name="search" id="search" onChange maxLength={12} autoComplete="off" placeholder="name of Fish"/>
+                <h2>choose a picture</h2>
+                <input className="input" name="fishName" id="fishName" onChange={(e)=>setFishName(e.target.value)} maxLength={12} autoComplete="off" placeholder="name of Fish"/>
                 
                     <div className='scrollmenu' style={{spaceBetween:"5rem", padding:"1rem"}}>
                         {pics.map((pic)=>(
