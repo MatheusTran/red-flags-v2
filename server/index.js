@@ -74,7 +74,7 @@ io.on("connection", socket =>{
             await docRef.update({players:current.players})
             io.to(data.roomId).emit('notif', {
                 title:`${current.players[index]["username"]} has submitted their fish`,
-                message:`waiting on blank more players`,
+                message:(current.players.length-current.data.turn-1)?`waiting on ${current.players.length-current.data.turn-1} more player${(current.players.length-current.data.turn-1)<2?"":"s"}`:"now it is time to present thy fish!!!",
                 color:"green",
                 style:{ textAlign: 'left' }
             })

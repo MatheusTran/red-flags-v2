@@ -50,7 +50,6 @@ function Tabs(props) { //I think there are wayyyyy too many variables
     },[socket])
 
     useEffect(()=>{
-        console.log(socket)
         if (socket==null)return
         const data = props.QS
         socket.emit("gamejoin", data.roomId, id, username, seed)
@@ -98,6 +97,11 @@ function Tabs(props) { //I think there are wayyyyy too many variables
                     setShow(false)
                     break;
                 }
+                if (JSON.stringify(you.fish)!=="{}"){
+                    setTopText("You have submitted your fish. Now wait for others to submit their's")
+                    setShow(false)
+                    break
+                }
                 setTopText(`${swiper.username} is looking for love, play two white cards`)
                 setButtonName("confirm")
                 if(present.length === 2){
@@ -105,6 +109,11 @@ function Tabs(props) { //I think there are wayyyyy too many variables
                     break
                 }
                 setShow(false)
+                break;
+            case "presenting":
+                setTopText("blank is now presenting their fish")
+                setButtonName("next")
+                setShow(true)
                 break;
             default:
                 break
@@ -130,7 +139,7 @@ function Tabs(props) { //I think there are wayyyyy too many variables
         const source = Array.from(pointer["array"][result.source.droppableId])
         const setSource = pointer["setArray"][result.source.droppableId]
         const [removedItem] = source.splice(result.source.index, 1)
-        removedItem.display = removedItem.value //note to self: when moving objects from present field to hand, this does not work, not sure why yet
+        removedItem.display = removedItem.value
         if(result.destination.droppableId === result.source.droppableId){
             source.splice(result.destination.index, 0, removedItem)
             setSource(source)
@@ -164,7 +173,7 @@ function Tabs(props) { //I think there are wayyyyy too many variables
     //note to self: I may add another tab for emotes
     return (
         <DragDropContext onDragEnd={reOrder}>
-            <PresentField cards={present} topText={topText} mountButton={show} buttonName={buttonName} room={props.room} data={props.QS.roomId}>
+            <PresentField cards={{present, setPresent}} topText={topText} mountButton={show} buttonName={buttonName} room={props.room} data={props.QS.roomId}>
                 <Droppable droppableId="present" direction="horizontal" roomId={props.QS}>
                     {(provided)=>(
                         <div id="played-cards" className="scrollmenu" {...provided.droppableProps} ref={provided.innerRef} style={{width:"100%", height:"auto"}}>
@@ -172,7 +181,7 @@ function Tabs(props) { //I think there are wayyyyy too many variables
                                 <Draggable key={"present"+index} draggableId={"present"+index} index={index} isDragDisabled={false}>
                                     {(provided)=>(
                                         <div {...provided.draggableProps} {...provided.dragHandleProps} ref={provided.innerRef} className={card.color + " card presented"} onDoubleClick={()=>{play("present", card.color,index)}}>
-                                            {card.text}{/*note to self, I will have to change the class thing*/}
+                                            {card.text}
                                             {card.Custom ? <span contentEditable="true" onKeyUp={e => update(e, index, "present")} onKeyDown={limit}>{card.display}</span>:""} 
                                         </div> 
                                     )}
