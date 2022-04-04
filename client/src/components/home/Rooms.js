@@ -102,7 +102,7 @@ export default function Rooms() {
 
                 <input className="search_input" name="search" placeholder="Search..." autoComplete="off" onChange={(e)=>search(e)}/>
                 
-                {/*isPending? <h1>please be patient while we look for your results</h1>:"" /*should probably make this float above the menu, not apart of it. It looks annoying */} 
+                {isPending? <h1 style={{position:"absolute", top:"50%"}}>please be patient while we look for your results</h1>:""} 
                 
                 {
                     filteredRooms?.length>0? filteredRooms.map((room, index)=>(
