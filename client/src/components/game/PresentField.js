@@ -57,7 +57,8 @@ function PresentField(props) {
     }
     function goFish(pic){
         const fish = {cards:props.cards, url:pic, name:fishName}
-        socket.emit("submitFish", fish, roomId)
+        socket.emit("submitFish", {fish, roomId}, ()=>socket.emit("increment", roomId))//callback function is to make sure that the fish is submitted before incrementing
+        setPopupOn(false)
     }
     return (
         <div id="upper-half">

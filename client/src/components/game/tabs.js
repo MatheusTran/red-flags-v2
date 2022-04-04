@@ -5,7 +5,7 @@ import PresentField from "./PresentField";
 import {DragDropContext, Droppable, Draggable} from "react-beautiful-dnd"
 import { useNotifications } from '@mantine/notifications';
 
-function Tabs(props) {
+function Tabs(props) { //I think there are wayyyyy too many variables
     //tabs
     const [toggleState, setToggleState] = useState(1);
     const toggleTab = (index) => setToggleState(index);

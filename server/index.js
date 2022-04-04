@@ -56,13 +56,14 @@ io.on("connection", socket =>{
             }
             current["data"]["turn"] = 1
             current["data"]["state"] = phase[current["data"]["state"]]
+            await docRef.update(current)
+        } else {
+            await docRef.update({"data.turn":FieldValue.increment(1)})
         }
-        await docRef.update(current)
-        io.to(roomId).emit("game")
         })();
     })
 
-    socket.on("submitFish", (fish, roomId)=>{
+    socket.on("submitFish", ({fish, roomId}, callback)=>{
         let docRef = db.collection("rooms").doc(roomId);
         (async ()=>{
             const doc = await docRef.get()
@@ -77,6 +78,7 @@ io.on("connection", socket =>{
                 color:"green",
                 style:{ textAlign: 'left' }
             })
+            callback()
         })();
     })
 
