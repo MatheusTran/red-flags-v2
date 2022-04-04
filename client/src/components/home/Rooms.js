@@ -80,16 +80,6 @@ export default function Rooms() {
         })
     }
 
-    const styleTest = {
-        width:"50%",
-        background:"black",
-        textAlign:"left",
-        paddingLeft:"1em",
-        opacity:"0.25",
-        textColor:"white",
-        marginBottom:"2em"
-    }
-
     return (
         <div>
             <div className='btn' datatext="Get_A_room" onClick={()=>setPopupOn(!popupOn)}>Get_A_room</div> {/* maybe this should be in a side menu with other options, like look at all cards, change username, github page, etc*/}
@@ -110,7 +100,7 @@ export default function Rooms() {
 
             <div style={{display:"flex", width:"100%",flexDirection:"column",alignItems:"center", marginTop:"2em"}}>
 
-                <input style={styleTest} name="search" placeholder="Search..." autoComplete="off" onChange={(e)=>search(e)}/>
+                <input className="search_input" name="search" placeholder="Search..." autoComplete="off" onChange={(e)=>search(e)}/>
                 
                 {/*isPending? <h1>please be patient while we look for your results</h1>:"" /*should probably make this float above the menu, not apart of it. It looks annoying */} 
                 
