@@ -135,8 +135,7 @@ export function DataContext(props) {
         show,
         pointer
     }
-
-    //note to self: I may add another tab for emotes
+    
     return (
         <context.Provider value={allData}>
             {props.children}

@@ -1,4 +1,3 @@
-const { connect } = require("http2"); //not sure what this is, I think I will remove it. I think it might have auto added this 
 const cards = require("./misc/cards.json");
 
 const app = require("express")()
