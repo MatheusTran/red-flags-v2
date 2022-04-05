@@ -2,7 +2,7 @@ import React from 'react'
 import DiceBear from "../DiceBear"
 import { useData } from './dataProvider'
 
-export default function Scoreboard(props) {//this might have to take in the room data
+export default function Scoreboard() {//this might have to take in the room data
     //const mockPlayers = [{userName:"matheus",seed:"test",points:4},{userName:"Scaevitas",seed:"bleh",points:1},{userName:"Mat A Door",seed:"poaewr",points:8},{userName:"hurder",seed:"Matheus",points:0}]
     const {room} = useData()
     return (

@@ -18,14 +18,12 @@ initializeApp({
     measurementId: "G-1GQK9YKCNK"
 })
 
-
-
 //important!!!!:
 //https://stackoverflow.com/questions/61297769/how-to-hide-api-key-and-still-run-heroku-app
 
 //note to self: for some reason downgrading socket.io to 2.4.0 fixes the bug
 function Game() { 
-    const [user] = useLocalStorage("user")
+    const [user] = useLocalStorage("user")//propbably not needed, might remove this later
     //hotbar component is not really useful
     return (
         <SocketProvider name={user}>

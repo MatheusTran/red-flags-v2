@@ -5,7 +5,7 @@ import { useNotifications } from '@mantine/notifications';
 
 import {useData} from "./dataProvider"; 
 
-function Tabs(props) {
+function Tabs() {
     const { pointer,room } = useData()
     //tabs
     const [toggleState, setToggleState] = useState(1);
