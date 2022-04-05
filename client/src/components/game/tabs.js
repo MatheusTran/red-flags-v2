@@ -98,7 +98,7 @@ function Tabs(props) { //I think there are wayyyyy too many variables
                     break;
                 }
                 if (JSON.stringify(you.fish)!=="{}"){
-                    setTopText("You have submitted your fish. Now wait for others to submit their's")
+                    setTopText("You have submitted your fish. Now wait for others to submit their fish")
                     setShow(false)
                     break
                 }

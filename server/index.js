@@ -87,7 +87,7 @@ io.on("connection", socket =>{
         callback(cards[color][random])
     });
 
-    socket.on("disconnect", ()=>{ 
+    socket.on("disconnect", ()=>{ //note to self: I have to remake the admin system
         const data = userToSocket[socket.id]
         if (data){
             let docRef = db.collection("rooms").doc(data.roomId); 
