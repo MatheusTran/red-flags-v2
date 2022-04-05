@@ -115,7 +115,7 @@ function Tabs(props) { //I think there are wayyyyy too many variables
                 setButtonName("next")
                 if(props.room.order[props.room.data.turn]["id"]===you.id){
                     setShow(true)
-                    setTopText(`you are presenting your fish, press next to reveal your cards`)
+                    setTopText(`you are presenting your fish, press next or the cards to reveal your cards`)
                     break
                 }
                 setTopText(`${props.room.order[props.room.data.turn]["username"]} is now presenting their fish`)
