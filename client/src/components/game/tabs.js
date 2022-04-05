@@ -5,7 +5,7 @@ import PresentField from "./PresentField";
 import {DragDropContext, Droppable, Draggable} from "react-beautiful-dnd"
 import { useNotifications } from '@mantine/notifications';
 
-function Tabs(props) { //I think there are wayyyyy too many variables
+function Tabs(props) { //I think there are wayyyyy too many variables. I may move them to another file
     //tabs
     const [toggleState, setToggleState] = useState(1);
     const toggleTab = (index) => setToggleState(index);
@@ -55,7 +55,7 @@ function Tabs(props) { //I think there are wayyyyy too many variables
         socket.emit("gamejoin", data.roomId, id, username, seed)
         socket.on("init", ()=>{
             for(let x=0; x<15; x++){
-                pull("white", whiteCards, setWhiteCards, setWhiteDupe)
+                pull("white", whiteCards, setWhiteCards, setWhiteDupe)//I may be able to abstract this in the future with the pointer array
             }
             for(let x=0; x<10; x++){
                 pull("red", redCards, setRedCards, setRedDupe)
@@ -112,19 +112,19 @@ function Tabs(props) { //I think there are wayyyyy too many variables
                 break;
             case "presenting":
                 //maybe have a new array showing the order in the database
+                let presenter = props.room.order[props.room.data.turn] 
                 setButtonName("next")
-                if(props.room.order[props.room.data.turn]["id"]===you.id){
+                if(presenter.id===you.id){
                     setShow(true)
-                    setTopText(`you are presenting your fish, press next or the cards to reveal your cards`)
+                    setTopText(`you are presenting your fish (${presenter.fish.name}), press next or the cards to reveal your cards`)
                     break
                 }
-                setTopText(`${props.room.order[props.room.data.turn]["username"]} is now presenting their fish`)
+                setTopText(`${presenter.username} is now presenting their fish: ${presenter.fish.name}`)//maybe the name should be added later, so it can be a reveal
                 setShow(false)
                 break;
             default:
                 break
         }
-
     }, [present, props.room, id])
 
     function play(source,destination, index){
