@@ -21,6 +21,19 @@ function randint(n){
     return Math.floor(Math.random() * (n));
 };
 
+function shuffle(array) {
+    let currentIndex = array.length,  randomIndex;
+    // While there remain elements to shuffle...
+    while (currentIndex != 0) {
+      // Pick a remaining element...
+        randomIndex = Math.floor(Math.random() * currentIndex);
+        currentIndex--;
+      // And swap it with the current element.
+        [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
+    }
+    return array;
+}
+
 const userToSocket = {}
 
 io.on("connection", socket =>{
@@ -50,11 +63,15 @@ io.on("connection", socket =>{
         const doc = await docRef.get();
         const current = doc.data()
         current["data"]["turn"]++
-        if (current["data"]["turn"] >= current["players"].length){
+        if (current["data"]["turn"] >= current["order"].length){
             if (current["data"]["state"] === "awaiting"){
                 current["players"][randint(current["players"].length)]["swiper"] = true
+                current["order"] = current["players"].filter((user)=>{
+                    if(!user.swiper)return {id:user.id,username:user.username,fish:[],}
+                })
+                shuffle(current["order"])
             }
-            current["data"]["turn"] = 1
+            current["data"]["turn"] = 0
             current["data"]["state"] = phase[current["data"]["state"]]
             await docRef.update(current)
         } else {
@@ -69,12 +86,13 @@ io.on("connection", socket =>{
             const doc = await docRef.get()
             let current = doc.data()
             const data = userToSocket[socket.id]
-            const index = current.players.indexOf(current.players.find(user =>user.id === data.userId))
-            current.players[index]["fish"] = fish
-            await docRef.update({players:current.players})
+            const index = current.order.indexOf(current.order.find(user =>user.id === data.userId))
+            current.order[index]["fish"] = fish
+            let left = current.order.length-current.data.turn-1
+            await docRef.update({order:current.order})
             io.to(data.roomId).emit('notif', {
-                title:`${current.players[index]["username"]} has submitted their fish`,
-                message:(current.players.length-current.data.turn-1)?`waiting on ${current.players.length-current.data.turn-1} more player${(current.players.length-current.data.turn-1)<2?"":"s"}`:"now it is time to present thy fish!!!",
+                title:`${current.order[index]["username"]} has submitted their fish`,
+                message:(left)?`waiting on ${left} more player${(left)>1?"s":""}`:"now it is time to present thy fish!!!",
                 color:"green",
                 style:{ textAlign: 'left' }
             })

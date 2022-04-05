@@ -62,7 +62,7 @@ export default function Rooms() {
                 maxPlayer:x["target"][2].value,
                 password:password,
             },
-            waiting:[],
+            order:[],
             id:lobbyId
         });
         joinRoom(lobbyId)

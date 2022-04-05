@@ -85,7 +85,7 @@ function Tabs(props) { //I think there are wayyyyy too many variables
             case "awaiting":
                 setTopText("waiting for players")
                 setButtonName("start")
-                if(you["admin"]){//note to self: fix this
+                if(you.admin){
                     setShow(true)
                     break;
                 } 
@@ -111,9 +111,15 @@ function Tabs(props) { //I think there are wayyyyy too many variables
                 setShow(false)
                 break;
             case "presenting":
-                setTopText("blank is now presenting their fish")
+                //maybe have a new array showing the order in the database
                 setButtonName("next")
-                setShow(true)
+                if(props.room.order[props.room.data.turn]["id"]===you.id){
+                    setShow(true)
+                    setTopText(`you are presenting your fish, press next to reveal your cards`)
+                    break
+                }
+                setTopText(`${props.room.order[props.room.data.turn]["username"]} is now presenting their fish`)
+                setShow(false)
                 break;
             default:
                 break
