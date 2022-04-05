@@ -1,14 +1,11 @@
 import useLocalStorage from "../../hooks/useLocalStorage";
 import {SocketProvider} from "../socket"
-import queryString from "query-string"
 import Tabs from "./tabs";
 import Scoreboard from "./Scoreboard";
 import { NotificationsProvider } from '@mantine/notifications';
+import { DataContext } from "./dataProvider";
 
 import {initializeApp} from "firebase/app";
-import {getFirestore, doc} from "firebase/firestore";
-
-import {useDocumentData} from "react-firebase-hooks/firestore"
 import React from "react";
 
 initializeApp({
@@ -21,7 +18,7 @@ initializeApp({
     measurementId: "G-1GQK9YKCNK"
 })
 
-const FS = getFirestore();
+
 
 //important!!!!:
 //https://stackoverflow.com/questions/61297769/how-to-hide-api-key-and-still-run-heroku-app
@@ -29,10 +26,6 @@ const FS = getFirestore();
 //note to self: for some reason downgrading socket.io to 2.4.0 fixes the bug
 function Game() { 
     const [user] = useLocalStorage("user")
-
-    var data = queryString.parse(window.location.search);
-    const [room] = useDocumentData(doc(FS, "rooms", data.roomId))
-
     //hotbar component is not really useful
     return (
         <SocketProvider name={user}>
@@ -40,10 +33,12 @@ function Game() {
                 <div>
                     <div id="bg"></div>
                 </div>
-                <div id="lower-half">
-                    <Scoreboard players={room?.players}/>
-                    <Tabs QS={data} room={room}/>
-                </div>
+                <DataContext>
+                    <div id="lower-half">
+                        <Scoreboard/>
+                        <Tabs/>
+                    </div>
+                </DataContext>
             </NotificationsProvider>
         </SocketProvider>
     );

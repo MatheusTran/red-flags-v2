@@ -2,14 +2,23 @@ import React, { useContext, useEffect, useState, useCallback } from 'react'
 import { useSocket } from '../socket'
 import useLocalStorage from "../../hooks/useLocalStorage";
 import { useNotifications } from '@mantine/notifications';
+import queryString from "query-string"
+import {getFirestore, doc} from "firebase/firestore";
+
+import {useDocumentData} from "react-firebase-hooks/firestore"
+
+const FS = getFirestore();
 
 const context = React.createContext()
 
 export function useData(){
-    return useContext(DataContext)
+    return useContext(context)
 }
 
 export function DataContext(props) {
+    var {roomId} = queryString.parse(window.location.search);
+    const [room] = useDocumentData(doc(FS, "rooms", roomId))
+
     //cards. it may be better to create a context provider for this in the future
     const [whiteCards, setWhiteCards] = useState([])
     const [redCards, setRedCards] = useState([])
@@ -50,8 +59,7 @@ export function DataContext(props) {
 
     useEffect(()=>{
         if (socket==null)return
-        const data = props.QS
-        socket.emit("gamejoin", data.roomId, id, username, seed)
+        socket.emit("gamejoin", roomId, id, username, seed)
         socket.on("init", ()=>{
             for(let x=0; x<15; x++){
                 pull("white", whiteCards, setWhiteCards, setWhiteDupe)//I may be able to abstract this in the future with the pointer array
@@ -75,12 +83,12 @@ export function DataContext(props) {
     }, [whiteDupe,redDupe])
 
     useEffect(()=>{
-        if(!props.room)return
-        let you = props.room.players.find(user => user.id === id)
+        if(!room)return
+        let you = room.players.find(user => user.id === id)
         if(!you)return
-        let swiper = props.room.players.find(user => user.swiper)
+        let swiper = room.players.find(user => user.swiper)
 
-        switch(props.room.data.state){
+        switch(room.data.state){
             case "awaiting":
                 setTopText("waiting for players")
                 setButtonName("start")
@@ -111,7 +119,7 @@ export function DataContext(props) {
                 break;
             case "presenting":
                 //maybe have a new array showing the order in the database
-                let presenter = props.room.order[props.room.data.turn] 
+                let presenter = room.order[room.data.turn] 
                 setButtonName("next")
                 if(presenter.id===you.id){
                     setShow(true)
@@ -124,16 +132,15 @@ export function DataContext(props) {
             default:
                 break
         }
-    }, [present, props.room, id])
+    }, [present, room, id])
 
     const allData = {
-        whiteCards,
-        redCards,
-        present,
         topText,
         buttonName,
         show,
-        pointer
+        pointer,
+        room,
+        roomId
     }
     
     return (

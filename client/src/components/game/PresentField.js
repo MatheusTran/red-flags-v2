@@ -3,13 +3,22 @@ import axios from "axios";
 import Popup from '../Popup';
 import { useSocket } from '../socket';
 import { useNotifications } from '@mantine/notifications';
+import { useData } from "./dataProvider"
+
 
 function PresentField(props) {
+    const {
+        topText,
+        buttonName,
+        show,
+        pointer,
+        room,
+        roomId
+    } = useData()
     const [popupOn, setPopupOn] = useState(()=>false);
     const [pics, setPics] = useState([])
     const socket = useSocket()
     const notifications = useNotifications()
-    const roomId = props.data //note to self, just remembered that I can access room id from the database aka props.room, I will look into this later
     const [fishName, setFishName] = useState("")
 
     useEffect(()=>{
@@ -17,12 +26,12 @@ function PresentField(props) {
     },[])
 
     function action(){
-        switch(props.room.data.state){
+        switch(room.data.state){
             case "awaiting":
-                if (props.room.players.length < 3){
+                if (room.players.length < 3){
                     notifications.showNotification({
                         title: 'Not enough players',
-                        message: `You only need ${3-props.room.players.length} more ${(3-props.room.players.length)===1? 'person':'people'}. Get more friends, loser`,
+                        message: `You only need ${3-room.players.length} more ${(3-room.players.length)===1? 'person':'people'}. Get more friends, loser`,
                         color:"red",
                         style:{ textAlign: 'left' }
                     })
@@ -54,18 +63,18 @@ function PresentField(props) {
         })
     }
     function goFish(pic){
-        const fish = {cards:props.cards.present, url:pic, name:fishName}
+        const fish = {cards:pointer.array.present, url:pic, name:fishName}
         socket.emit("submitFish", {fish, roomId}, ()=>socket.emit("increment", roomId))//callback function is to make sure that the fish is submitted before incrementing
-        props.cards.setPresent([])
+        pointer.setArray.setPresent([])
         setPopupOn(false)
     }
     return (
         <div id="upper-half">
-                    <h2>{props.topText}</h2>
+                    <h2>{topText}</h2>
                     <div>
                         {props.children}
                     </div>
-            {props.mountButton? <div className="btn" datatext={props.buttonName} onClick={action}>{props.buttonName}</div> : ""}
+            {show? <div className="btn" datatext={buttonName} onClick={action}>{buttonName}</div> : ""}
             <Popup trigger={popupOn} text="create" setTrigger={setPopupOn}>
                 <h2>choose a picture</h2>
                 <input className="input" name="fishName" id="fishName" onChange={(e)=>setFishName(e.target.value)} maxLength={12} autoComplete="off" placeholder="name of Fish"/>
