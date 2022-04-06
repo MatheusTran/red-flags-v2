@@ -131,7 +131,7 @@ export function DataContext(props) {
                     break
                 }
                 setPresentedFish({...presenter.fish, present:false})
-                setTopText(`${presenter.username} is now presenting their fish: ${presenter.fish.name}`)//maybe the name should be added later, so it can be a reveal
+                setTopText(`${presenter.username} is now presenting their fish`)//maybe the name should be added later, so it can be a reveal
                 setShow(false)
                 break;
             default:

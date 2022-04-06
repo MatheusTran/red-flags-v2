@@ -66,6 +66,7 @@ function PresentField(props) {
     function goFish(pic){
         const cards = Array.from(pointer.array.present)
         for (let x=0;x<2;x++){
+            cards[x]["show"] = false
             if (cards[x]["custom"]){
                 if (cards[x].text === "(Custom card)\n"){
                     cards[x].text = cards[x].value
@@ -74,7 +75,7 @@ function PresentField(props) {
                 }
             }
         }
-        const fish = {cards, url:pic, name:fishName}
+        const fish = {cards, url:pic, name:fishName, show:false}
         socket.emit("submitFish", {fish, roomId}, ()=>socket.emit("increment", roomId))//callback function is to make sure that the fish is submitted before incrementing
         pointer.setArray.present([])
         setPopupOn(false)
