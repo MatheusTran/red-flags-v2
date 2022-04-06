@@ -164,3 +164,12 @@ input[type=checkbox]:checked:disabled + label:before {
     opacity: 0.25;
     color: white;
 }
+
+.profile{
+    overflow:hidden; 
+    max-width:10.25rem; 
+    height:9rem;
+    background-size:cover; 
+    background-position:center; 
+    position:relative
+}
