@@ -65,12 +65,12 @@ function Tabs() {
     //note to self: I may add another tab for emotes
     return (
         <DragDropContext onDragEnd={reOrder}>
-            <PresentField>{/*might remove these props in the future */}
-                <Droppable droppableId="present" direction="horizontal">{/*roomId={props.QS} this was in here for some reason. I think it was a mistake */}
+            <PresentField>
+                <Droppable droppableId="present" direction="horizontal">
                     {(provided)=>(
-                        <div id="played-cards" className="scrollmenu" {...provided.droppableProps} ref={provided.innerRef} style={{width:"100%", height:"auto"}}>
+                        <div {...provided.droppableProps} ref={provided.innerRef}>
                             {pointer.array.present.map((card,index) => {return (
-                                <Draggable key={"present"+index} draggableId={"present"+index} index={index} isDragDisabled={false}>
+                                <Draggable key={"present"+index} draggableId={"present"+index} index={index}>
                                     {(provided)=>(
                                         <div {...provided.draggableProps} {...provided.dragHandleProps} ref={provided.innerRef} className={card.color + " card presented"} onDoubleClick={()=>{play("present", card.color,index)}}>
                                             {card.text}
@@ -89,24 +89,16 @@ function Tabs() {
             </PresentField>
             <div className="tabs-container">
             <div className="bloc-tabs">
-                <button
-                className={toggleState === 1 ? "tabs active-tabs" : "tabs"}
-                onClick={() => toggleTab(1)}
-                >
-                white cards
+                <button className={toggleState === 1 ? "tabs active-tabs" : "tabs"} onClick={() => toggleTab(1)}>
+                    white cards
                 </button>
-                <button
-                className={toggleState === 2 ? "tabs active-tabs" : "tabs"}
-                onClick={() => toggleTab(2)}
-                >
-                red cards
+                <button className={toggleState === 2 ? "tabs active-tabs" : "tabs"} onClick={() => toggleTab(2)}>
+                    red cards
                 </button>
             </div>
 
             <div className="content-tabs">
-                    <div
-                    className={(toggleState === 1 ? "content  active-content" : "content")}
-                    >
+                    <div className={(toggleState === 1 ? "content  active-content" : "content")}>
                         <Droppable droppableId="white" direction="horizontal">
                             {(provided)=>(
                             <div className="scrollmenu hand" {...provided.droppableProps} ref={provided.innerRef}>
@@ -126,9 +118,7 @@ function Tabs() {
                     </Droppable>
                 </div>
 
-                <div
-                className={(toggleState === 2 ? "content  active-content" : "content")}
-                >
+                <div className={(toggleState === 2 ? "content  active-content" : "content")}>
                     <Droppable droppableId="red" direction="horizontal">
                         {(provided)=>(
                         <div className="scrollmenu hand" {...provided.droppableProps} ref={provided.innerRef}>

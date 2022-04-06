@@ -25,6 +25,7 @@ export function DataContext(props) {
     const [whiteDupe, setWhiteDupe] = useState(false)
     const [redDupe, setRedDupe] = useState(false) 
     const [present, setPresent] = useState([])
+    const [presentedFish, setPresentedFish] = useState({})
     //present field
     const notifications = useNotifications()
     const [topText, setTopText] = useState("loading data, please be patient")//maybe I can use an object again
@@ -99,16 +100,18 @@ export function DataContext(props) {
                 setShow(false)
                 break
             case "white":
-                if (you.swiper){
+                if (swiper.id === you.id){
                     setTopText("You are lonely and looking for a fish to fill the empty void that is your heart. Don't worry, you'll find someone eventually")
                     setShow(false)
                     break;
                 }
-                if (JSON.stringify(you.fish)!=="{}"){
+                if (room.order){
+                    const yourFish = room.order.find(user => user.id === id)
+                    if (JSON.stringify(yourFish.fish)!=="{}"){
                     setTopText("You have submitted your fish. Now wait for others to submit their fish")
                     setShow(false)
                     break
-                }
+                }}
                 setTopText(`${swiper.username} is looking for love, play two white cards`)
                 setButtonName("confirm")
                 if(present.length === 2){
@@ -122,10 +125,12 @@ export function DataContext(props) {
                 let presenter = room.order[room.data.turn] 
                 setButtonName("next")
                 if(presenter.id===you.id){
+                    setPresentedFish({...presenter.fish, present:true})
                     setShow(true)
                     setTopText(`you are presenting your fish (${presenter.fish.name}), press next or the cards to reveal your cards`)
                     break
                 }
+                setPresentedFish({...presenter.fish, present:false})
                 setTopText(`${presenter.username} is now presenting their fish: ${presenter.fish.name}`)//maybe the name should be added later, so it can be a reveal
                 setShow(false)
                 break;
@@ -140,7 +145,8 @@ export function DataContext(props) {
         show,
         pointer,
         room,
-        roomId
+        roomId,
+        presentedFish
     }
     
     return (

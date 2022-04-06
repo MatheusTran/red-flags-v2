@@ -66,7 +66,7 @@ io.on("connection", socket =>{
             if (current["data"]["state"] === "awaiting"){
                 current["players"][randint(current["players"].length)]["swiper"] = true
                 current["order"] = current["players"].filter((user)=>{
-                    if(!user.swiper)return {id:user.id,username:user.username,fish:[],}
+                    if(!user.swiper)return {id:user.id,username:user.username,fish:[]}
                 })
                 shuffle(current["order"])
             }

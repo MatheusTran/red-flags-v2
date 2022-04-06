@@ -4,6 +4,7 @@ import Popup from '../Popup';
 import { useSocket } from '../socket';
 import { useNotifications } from '@mantine/notifications';
 import { useData } from "./dataProvider"
+import Fish from './Fish';
 
 
 function PresentField(props) {
@@ -63,16 +64,26 @@ function PresentField(props) {
         })
     }
     function goFish(pic){
-        const fish = {cards:pointer.array.present, url:pic, name:fishName}
+        const cards = Array.from(pointer.array.present)
+        for (let x=0;x<2;x++){
+            if (cards[x]["custom"]){
+                if (cards[x].text === "(Custom card)\n"){
+                    cards[x].text = cards[x].value
+                } else {
+                    cards[x].text = cards[x].text.replace("_____", cards[x].value)
+                }
+            }
+        }
+        const fish = {cards, url:pic, name:fishName}
         socket.emit("submitFish", {fish, roomId}, ()=>socket.emit("increment", roomId))//callback function is to make sure that the fish is submitted before incrementing
-        pointer.setArray.setPresent([])
+        pointer.setArray.present([])
         setPopupOn(false)
     }
     return (
         <div id="upper-half">
                     <h2>{topText}</h2>
-                    <div>
-                        {props.children}
+                    <div id="played-cards" className="scrollmenu" style={{width:"100%", height:"auto"}}>
+                        {room?.data.state==="presenting"?<Fish/>:props.children}
                     </div>
             {show? <div className="btn" datatext={buttonName} onClick={action}>{buttonName}</div> : ""}
             <Popup trigger={popupOn} text="create" setTrigger={setPopupOn}>
