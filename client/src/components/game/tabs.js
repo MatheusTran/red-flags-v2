@@ -68,7 +68,7 @@ function Tabs() {
             <PresentField>
                 <Droppable droppableId="present" direction="horizontal">
                     {(provided)=>(
-                        <div {...provided.droppableProps} ref={provided.innerRef}>
+                        <div {...provided.droppableProps} ref={provided.innerRef} style={{width:"100%",display:"flex",flexDirection:"row"}}>
                             {pointer.array.present.map((card,index) => {return (
                                 <Draggable key={"present"+index} draggableId={"present"+index} index={index}>
                                     {(provided)=>(
