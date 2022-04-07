@@ -72,6 +72,15 @@ export function DataContext(props) {
         socket.on("notif", (notif)=>{
             notifications.showNotification(notif)
         })
+        socket.on("reveal", (card)=>{
+            if (card===3){
+                setPresentedFish({...presentedFish, show:true})
+            } else {
+                let cards = Array.from(presentedFish)
+                cards[card]["show"] = true
+                setPresentedFish({...presentedFish, cards})
+            }
+        })
     },[socket])
 
     useEffect(()=>{//for some reason this does not work
