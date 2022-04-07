@@ -43,6 +43,9 @@ function PresentField(props) {
             case "white":
                 setPopupOn(!popupOn)
                 break;
+            case "present":
+
+                break;
             default:
                 break;
         }
@@ -75,7 +78,7 @@ function PresentField(props) {
                 }
             }
         }
-        const fish = {cards, url:pic, name:fishName, show:false}
+        const fish = {cards:[{url:pic, name:fishName, show:false}, ...cards]}
         socket.emit("submitFish", {fish, roomId}, ()=>socket.emit("increment", roomId))//callback function is to make sure that the fish is submitted before incrementing
         pointer.setArray.present([])
         setPopupOn(false)

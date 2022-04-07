@@ -136,7 +136,7 @@ export function DataContext(props) {
                 if(presenter.id===you.id){
                     setPresentedFish({...presenter.fish, present:true})
                     setShow(true)
-                    setTopText(`you are presenting your fish (${presenter.fish.name}), press next or the cards to reveal your cards`)
+                    setTopText(`you are presenting your fish (${presenter.fish.cards[0].name}), press next or the cards to reveal your cards`)
                     break
                 }
                 setPresentedFish({...presenter.fish, present:false})
