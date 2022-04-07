@@ -61,7 +61,6 @@ io.on("connection", socket =>{
         (async ()=>{
             const doc = await docRef.get();
             const current = doc.data()
-            console.log(index)
             current.order[current.data.turn].fish.cards[index].show = true
             await docRef.update({order:current.order})
         })();

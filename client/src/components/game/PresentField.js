@@ -14,7 +14,8 @@ function PresentField(props) {
         show,
         pointer,
         room,
-        roomId
+        roomId,
+        presentedFish
     } = useData()
     const [popupOn, setPopupOn] = useState(()=>false);
     const [pics, setPics] = useState([])
@@ -43,8 +44,15 @@ function PresentField(props) {
             case "white":
                 setPopupOn(!popupOn)
                 break;
-            case "present":
-
+            case "presenting":
+                const next = presentedFish.cards.find((card)=>card.show===false)
+                console.log(next)
+                if(!next){
+                    break;
+                }
+                const index = presentedFish.cards.indexOf(next)
+                console.log(index)
+                socket.emit("reveal", roomId, index)
                 break;
             default:
                 break;
