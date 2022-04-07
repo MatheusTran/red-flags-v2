@@ -46,12 +46,11 @@ function PresentField(props) {
                 break;
             case "presenting":
                 const next = presentedFish.cards.find((card)=>card.show===false)
-                console.log(next)
                 if(!next){
+                    socket.emit("increment", roomId)
                     break;
                 }
                 const index = presentedFish.cards.indexOf(next)
-                console.log(index)
                 socket.emit("reveal", roomId, index)
                 break;
             default:
