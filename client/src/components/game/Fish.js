@@ -13,12 +13,12 @@ function Fish() {
         if(!presentedFish||JSON.stringify(presentedFish)==="{}")return {display:"none"}
         if(!presentedFish.cards[0].show){
             if(presentedFish.present){
-                return {background: `linear-gradient(180turn,rgba(0,0,0,0.65),rgba(0,0,0,0)), url(${presentedFish?.cards[0].url})`, opacity:"0.5"}
+                return {background: `linear-gradient(180turn,rgba(0,0,0,0.65),rgba(0,0,0,0)), url(${presentedFish?.cards[0].url})`, backgroundSize:"cover", backgroundPosition:"center", opacity:"0.5"}
             } else{
                 return {display:"none"}
             }
         }
-        return {background: `linear-gradient(180turn,rgba(0,0,0,0.65),rgba(0,0,0,0)), url(${presentedFish?.cards[0].url})`}
+        return {background: `linear-gradient(180turn,rgba(0,0,0,0.65),rgba(0,0,0,0)), url(${presentedFish?.cards[0].url})`,backgroundSize:"cover", backgroundPosition:"center"}
     }
     return (
         <>

@@ -169,7 +169,5 @@ input[type=checkbox]:checked:disabled + label:before {
     overflow:hidden; 
     max-width:10.25rem; 
     height:9rem;
-    background-size:cover; 
-    background-position:center; 
     position:relative
 }
