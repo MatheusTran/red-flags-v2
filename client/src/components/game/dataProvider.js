@@ -143,6 +143,22 @@ export function DataContext(props) {
                 setTopText(`${presenter.username} is now presenting their fish`)//maybe the name should be added later, so it can be a reveal
                 setShow(false)
                 break;
+            case "red":
+                let ruiner = room.order[room.data.turn] 
+                let spoiledFish = room.order[room.data.turn+1]?room.order[room.data.turn+1]:room.order[0]
+                if (ruiner.id===you.id){
+                    setTopText(`you are spoiling ${spoiledFish.username}'s fish`)
+                    if(spoiledFish.fish.cards.length >=4){
+                        setButtonName("next")
+                        break;
+                    }
+                    setButtonName("confirm")
+                    setShow(true)
+                    break;
+                }
+                setShow(false)
+                setTopText(`${ruiner.username} is ruining ${spoiledFish.username}'s fish`)
+                break;
             default:
                 break
         }
