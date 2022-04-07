@@ -70,7 +70,7 @@ function PresentField(props) {
         const cards = Array.from(pointer.array.present)
         for (let x=0;x<2;x++){
             cards[x]["show"] = false
-            if (cards[x]["custom"]){
+            if (cards[x]["Custom"]){
                 if (cards[x].text === "(Custom card)\n"){
                     cards[x].text = cards[x].value
                 } else {

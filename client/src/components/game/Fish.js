@@ -1,11 +1,13 @@
 import React from 'react'
 import { useData } from './dataProvider'
+import { useSocket } from '../socket'
 
 function Fish() {
-    const { presentedFish } = useData()
+    const { presentedFish, roomId } = useData()
+    const socket = useSocket()
     function reveal(index){
-        console.log("test")
-        console.log(index)
+        console.log(presentedFish)
+        socket.emit("reveal",roomId, index)
     }
     function getProfileStyle(){//I could turn this into a ternary operator like I did with the cards, but it's a bit hard to read. I might make the background a variable
         if(!presentedFish||JSON.stringify(presentedFish)==="{}")return {display:"none"}
@@ -29,7 +31,7 @@ function Fish() {
                     return null
                 }
             ).map((card, index)=>(
-                <div onClick={()=>reveal(index+1)} key={"fish"+ index} className={card.color + " card presented"} style={presentedFish.show?{}:presentedFish.present?{opacity:"0.5"}:{display:"none"}}>
+                <div onClick={()=>reveal(index+1)} key={"fish"+ index} className={card.color + " card presented"} style={presentedFish?.cards[index+1].show?{}:presentedFish.present?{opacity:"0.5"}:{display:"none"}}>
                     {card.text}
                 </div>
             ))}

@@ -56,6 +56,17 @@ io.on("connection", socket =>{
         })();
     });
 
+    socket.on("reveal", (roomId, index)=>{
+        let docRef = db.collection("rooms").doc(roomId);//I may change this, because it can be slow
+        (async ()=>{
+            const doc = await docRef.get();
+            const current = doc.data()
+            console.log(index)
+            current.order[current.data.turn].fish.cards[index].show = true
+            await docRef.update({order:current.order})
+        })();
+    })
+
     socket.on("increment", (roomId)=>{
         let docRef = db.collection("rooms").doc(roomId);
         (async ()=>{
