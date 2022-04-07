@@ -15,7 +15,8 @@ function PresentField(props) {
         pointer,
         room,
         roomId,
-        presentedFish
+        presentedFish,
+        username
     } = useData()
     const [popupOn, setPopupOn] = useState(()=>false);
     const [pics, setPics] = useState([])
@@ -85,7 +86,7 @@ function PresentField(props) {
                 }
             }
         }
-        const fish = {cards:[{url:pic, name:fishName, show:false}, ...cards]}
+        const fish = {cards:[{url:pic, name:fishName?fishName:username, show:false}, ...cards]}
         socket.emit("submitFish", {fish, roomId}, ()=>socket.emit("increment", roomId))//callback function is to make sure that the fish is submitted before incrementing
         pointer.setArray.present([])
         setPopupOn(false)
@@ -94,7 +95,7 @@ function PresentField(props) {
         <div id="upper-half">
                     <h2>{topText}</h2>
                     <div id="played-cards" className="scrollmenu" style={{width:"100%", height:"auto"}}>
-                        {room?.data.state==="presenting"?<Fish/>:props.children}
+                        {room?.data.state==="presenting"?<Fish/>:room?.data.state==="red"?<><Fish/>{props.children}</>:props.children}
                     </div>
             {show? <div className="btn" datatext={buttonName} onClick={action}>{buttonName}</div> : ""}
             <Popup trigger={popupOn} text="create" setTrigger={setPopupOn}>

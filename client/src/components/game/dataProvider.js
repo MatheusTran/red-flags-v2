@@ -146,6 +146,7 @@ export function DataContext(props) {
             case "red":
                 let ruiner = room.order[room.data.turn] 
                 let spoiledFish = room.order[room.data.turn+1]?room.order[room.data.turn+1]:room.order[0]
+                setPresentedFish(spoiledFish.fish)
                 if (ruiner.id===you.id){
                     setTopText(`you are spoiling ${spoiledFish.username}'s fish`)
                     if(spoiledFish.fish.cards.length >=4){
@@ -171,7 +172,8 @@ export function DataContext(props) {
         pointer,
         room,
         roomId,
-        presentedFish
+        presentedFish,
+        username
     }
     
     return (
