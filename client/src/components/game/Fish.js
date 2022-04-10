@@ -13,28 +13,32 @@ function Fish() {
         if(!presentedFish||JSON.stringify(presentedFish)==="{}")return {display:"none"}
         if(!presentedFish.cards[0].show){
             if(presentedFish.present){
-                return {background: `linear-gradient(180turn,rgba(0,0,0,0.65),rgba(0,0,0,0)), url(${presentedFish?.cards[0].url})`, backgroundSize:"cover", backgroundPosition:"center", opacity:"0.5"}
+                return {background: `linear-gradient(180turn,rgba(0,0,0,0.65),rgba(0,0,0,0)), url(${presentedFish.cards[0].url})`, backgroundSize:"cover", backgroundPosition:"center", opacity:"0.5"}
             } else{
                 return {display:"none"}
             }
         }
-        return {background: `linear-gradient(180turn,rgba(0,0,0,0.65),rgba(0,0,0,0)), url(${presentedFish?.cards[0].url})`,backgroundSize:"cover", backgroundPosition:"center"}
+        return {background: `linear-gradient(180turn,rgba(0,0,0,0.65),rgba(0,0,0,0)), url(${presentedFish.cards[0].url})`,backgroundSize:"cover", backgroundPosition:"center"}
     }
     return (
         <>
-            <div onClick={()=>reveal(0)} className='card presented profile' style={getProfileStyle()}>
-                <h1 style={{fontSize:"20px", marginTop:"auto", position:"absolute", bottom:"0", left:"0"}}>{presentedFish?.cards?" "+presentedFish.cards[0].name:""}</h1>
-            </div>
-            {presentedFish?.cards?.filter(
-                (card,index)=>{
-                    if(index)return card
-                    return null
-                }
-            ).map((card, index)=>(
-                <div onClick={()=>reveal(index+1)} key={"fish"+ index} className={card.color + " card presented"} style={presentedFish?.cards[index+1].show?{}:presentedFish.present?{opacity:"0.5"}:{display:"none"}}>
-                    {card.text}
+            { presentedFish?
+            <>
+                <div onClick={()=>reveal(0)} className='card presented profile' style={getProfileStyle()}>
+                    <h1 style={{fontSize:"20px", marginTop:"auto", position:"absolute", bottom:"0", left:"0"}}>{presentedFish.cards?" "+presentedFish.cards[0].name:""}</h1>
                 </div>
-            ))}
+                {presentedFish.cards?.filter(
+                    (card,index)=>{
+                        if(index)return card
+                        return null
+                    }
+                ).map((card, index)=>(
+                    <div onClick={()=>reveal(index+1)} key={"fish"+ index} className={card.color + " card presented"} style={presentedFish.cards[index+1].show?{}:presentedFish.present?{opacity:"0.5"}:{display:"none"}}>
+                        {card.text}
+                    </div>
+                ))}
+            </>:""
+            }
         </>
     )
 }

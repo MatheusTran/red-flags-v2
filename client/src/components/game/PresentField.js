@@ -95,7 +95,8 @@ function PresentField(props) {
         <div id="upper-half">
                     <h2>{topText}</h2>
                     <div id="played-cards" className="scrollmenu" style={{width:"100%", height:"auto"}}>
-                        {room?.data.state==="presenting"?<Fish/>:room?.data.state==="red"?<><Fish/>{props.children}</>:props.children}
+                        <Fish/>
+                        {room?.data.state==="white"||room?.data.state==="red"?<>{props.children}</>:""}
                     </div>
             {show? <div className="btn" datatext={buttonName} onClick={action}>{buttonName}</div> : ""}
             <Popup trigger={popupOn} text="create" setTrigger={setPopupOn}>
