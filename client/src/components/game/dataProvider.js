@@ -154,7 +154,7 @@ export function DataContext(props) {
                         break;
                     }
                     setButtonName("confirm")
-                    setShow(true)
+                    present.length? setShow(true):setShow(false)
                     break;
                 }
                 setShow(false)
