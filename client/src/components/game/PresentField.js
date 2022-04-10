@@ -98,7 +98,7 @@ function PresentField(props) {
                         <Fish/>
                         {room?.data.state==="white"||room?.data.state==="red"?<>{props.children}</>:""}
                     </div>
-            {show? <div className="btn" datatext={buttonName} onClick={action}>{buttonName}</div> : ""}
+            {show? <div className="btn" datatext={buttonName} onClick={action}>{buttonName}</div> : ""/*maybe I can make this a seperate component so that I can add an animation to this*/}
             <Popup trigger={popupOn} text="create" setTrigger={setPopupOn}>
                 <h2>choose a picture</h2>
                 <input className="input" name="fishName" id="fishName" onChange={(e)=>setFishName(e.target.value)} maxLength={12} autoComplete="off" placeholder="name of Fish"/>
