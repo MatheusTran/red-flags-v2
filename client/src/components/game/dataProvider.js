@@ -161,6 +161,15 @@ export function DataContext(props) {
                 setShow(false)
                 setTopText(`${ruiner.username} is ruining ${spoiledFish.username}'s fish`)
                 break;
+            case "pick":
+                setShow(false)
+                const swiper = room.players.find(user=>user.swiper)
+                if (swiper.id === you.id){
+                    setTopText("time to choose your favorite fish")
+                    break
+                }
+                setTopText(`${swiper.username} is choosing their destined lover`)
+                break;
             default:
                 break
         }
