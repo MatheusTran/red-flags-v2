@@ -54,6 +54,22 @@ function PresentField(props) {
                 const index = presentedFish.cards.indexOf(next)
                 socket.emit("reveal", roomId, index)
                 break;
+            case "red":
+                if(presentedFish.cards.length>=4){
+                    socket.emit("increment", roomId)
+                    break;
+                }
+                let card = {...pointer.array.present[0], show:true}
+                if (card.custom){//not sure if I should make this a function in the future
+                    if (card.text === "(Custom card)"){
+                        card.text = card.value
+                    } else {
+                        card.text = card.text.replace("_____", card.value)
+                    }
+                }
+                pointer.setArray.present([])
+                socket.emit("spoilFish", roomId, card)
+                break;
             default:
                 break;
         }
@@ -79,7 +95,7 @@ function PresentField(props) {
         for (let x=0;x<2;x++){
             cards[x]["show"] = false
             if (cards[x]["Custom"]){
-                if (cards[x].text === "(Custom card)\n"){
+                if (cards[x].text === "(Custom card)"){
                     cards[x].text = cards[x].value
                 } else {
                     cards[x].text = cards[x].text.replace("_____", cards[x].value)

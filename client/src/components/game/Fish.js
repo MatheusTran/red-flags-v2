@@ -6,7 +6,6 @@ function Fish() {
     const { presentedFish, roomId } = useData()
     const socket = useSocket()
     function reveal(index){
-        console.log(presentedFish)
         socket.emit("reveal",roomId, index)
     }
     function getProfileStyle(){//I could turn this into a ternary operator like I did with the cards, but it's a bit hard to read. I might make the background a variable
@@ -33,7 +32,7 @@ function Fish() {
                         return null
                     }
                 ).map((card, index)=>(
-                    <div onClick={()=>reveal(index+1)} key={"fish"+ index} className={card.color + " card presented"} style={presentedFish.cards[index+1].show?{}:presentedFish.present?{opacity:"0.5"}:{display:"none"}}>
+                    <div onClick={()=>presentedFish.cards[index+1].show?"":reveal(index+1)} key={"fish"+ index} className={card.color + " card presented"} style={presentedFish.cards[index+1].show?{}:presentedFish.present?{opacity:"0.5"}:{display:"none"}}>
                         {card.text}
                     </div>
                 ))}

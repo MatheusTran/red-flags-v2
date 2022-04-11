@@ -150,6 +150,7 @@ export function DataContext(props) {
                 if (ruiner.id===you.id){
                     setTopText(`you are spoiling ${spoiledFish.username}'s fish`)
                     if(spoiledFish.fish.cards.length >=4){
+                        setShow(true)
                         setButtonName("next")
                         break;
                     }
