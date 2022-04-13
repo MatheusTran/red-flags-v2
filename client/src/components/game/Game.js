@@ -4,6 +4,7 @@ import Tabs from "./tabs";
 import Scoreboard from "./Scoreboard";
 import { NotificationsProvider } from '@mantine/notifications';
 import { DataContext } from "./dataProvider";
+import Tinder from "./tinder";
 
 import {initializeApp} from "firebase/app";
 import React from "react";
@@ -32,6 +33,7 @@ function Game() {
                     <div id="bg"></div>
                 </div>
                 <DataContext>
+                    <Tinder/>
                     <div id="lower-half">
                         <Scoreboard/>
                         <Tabs/>
