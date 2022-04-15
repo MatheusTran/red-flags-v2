@@ -44,6 +44,7 @@ export default function Rooms() {
             } else if (room.Name.toLowerCase().includes(searchRoom.toLowerCase())){
                 return(room)
             }
+            return null
         })
     }, [searchRoom, roomsList])
 
