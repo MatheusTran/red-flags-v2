@@ -171,3 +171,9 @@ input[type=checkbox]:checked:disabled + label:before {
     height:9rem;
     position:relative
 }
+
+button[aria-label="previous"],
+button[aria-label="next"] {
+    background: salmon !important;
+    color: black !important;
+}
