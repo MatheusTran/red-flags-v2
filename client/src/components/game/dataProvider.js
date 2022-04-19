@@ -163,6 +163,7 @@ export function DataContext(props) {
                 break;
             case "pick":
                 setShow(false)
+                setPresentedFish({})
                 if (you.swiper){
                     setTopText("time to choose your favorite fish")
                     break;
