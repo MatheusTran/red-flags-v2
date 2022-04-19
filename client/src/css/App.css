@@ -176,4 +176,28 @@ button[aria-label="previous"],
 button[aria-label="next"] {
     background: salmon !important;
     color: black !important;
+    opacity: 0.75 !important; 
+}
+
+button[aria-label="previous"]:hover,
+button[aria-label="next"]:hover {
+    opacity: 1 !important; 
+}
+
+.circle{
+    margin:2rem;
+    width:4rem;
+    height:4rem;
+    border-radius:100%;
+    background:white,;
+    border:solid 10px whitesmoke;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    cursor:pointer;
+}
+
+.circle svg:hover{
+    transform: scale(1.25);
+    transition: all .2s ease-in-out;
 }

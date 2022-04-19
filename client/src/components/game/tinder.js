@@ -12,7 +12,6 @@ function Tinder() {
         {text:"this is a white card", color:"white"},
         {text:"this is a red card", color:"red"}
     ]
-    const circle = {margin:"2rem",width:"4rem",height:"4rem", borderRadius:"100%", background:"white", border:"solid 10px whitesmoke", display:"flex", alignItems:"center", justifyContent:"center"}
     return (
         <>
         {
@@ -24,8 +23,8 @@ function Tinder() {
                     <Profile key={"profile" + index} cards={fish} name={"mock user"}/>
                 ))*/}
                 <div style={{display:"flex", flexDirection:"row", height:"auto", width:"100%", alignItems:"center", justifyContent:"center"}}>
-                    <div style={circle}><FontAwesomeIcon size="2xl" icon={faXmark} style={{color:"rgb(254,133,113)"}}/></div>
-                    <div style={circle}><FontAwesomeIcon size="2xl" icon={faHeart} style={{color:"rgb(159, 226,191)"}}/></div>
+                    <div className='circle'><FontAwesomeIcon size="2xl" icon={faXmark} style={{color:"rgb(254,133,113)"}}/></div>
+                    <div className='circle'><FontAwesomeIcon size="2xl" icon={faHeart} style={{color:"rgb(159, 226,191)"}}/></div>
                 </div>
             </div>
         </div>:""
