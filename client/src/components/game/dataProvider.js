@@ -183,7 +183,8 @@ export function DataContext(props) {
         room,
         roomId,
         presentedFish,
-        username
+        username,
+        id
     }
     
     return (

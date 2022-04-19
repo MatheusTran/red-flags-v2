@@ -4,18 +4,29 @@ import Profile from './profile'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faXmark, faHeart } from '@fortawesome/free-solid-svg-icons'
 import { useSocket } from '../socket'
+import {useNotifications } from '@mantine/notifications'
 
 function Tinder() {
-    const { room, roomId } = useData()
+    const { room, roomId, id } = useData()
     const [num, setNum] = useState(0)
     const socket = useSocket()
+    const notifications = useNotifications() 
     function newNum(){
         if(num+1>=room.order.length)return 0
         return num+1
     }
 
     function next(){
-        socket.emit("slide", roomId, newNum())
+        if (room.players.find(user=>user.id===id).swiper){
+            socket.emit("slide", roomId, newNum())
+        } else {
+            notifications.showNotification({
+                title: 'You may be single, but you are not the "single"',
+                message: `I'm sure it'll be your turn to find love eventually`,
+                color:"red",
+                style:{ textAlign: 'left' }
+            })
+        }
     }
 
     useEffect(()=>{
