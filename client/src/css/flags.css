@@ -386,3 +386,17 @@ div i:hover{
 #player-button{
     display:none;
 }
+
+.profile-card{
+    display:flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+}
+
+.profile-card .card{
+    min-width: 18rem;
+    height: 20.5rem;
+    font-size: 40px;
+}

@@ -6,9 +6,9 @@ function Tinder() {
     const { room } = useData()
     const mock = [
         {url:"https://cdn.cnn.com/cnnnext/dam/assets/160725131446-graham-car-crash-evolved-human-full-169.jpeg", name:"test"},
-        {text:"this is the first card"},
-        {text:"this is a white card"},
-        {text:"this is a red card"}
+        {text:"this is the first card", color:"white"},
+        {text:"this is a white card", color:"white"},
+        {text:"this is a red card", color:"red"}
     ]
     return (
         <>
