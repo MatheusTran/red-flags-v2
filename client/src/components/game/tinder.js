@@ -7,8 +7,15 @@ import { faXmark, faHeart } from '@fortawesome/free-solid-svg-icons'
 function Tinder() {
     const { room } = useData()
     const [num, setNum] = useState(0)
-    const mock = [[
-        {url:"https://cdn.cnn.com/cnnnext/dam/assets/160725131446-graham-car-crash-evolved-human-full-169.jpeg", name:"test"},
+    const mock = [
+    [
+        {url:"https://images.unsplash.com/photo-1514924801778-1db0aba75e9b?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=934&q=80", name:"test"},
+        {text:"this is the first card", color:"white"},
+        {text:"this is a white card", color:"white"},
+        {text:"this is a red card", color:"red"}
+    ],
+    [
+        {url:"https://images.unsplash.com/photo-1522263842439-347f062b8475?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=934&q=80", name:"another one"},
         {text:"this is the first card", color:"white"},
         {text:"this is a white card", color:"white"},
         {text:"this is a red card", color:"red"}
@@ -18,7 +25,8 @@ function Tinder() {
         {text:"this is another person", color:"white"},
         {text:"thingy ma bob", color:"white"},
         {text:"boob", color:"red"}
-    ]]
+    ]
+]
     function next(){
         setNum(()=>{
         if(num+1>=mock.length)return 0
