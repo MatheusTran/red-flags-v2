@@ -33,7 +33,7 @@ function Tinder() {
             <div style={{position:"fixed", width:"500px", background:"white", borderRadius:"5%", height:"100%", left:"50%", transform:"translateX(-50%)"}}>
                 <div style={{display:"grid"}}>
                     {mock.map((profile, index)=>(
-                        <Profile key={"profile "+index} cards={profile} name={"Matheus"} index={index*-1} mount={index>=num}/>
+                        <Profile key={"profile "+index} cards={profile} name={"Matheus"} index={mock.length-index} mount={index>=num}/>
                     ))}
                     </div>
                 {/*room.order.map((fish, index)=>(
