@@ -29,6 +29,19 @@ function Tinder() {
         }
     }
 
+    function select(){
+        if (room.players.find(user=>user.id===id).swiper){
+            socket.emit("winner", roomId, num)
+        } else {
+            notifications.showNotification({
+                title: 'You may be single, but you are not the "single"',
+                message: `I'm sure it'll be your turn to find love eventually`,
+                color:"red",
+                style:{ textAlign: 'left' }
+            })
+        }
+    }
+
     useEffect(()=>{
         if(!socket)return
         socket.on("change", (newNum)=>{
@@ -50,7 +63,7 @@ function Tinder() {
                 </div>
                 <div style={{display:"flex", flexDirection:"row", height:"auto", width:"100%", alignItems:"center", justifyContent:"center"}}>
                     <div className='circle'><FontAwesomeIcon size="2xl" icon={faXmark} style={{color:"rgb(254,133,113)"}} onClick={()=>{next()}}/></div>
-                    <div className='circle'><FontAwesomeIcon size="2xl" icon={faHeart} style={{color:"rgb(159, 226,191)"}}/></div>
+                    <div className='circle'><FontAwesomeIcon size="2xl" icon={faHeart} style={{color:"rgb(159, 226,191)"}} onClick={()=>{select()}}/></div>
                 </div>
             </div>
         </div>:""

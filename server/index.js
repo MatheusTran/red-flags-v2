@@ -70,6 +70,18 @@ io.on("connection", socket =>{
         })();
     })
 
+    socket.on("winner", (roomId, num)=>{
+        let docRef = db.collection("rooms").doc(roomId);//I may change this, because it can be slow
+        (async ()=>{
+            const doc = await docRef.get();
+            const current = doc.data()
+            const winner = current.order[num]
+            current.players.find(user=>user.id===winner.id).score++
+            console.log(current.players)
+            await docRef.update({players:current.players})
+        })
+    })
+
     socket.on("reveal", (roomId, index)=>{
         let docRef = db.collection("rooms").doc(roomId);//I may change this, because it can be slow
         (async ()=>{
