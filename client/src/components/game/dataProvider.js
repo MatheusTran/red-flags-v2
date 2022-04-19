@@ -109,7 +109,7 @@ export function DataContext(props) {
                 setShow(false)
                 break
             case "white":
-                if (swiper.id === you.id){
+                if (you.swiper){
                     setTopText("You are lonely and looking for a fish to fill the empty void that is your heart. Don't worry, you'll find someone eventually")
                     setShow(false)
                     break;
@@ -163,10 +163,9 @@ export function DataContext(props) {
                 break;
             case "pick":
                 setShow(false)
-                const swiper = room.players.find(user=>user.swiper)
-                if (swiper.id === you.id){
+                if (you.swiper){
                     setTopText("time to choose your favorite fish")
-                    break
+                    break;
                 }
                 setTopText(`${swiper.username} is choosing their destined lover`)
                 break;

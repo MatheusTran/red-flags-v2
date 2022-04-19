@@ -60,7 +60,8 @@ function PresentField(props) {
                     break;
                 }
                 let card = {...pointer.array.present[0], show:true}
-                if (card.custom){//not sure if I should make this a function in the future
+                if (card.Custom){//not sure if I should make this a function in the future
+                    console.log(card)
                     if (card.text === "(Custom card)"){
                         card.text = card.value
                     } else {
