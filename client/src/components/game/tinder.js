@@ -31,6 +31,7 @@ function Tinder() {
 
     function select(){
         if (room.players.find(user=>user.id===id).swiper){
+            console.log(num)
             socket.emit("winner", roomId, num)
         } else {
             notifications.showNotification({

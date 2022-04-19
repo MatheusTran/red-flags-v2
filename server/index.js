@@ -71,15 +71,29 @@ io.on("connection", socket =>{
     })
 
     socket.on("winner", (roomId, num)=>{
-        let docRef = db.collection("rooms").doc(roomId);//I may change this, because it can be slow
+        let docRef = db.collection("rooms").doc(roomId);
         (async ()=>{
             const doc = await docRef.get();
             const current = doc.data()
             const winner = current.order[num]
             current.players.find(user=>user.id===winner.id).score++
-            console.log(current.players)
-            await docRef.update({players:current.players})
-        })
+            let swiper = current.players.indexOf(current.players.find(user=>user.swiper))
+            //new swiper
+            current.players[swiper].swiper = false
+            if(current.players[swiper+1]){
+                current.players[swiper+1].swiper = true
+            } else {
+                current.players[0].swiper = true
+            }
+            //reshuffle the order
+            current["order"] = current["players"].filter((user)=>{
+                if(!user.swiper)return {id:user.id,username:user.username,fish:[]}
+            })
+            shuffle(current["order"])
+            current["data"]["turn"] = 0
+            current["data"]["state"] = "white"
+            await docRef.update(current)
+        })();
     })
 
     socket.on("reveal", (roomId, index)=>{
