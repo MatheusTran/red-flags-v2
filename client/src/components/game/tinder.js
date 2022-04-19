@@ -1,20 +1,31 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useData } from './dataProvider'
 import Profile from './profile'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faXmark, faHeart } from '@fortawesome/free-solid-svg-icons'
+import { useSocket } from '../socket'
 
 function Tinder() {
-    const { room } = useData()
+    const { room, roomId } = useData()
     const [num, setNum] = useState(0)
-    
-    function next(){
-        setNum(()=>{
-            console.log(num)
+    const socket = useSocket()
+    function newNum(){
         if(num+1>=room.order.length)return 0
         return num+1
-        })
     }
+
+    function next(){
+        socket.emit("slide", roomId, newNum())
+    }
+
+    useEffect(()=>{
+        if(!socket)return
+        socket.on("change", (newNum)=>{
+            setNum(newNum)
+        })
+    },[socket])
+    
+
     return (
         <>
         {

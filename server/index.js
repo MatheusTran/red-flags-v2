@@ -56,6 +56,10 @@ io.on("connection", socket =>{
         })();
     });
 
+    socket.on("slide", (roomId, newNum)=>{
+        io.to(roomId).emit("change", newNum)
+    })
+
     socket.on("spoilFish", (roomId, card)=>{
         let docRef = db.collection("rooms").doc(roomId);
         (async ()=>{
