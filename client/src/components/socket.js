@@ -10,7 +10,7 @@ export function useSocket() {
 export function SocketProvider({ name, children }) {
     const [socket, setSocket] = useState()
 
-    useEffect(() => {
+    useEffect(() => { 
     const newSocket = io(
         'https://red-flags-v2.herokuapp.com/',//I am not sure what to change this to in the future
         { user: { name } } //I think I can remove this
