@@ -12,7 +12,7 @@ export function SocketProvider({ name, children }) {
 
     useEffect(() => {
     const newSocket = io(
-        'http://localhost:9000',//I am not sure what to change this to in the future
+        'https://red-flags-v2.herokuapp.com/',//I am not sure what to change this to in the future
         { user: { name } } //I think I can remove this
     )
     setSocket(newSocket)
