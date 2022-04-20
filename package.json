@@ -15,5 +15,14 @@
   "bugs": {
     "url": "https://github.com/scaevitas/red-flags-v2/issues"
   },
-  "homepage": "https://github.com/scaevitas/red-flags-v2#readme"
+  "homepage": "https://github.com/scaevitas/red-flags-v2#readme",
+  "dependencies": {
+    "express": "^4.17.3",
+    "firebase": "^9.6.8",
+    "firebase-admin": "^10.0.2",
+    "nodemon": "^2.0.15",
+    "react-beautiful-dnd": "^13.1.0",
+    "redis-om": "^0.1.7",
+    "socketio": "^1.0.0"
+  }
 }
