@@ -1,0 +1,19 @@
+{
+  "name": "red-flags",
+  "version": "1.0.0",
+  "description": "a game",
+  "main": "./server/index.js",
+  "scripts": {
+    "start": "cd server && npm run start"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/scaevitas/red-flags-v2.git"
+  },
+  "author": "Matheus Tran",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/scaevitas/red-flags-v2/issues"
+  },
+  "homepage": "https://github.com/scaevitas/red-flags-v2#readme"
+}
