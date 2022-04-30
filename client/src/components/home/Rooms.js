@@ -31,8 +31,8 @@ export default function Rooms() {
     const [isPending, startTransition] = useTransition()
 
     useEffect(()=>{
-        setId(v4())
-    },[setId])
+        if(!id)setId(v4())
+    },[id, setId])
 
     let player = {username:user, score:0, admin:false, played:[], seed:seed, id:id}//note to self, create an id
 
