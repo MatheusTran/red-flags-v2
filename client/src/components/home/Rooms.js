@@ -83,6 +83,7 @@ export default function Rooms() {
 
     return (
         <div>
+        <div id="bg"></div>
             <div className='btn' datatext="Get_A_room" onClick={()=>setPopupOn(!popupOn)}>Get_A_room</div> {/* maybe this should be in a side menu with other options, like look at all cards, change username, github page, etc*/}
             <Popup trigger={popupOn} setTrigger={setPopupOn}>                
                 <form onSubmit={createRoom} autoComplete='off' action="game">

@@ -3,9 +3,22 @@ import { useSocket } from '../socket'
 import useLocalStorage from "../../hooks/useLocalStorage";
 import { useNotifications } from '@mantine/notifications';
 import queryString from "query-string"
+
+import {initializeApp} from "firebase/app";
 import {getFirestore, doc} from "firebase/firestore";
 
 import {useDocumentData} from "react-firebase-hooks/firestore"
+
+initializeApp({
+    apiKey: process.env.REACT_APP_firebase_api,
+    authDomain: "red-flags-v2.firebaseapp.com",
+    projectId: "red-flags-v2",
+    storageBucket: "red-flags-v2.appspot.com",
+    messagingSenderId: "35160152967",
+    appId: "1:35160152967:web:6d106eec111e58897d1122",
+    measurementId: "G-1GQK9YKCNK"
+})
+
 
 const FS = getFirestore();
 
