@@ -9,7 +9,7 @@ export default function Router() {
         <BrowserRouter>
             <Routes>
                 <Route path="/" exact element={<App/>}/>
-                <Route path="/lobbies" exact element={<Rooms/>}/>
+                <Route path="/hallway" exact element={<Rooms/>}/>
                 <Route path="/game" element={<Game/>}/>
             </Routes>
         </BrowserRouter>

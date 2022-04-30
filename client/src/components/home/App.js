@@ -11,7 +11,7 @@ function App() {
   function create(a,b){
     setUser(a)
     setSeed(b)
-    window.location = (`lobbies`);
+    window.location = (`hallway`);
   }
   return (
     <div className="container">
