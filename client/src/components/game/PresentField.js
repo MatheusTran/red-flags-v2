@@ -5,6 +5,7 @@ import { useSocket } from '../socket';
 import { useNotifications } from '@mantine/notifications';
 import { useData } from "./dataProvider"
 import Fish from './Fish';
+import { randFullName } from '@ngneat/falso'
 
 
 function PresentField(props) {
@@ -103,7 +104,7 @@ function PresentField(props) {
                 }
             }
         }
-        const fish = {cards:[{url:pic, name:fishName?fishName:username, show:false}, ...cards]}
+        const fish = {cards:[{url:pic, name:fishName?fishName:randFullName(), show:false}, ...cards]}
         socket.emit("submitFish", {fish, roomId}, ()=>socket.emit("increment", roomId))//callback function is to make sure that the fish is submitted before incrementing
         pointer.setArray.present([])
         setPopupOn(false)
