@@ -44,7 +44,8 @@ io.on("connection", socket =>{
         let docRef = db.collection("rooms").doc(roomId);
         (async ()=>{
             const doc = await docRef.get();
-            await docRef.update({"data.turn":FieldValue.increment(1)})
+            const current = doc.data()
+            if(current.data.state==="awaiting")await docRef.update({"data.turn":FieldValue.increment(1)})
             if (doc.data()["players"].length > 0){// I will have to remove the try block, this is only here for test purposes
                 await docRef.update({players:FieldValue.arrayUnion({username:user, score:0, admin:false, fish:{}, seed:seed, id:userId, swiper:false})})
             }else{
