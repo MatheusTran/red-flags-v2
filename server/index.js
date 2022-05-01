@@ -165,8 +165,8 @@ io.on("connection", socket =>{
                 if(current["players"].length <= 1){ 
                     await docRef.delete()
                 }else{
-                    if(quiter.admin)current["players"][0].admin = true
                     current["players"].splice(current["players"].indexOf(quiter),1)
+                    if(quiter.admin)current["players"][0].admin = true
                     await docRef.update({players:current["players"]}) 
                 } 
             })(); 
