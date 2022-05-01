@@ -16,8 +16,7 @@ function PresentField(props) {
         pointer,
         room,
         roomId,
-        presentedFish,
-        username
+        presentedFish
     } = useData()
     const [popupOn, setPopupOn] = useState(()=>false);
     const [pics, setPics] = useState([])
@@ -107,6 +106,8 @@ function PresentField(props) {
         const fish = {cards:[{url:pic, name:fishName?fishName:randFullName(), show:false}, ...cards]}
         socket.emit("submitFish", {fish, roomId}, ()=>socket.emit("increment", roomId))//callback function is to make sure that the fish is submitted before incrementing
         pointer.setArray.present([])
+        setFishName("")
+        getImages()
         setPopupOn(false)
     }
     return (
@@ -119,7 +120,7 @@ function PresentField(props) {
             {show? <div className="btn" datatext={buttonName} onClick={action}>{buttonName}</div> : ""/*maybe I can make this a seperate component so that I can add an animation to this*/}
             <Popup trigger={popupOn} text="create" setTrigger={setPopupOn}>
                 <h2>choose a picture</h2>
-                <input className="input" name="fishName" id="fishName" onChange={(e)=>setFishName(e.target.value)} maxLength={12} autoComplete="off" placeholder="name of Fish"/>
+                <input className="input" name="fishName" id="fishName" onChange={(e)=>setFishName(e.target.value)} maxLength={20} autoComplete="off" placeholder="name of Fish"/>
                 
                     <div className='scrollmenu' style={{spaceBetween:"5rem", padding:"1rem"}}>
                         {pics.map((pic)=>(

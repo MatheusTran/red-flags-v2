@@ -60,6 +60,7 @@ io.on("connection", socket =>{
 
     socket.on("spoilFish", (roomId, card)=>{
         let docRef = db.collection("rooms").doc(roomId);
+        socket.emit("draw", "red")
         (async ()=>{
             const doc = await docRef.get();
             const current = doc.data()
@@ -129,6 +130,7 @@ io.on("connection", socket =>{
 
     socket.on("submitFish", ({fish, roomId}, callback)=>{
         let docRef = db.collection("rooms").doc(roomId);
+        socket.emit("draw", "white")
         (async ()=>{
             const doc = await docRef.get()
             let current = doc.data()
@@ -158,11 +160,12 @@ io.on("connection", socket =>{
             let docRef = db.collection("rooms").doc(data.roomId); 
             (async ()=>{
                 const doc = await docRef.get();
-                const quiter = doc.data()["players"].find(user => user.id == data.userId)
+                const quiter = doc.data()["players"].find(user => user.id == data.userId)                
                 if(doc.data()["players"].length <= 1){ 
                     await docRef.delete()
                 }else{
                     await docRef.update({players:FieldValue.arrayRemove(quiter)}) 
+                    if(quiter.admin)doc.data()["players"][randint(0,doc.data()["players"].length)].admin = true
                 } 
             })(); 
         } 

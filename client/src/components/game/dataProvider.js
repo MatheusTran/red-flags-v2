@@ -75,10 +75,18 @@ export function DataContext(props) {
         if (socket==null)return
         socket.emit("gamejoin", roomId, id, username, seed)
         socket.on("init", ()=>{
-            for(let x=0; x<15; x++){
+            for(let x=0; x<20; x++){
                 pull("white", whiteCards, setWhiteCards, setWhiteDupe)//I may be able to abstract this in the future with the pointer array
             }
-            for(let x=0; x<10; x++){
+            for(let x=0; x<15; x++){
+                pull("red", redCards, setRedCards, setRedDupe)
+            }
+        })
+        socket.on("draw",(color)=>{
+            if (color==="white"){
+                pull("white", whiteCards, setWhiteCards, setWhiteDupe)
+                pull("white", whiteCards, setWhiteCards, setWhiteDupe)
+            } else {
                 pull("red", redCards, setRedCards, setRedDupe)
             }
         })
