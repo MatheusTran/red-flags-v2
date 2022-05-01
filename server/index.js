@@ -160,12 +160,14 @@ io.on("connection", socket =>{
             let docRef = db.collection("rooms").doc(data.roomId); 
             (async ()=>{
                 const doc = await docRef.get();
-                const quiter = doc.data()["players"].find(user => user.id == data.userId)                
-                if(doc.data()["players"].length <= 1){ 
+                const current = doc.data()
+                const quiter = current["players"].find(user => user.id == data.userId)                
+                if(current["players"].length <= 1){ 
                     await docRef.delete()
                 }else{
-                    await docRef.update({players:FieldValue.arrayRemove(quiter)}) 
-                    if(quiter.admin)doc.data()["players"][randint(0,doc.data()["players"].length)].admin = true
+                    if(quiter.admin)current["players"][0].admin = true
+                    current["players"].splice(current["players"].indexOf(quiter),1)
+                    await docRef.update({players:current["players"]}) 
                 } 
             })(); 
         } 
