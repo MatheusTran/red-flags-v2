@@ -52,7 +52,7 @@ io.on("connection", socket =>{
                 await docRef.update({players:FieldValue.arrayUnion({username:user, score:0, admin:true, fish:{}, seed:seed, id:userId, swiper:false})})
             }
         })();
-    });
+    }); 
 
     socket.on("slide", (roomId, newNum)=>{
         io.to(roomId).emit("change", newNum)
