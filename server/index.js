@@ -92,6 +92,7 @@ io.on("connection", socket =>{
             current["data"]["turn"] = 0
             current["data"]["state"] = "white"
             await docRef.update(current)
+            socket.emit("change", 0)
         })();
     })
 
@@ -169,7 +170,7 @@ io.on("connection", socket =>{
                     if(quiter.admin)current["players"][0].admin = true
                     await docRef.update({players:current["players"]}) 
                 } 
-            })(); 
+            })();
         } 
     }) 
 });

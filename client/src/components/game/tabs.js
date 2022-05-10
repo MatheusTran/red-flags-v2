@@ -27,7 +27,7 @@ function Tabs() {
     function limit(e){//it's a limit function... ba dum tss
         if(e.target.innerText.length >=36 && e.key!=="Backspace")e.preventDefault()
     }
-    function reOrder(result){
+    function reOrder(result){//note to self, add some lines to check for swiper
         const source = Array.from(pointer["array"][result.source.droppableId])
         const setSource = pointer["setArray"][result.source.droppableId]
         const [removedItem] = source.splice(result.source.index, 1)
