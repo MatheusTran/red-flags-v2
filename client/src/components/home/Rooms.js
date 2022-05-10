@@ -36,10 +36,11 @@ export default function Rooms() {
 
     let player = {username:user, score:0, admin:false, played:[], seed:seed, id:id}//note to self, create an id
 
+    //search rooms
     const [roomsList] = useCollectionData(collection(FS,"rooms"))
     const filteredRooms = useMemo(()=>{
-        return roomsList?.filter((room) =>{//filters the room listings. Also ignore this error message
-            if(searchRoom===""){
+        return roomsList?.filter((room) =>{
+            if(!searchRoom){
                 return(room)
             } else if (room.Name.toLowerCase().includes(searchRoom.toLowerCase())){
                 return(room)
@@ -47,6 +48,12 @@ export default function Rooms() {
             return null
         })
     }, [searchRoom, roomsList])
+
+    function search(e){
+        startTransition(()=>{
+            setSearchRoom(e.target.value)
+        })
+    }
 
     const createRoom = async(x) => { //this should propbably be in index js as well
         const lobbyId = v4()
@@ -72,13 +79,6 @@ export default function Rooms() {
     const joinRoom = async(joinroomid) =>{
         //await setDoc(doc(FS, "rooms", joinroomid), {players:arrayUnion(player)},{merge:true});//maybe move this to index.js
         window.location = (`game?roomId=${joinroomid}`);
-    }
-
-    function search(e){
-        startTransition(()=>{
-            console.log(searchRoom)
-            setSearchRoom(e.target.value)
-        })
     }
 
     return (
