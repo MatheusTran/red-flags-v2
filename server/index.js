@@ -13,7 +13,7 @@ const phase = {awaiting:"white", white:"presenting", presenting:"red", red:"pick
 
 admin.initializeApp({
     credential: admin.credential.cert(serviceAccount)
-})
+}) W
 
 const db = admin.firestore()
 
