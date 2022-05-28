@@ -4,6 +4,9 @@ require("dotenv").config();
 const app = require("express")()
 const server = require("http").createServer(app)
 const io = require("socket.io")(server)
+const cors = require("cors")
+
+app.use(cors())
 
 const admin = require("firebase-admin")//note to self: may change to real time database in the future instead of firestore
 const serviceAccount = JSON.parse(process.env.firestore_key)
