@@ -1,4 +1,4 @@
-const cards = require("./misc/cards.json");
+const cards = require("./misc/cards.json"); 
 require("dotenv").config();
 
 const app = require("express")()
@@ -19,7 +19,7 @@ const db = admin.firestore()
 
 function randint(n){
     return Math.floor(Math.random() * (n));
-};
+}; 
 
 function shuffle(array) {
     let currentIndex = array.length,  randomIndex;
