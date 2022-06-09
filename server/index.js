@@ -131,7 +131,7 @@ io.on("connection", socket =>{
 
     socket.on("submitFish", ({fish, roomId}, callback)=>{
         let docRef = db.collection("rooms").doc(roomId);
-        socket.emit("draw", "white")
+        socket.emit("draw", "white");
         (async ()=>{
             const doc = await docRef.get()
             let current = doc.data()
