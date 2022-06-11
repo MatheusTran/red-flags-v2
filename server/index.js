@@ -60,7 +60,7 @@ io.on("connection", socket =>{
 
     socket.on("spoilFish", (roomId, card)=>{
         let docRef = db.collection("rooms").doc(roomId);
-        socket.emit("draw", "red")
+        socket.emit("draw", "red");
         (async ()=>{
             const doc = await docRef.get();
             const current = doc.data()
